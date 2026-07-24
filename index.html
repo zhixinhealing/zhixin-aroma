@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>芝心調香室 V16 Mobile</title>
+<title>芝心調香室 V18</title>
 <style>
 :root{
   --bg:#f5f1e9;
@@ -712,7 +712,7 @@ button,input,select,textarea{max-width:100%}
         <p>精油百科・原料管理・產品配方・蠟燭計算・庫存管理</p>
       </div>
     </div>
-    <div class="badge">芝心聊癒專屬 V16 Mobile</div>
+    <div class="badge">芝心聊癒專屬 V18</div>
   </header>
 
   <button class="mobile-nav-toggle" id="mobileNavToggle" type="button" aria-controls="mainNav" aria-expanded="false">
@@ -948,7 +948,7 @@ button,input,select,textarea{max-width:100%}
 
   <section id="diffuser" class="panel v3-diffuser">
     <div class="v3-wrap">
-      <div class="v3-header"><div><h1>擴香日誌</h1><p>選擇想要的空間氣味，系統會自動帶你前往符合的精油。</p></div><span class="v3-badge">V3 引導式測試版</span></div>
+      <div class="v3-header"><div><h1>擴香日誌</h1><p>選擇想要的空間氣味，系統會自動帶你前往符合的精油。</p></div><span class="v3-badge">V18 共用資料庫</span></div>
       <div class="v3-layout">
         <main class="v3-card">
           <section class="v3-section" id="v3EnvSection">
@@ -1410,26 +1410,3745 @@ const initialInventory = [
   {name:"蠟燭容器", category:"瓶器", ml:12, unit:"個", spec:"", reorder:3}
 ];
 
-let oils = [
-{name:"葡萄柚",en:"Grapefruit",part:"果皮",tone:"T",drops:"8",aroma:"果香、清甜",body:"促進循環、排水、支持代謝",emotion:"提振快樂與動能，釋放沉重情緒",tags:["財富","淨化","放鬆"],element:"木"},
-{name:"檀香",en:"Sandalwood",part:"木材",tone:"B",drops:"6",aroma:"溫潤木質、奶香柔和",body:"鎮靜、滋潤、助眠",emotion:"寧靜、慈悲、內在智慧",tags:["睡眠","保護","放鬆"],element:"水"},
-{name:"甜橙",en:"Orange",part:"果皮",tone:"T",drops:"7",aroma:"甜美果香、明亮柔和",body:"促進消化、緩解緊繃、幫助入眠",emotion:"喜悅、放鬆、喚醒童心",tags:["愛情","放鬆","睡眠"],element:"土"},
-{name:"高山薰衣草",en:"Lavender",part:"花",tone:"M",drops:"7",aroma:"花香、草本清新",body:"鎮靜安神、助眠、放鬆肌肉",emotion:"平衡心緒、安撫焦慮不安",tags:["放鬆","睡眠","保護"],element:"火"},
-{name:"檜木",en:"Benihi / Hinoki",part:"木質部",tone:"M/B",drops:"2",aroma:"溫潤木質、森林氣息",body:"支援呼吸、營造清新空氣",emotion:"沉穩、安定、內在回歸",tags:["保護","放鬆","淨化"],element:"金"},
-{name:"廣藿香",en:"Patchouli",part:"葉片",tone:"B",drops:"4",aroma:"濕潤土氣、木質厚重",body:"促進循環、皮膚保養",emotion:"接地、穩定、安全感與現實行動力",tags:["財富","保護","放鬆"],element:"木"},
-{name:"雪松",en:"Cedarwood",part:"木材",tone:"B",drops:"7-8",aroma:"木質、溫潤",body:"支持呼吸、頭皮與肌膚保養",emotion:"深沉、穩定、根基感與自信",tags:["財富","保護","睡眠"],element:"金"},
-{name:"山雞椒",en:"Litsea cubeba",part:"果實",tone:"T/M",drops:"4",aroma:"明亮柑橘、草本辛甜",body:"淨化空氣、促進循環、提振代謝",emotion:"喚起希望與快樂、掃除雜訊",tags:["財富","淨化","放鬆"],element:"木"},
-{name:"乳香",en:"Frankincense",part:"樹脂",tone:"B",drops:"4-5",aroma:"樹脂、木質、微甜暖香",body:"支持免疫、肌膚再生、深層放鬆",emotion:"內在平靜、靜心與靈性連結",tags:["保護","淨化","睡眠"],element:"金"},
-{name:"岩蘭草",en:"Vetiver",part:"根部",tone:"B",drops:"1",aroma:"濕潤木根、濃郁厚實",body:"穩定神經、緩解焦慮、支持循環",emotion:"扎根、專注、回到身體",tags:["保護","睡眠","放鬆"],element:"水"},
-{name:"依蘭依蘭",en:"Ylang Ylang",part:"花",tone:"M/B",drops:"4",aroma:"濃郁甜花香、性感柔美",body:"調節荷爾蒙、舒緩焦慮",emotion:"愛、自我接納、感官流動",tags:["愛情","放鬆","睡眠"],element:"火"},
-{name:"歐薄荷",en:"Peppermint",part:"葉",tone:"T",drops:"1-2",aroma:"清涼、辛薄荷",body:"提神、清頭腦、舒緩頭痛",emotion:"清醒、專注、理智",tags:["淨化","保護"],element:"木"},
-{name:"佛手柑",en:"Bergamot",part:"果皮",tone:"T",drops:"7-8",aroma:"柑橘、微花香、明亮",body:"皮膚調理、壓力後放鬆",emotion:"愉悅、輕盈、轉換情緒",tags:["愛情","財富","放鬆"],element:"土",warning:"具光敏性，外用後避免日曬。"},
-{name:"沒藥",en:"Myrrh",part:"樹脂",tone:"B",drops:"5-6",aroma:"樹脂木質、厚重煙燻",body:"抗炎、抗菌、支持呼吸與免疫",emotion:"靜心、放下悲傷與焦慮",tags:["保護","淨化","睡眠"],element:"金"},
-{name:"茉莉",en:"Jasmine",part:"花",tone:"M/B",drops:"1",aroma:"濃郁甜美花香",body:"荷爾蒙支持、放鬆",emotion:"愛、自信、心輪",tags:["愛情"],element:"火"},
-{name:"橙花",en:"Neroli",part:"花",tone:"M",drops:"2-3",aroma:"清甜高貴花香",body:"鎮靜神經、幫助睡眠",emotion:"幸福、被愛感、重生",tags:["愛情","睡眠"],element:"火"},
-{name:"絲柏",en:"Cypress",part:"針葉",tone:"M",drops:"5",aroma:"清新木質、草本",body:"促進循環、支持呼吸",emotion:"內在靜定、清醒思考",tags:["保護","淨化"],element:"金"},
-{name:"苦橙",en:"Bitter Orange",part:"果皮",tone:"T",drops:"7",aroma:"清甜柑橘略帶苦韻",body:"舒緩、支持消化",emotion:"釋放壓力、重新振作",tags:["放鬆","睡眠"],element:"土"}
+const MASTER_OIL_DATABASE = [
+  {
+    "id": "angelica",
+    "name": "欧白芷/當歸",
+    "en": "Angelica",
+    "scientificName": "",
+    "part": "根部",
+    "tone": "M/B",
+    "volatility": "M/B",
+    "drops": "2-4",
+    "aroma": "帶有土質、辛香、草本的氣息，略帶根莖的厚重感",
+    "body": "傳統用於支援消化系統、舒緩筋骨緊繃或疲勞",
+    "emotion": "有「接地」與「安定」的感受，適合當你需要從高速運轉中退一步，進入內在溫暖、放鬆的狀態。",
+    "warning": "具光敏性，外用後至少 12-18 小時避免日光直射；敏感性膚質建議先進行貼膚測試",
+    "notes": "",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Angelica",
+        "part": "根部",
+        "tone": "M/B",
+        "drops": "2-4",
+        "aroma": "帶有土質、辛香、草本的氣息，略帶根莖的厚重感",
+        "body": "傳統用於支援消化系統、舒緩筋骨緊繃或疲勞",
+        "emotion": "有「接地」與「安定」的感受，適合當你需要從高速運轉中退一步，進入內在溫暖、放鬆的狀態。",
+        "warning": "具光敏性，外用後至少 12-18 小時避免日光直射；敏感性膚質建議先進行貼膚測試",
+        "notes": ""
+      }
+    ],
+    "aliases": [
+      "歐白芷/當歸"
+    ],
+    "tags": [
+      "放鬆"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "balsam-fir-idaho",
+    "name": "愛達荷州冷杉",
+    "en": "Balsam Fir (Idaho)",
+    "scientificName": "",
+    "part": "針葉或嫩枝",
+    "tone": "T/M",
+    "volatility": "T/M",
+    "drops": "6",
+    "aroma": "木質且帶針葉樹的清新氣息，有點像置身森林的感覺",
+    "body": "適合用於呼吸系統支援、肌肉關節的放鬆按摩。",
+    "emotion": "有強烈「森呼吸」的感覺，適合在壓力大、思緒混亂時幫助清醒、重啟。",
+    "warning": "",
+    "notes": "",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Balsam Fir (Idaho)",
+        "part": "針葉或嫩枝",
+        "tone": "T/M",
+        "drops": "6",
+        "aroma": "木質且帶針葉樹的清新氣息，有點像置身森林的感覺",
+        "body": "適合用於呼吸系統支援、肌肉關節的放鬆按摩。",
+        "emotion": "有強烈「森呼吸」的感覺，適合在壓力大、思緒混亂時幫助清醒、重啟。",
+        "warning": "",
+        "notes": ""
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "愛情",
+      "放鬆"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "basil",
+    "name": "羅勒",
+    "en": "Basil",
+    "scientificName": "",
+    "part": "葉與花頂部",
+    "tone": "M",
+    "volatility": "M",
+    "drops": "4",
+    "aroma": "草本＋辛香，帶有明亮的羅勒葉香與微甜辛調",
+    "body": "可用於頭腦疲憊、精神運轉過度時幫助恢復清醒；亦常見於疲勞後支援。",
+    "emotion": "帶來振奮、清醒、專注的感受，適合需要集中精神或提升效率時使用。",
+    "warning": "孕婦不宜使用",
+    "notes": "",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Basil",
+        "part": "葉與花頂部",
+        "tone": "M",
+        "drops": "4",
+        "aroma": "草本＋辛香，帶有明亮的羅勒葉香與微甜辛調",
+        "body": "可用於頭腦疲憊、精神運轉過度時幫助恢復清醒；亦常見於疲勞後支援。",
+        "emotion": "帶來振奮、清醒、專注的感受，適合需要集中精神或提升效率時使用。",
+        "warning": "孕婦不宜使用",
+        "notes": ""
+      }
+    ],
+    "aliases": [],
+    "tags": [],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "bergamot-citrus",
+    "name": "佛手柑",
+    "en": "Bergamot Citrus",
+    "scientificName": "",
+    "part": "果皮冷壓",
+    "tone": "T",
+    "volatility": "T",
+    "drops": "7-8",
+    "aroma": "鮮明的柑橘香＋微微花香／木質底，屬於明亮、愉快香氣",
+    "body": "常用於皮膚調理、緩解壓力以後的放鬆、提振疲憊身體。",
+    "emotion": "提供愉悅、輕盈、甜美的情緒支持，幫助轉換情緒、提升好心情。",
+    "warning": "外用後至少 12-18 小時應避開陽光；孕婦或敏膚族亦需小心。",
+    "notes": "",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Bergamot Citrus",
+        "part": "果皮冷壓",
+        "tone": "T",
+        "drops": "7-8",
+        "aroma": "鮮明的柑橘香＋微微花香／木質底，屬於明亮、愉快香氣",
+        "body": "常用於皮膚調理、緩解壓力以後的放鬆、提振疲憊身體。",
+        "emotion": "提供愉悅、輕盈、甜美的情緒支持，幫助轉換情緒、提升好心情。",
+        "warning": "外用後至少 12-18 小時應避開陽光；孕婦或敏膚族亦需小心。",
+        "notes": ""
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "放鬆"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "blackpepper",
+    "name": "黑胡椒",
+    "en": "BlackPepper",
+    "scientificName": "",
+    "part": "果實",
+    "tone": "M",
+    "volatility": "M",
+    "drops": "3-4",
+    "aroma": "辛香＋木質，帶點辣椒般的溫暖感",
+    "body": "適合暖身、肌肉按摩、促進血液循環、活動前後的熱身輔助。",
+    "emotion": "帶來動力、勇氣、振奮的感覺，適合需要突破或活化的時刻。",
+    "warning": "可能對皮膚造成刺激／過熱感，敏膚慎用；孕婦避免；避免接觸眼睛或黏膜。",
+    "notes": "",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "BlackPepper",
+        "part": "果實",
+        "tone": "M",
+        "drops": "3-4",
+        "aroma": "辛香＋木質，帶點辣椒般的溫暖感",
+        "body": "適合暖身、肌肉按摩、促進血液循環、活動前後的熱身輔助。",
+        "emotion": "帶來動力、勇氣、振奮的感覺，適合需要突破或活化的時刻。",
+        "warning": "可能對皮膚造成刺激／過熱感，敏膚慎用；孕婦避免；避免接觸眼睛或黏膜。",
+        "notes": ""
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "財富"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "black-spruce",
+    "name": "黑雲杉",
+    "en": "Black Spruce",
+    "scientificName": "",
+    "part": "針葉／枝",
+    "tone": "T/M",
+    "volatility": "T/M",
+    "drops": "4-5",
+    "aroma": "清新森林／針葉香調，有點像置身針葉林中，木質感明顯。",
+    "body": "常用於呼吸支持（如胸腔按摩）、肌肉放鬆、冬日保暖或自然防護香氛。",
+    "emotion": "提供樹林、穩定、扎根的感覺，適合當你需要「穩住情緒」、「回到自己中心」的時刻。",
+    "warning": "",
+    "notes": "",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Black Spruce",
+        "part": "針葉／枝",
+        "tone": "T/M",
+        "drops": "4-5",
+        "aroma": "清新森林／針葉香調，有點像置身針葉林中，木質感明顯。",
+        "body": "常用於呼吸支持（如胸腔按摩）、肌肉放鬆、冬日保暖或自然防護香氛。",
+        "emotion": "提供樹林、穩定、扎根的感覺，適合當你需要「穩住情緒」、「回到自己中心」的時刻。",
+        "warning": "",
+        "notes": ""
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "保護",
+      "放鬆"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "blue-cypres",
+    "name": "蓝絲柏",
+    "en": "Blue Cypres",
+    "scientificName": "",
+    "part": "木材",
+    "tone": "M/B",
+    "volatility": "M/B",
+    "drops": "3",
+    "aroma": "帶有較深沉的木質與樹脂感，溫潤木質＋微微煙燻／蜂蜜／藍藥草的氣息，較為少見、獨特",
+    "body": "常用於舒緩肌膚（如癢、擦傷後護理）、戶外香氛防護、放鬆緊張肌肉。",
+    "emotion": "帶有一種溫潤但穩定的氛圍，適合進入內在、釋放後感受安穩、從外向內的轉化。",
+    "warning": "孕期與哺乳期者避免使用；使用抗凝藥物者或對藥物代謝有特殊情況者慎用",
+    "notes": "",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Blue Cypres",
+        "part": "木材",
+        "tone": "M/B",
+        "drops": "3",
+        "aroma": "帶有較深沉的木質與樹脂感，溫潤木質＋微微煙燻／蜂蜜／藍藥草的氣息，較為少見、獨特",
+        "body": "常用於舒緩肌膚（如癢、擦傷後護理）、戶外香氛防護、放鬆緊張肌肉。",
+        "emotion": "帶有一種溫潤但穩定的氛圍，適合進入內在、釋放後感受安穩、從外向內的轉化。",
+        "warning": "孕期與哺乳期者避免使用；使用抗凝藥物者或對藥物代謝有特殊情況者慎用",
+        "notes": ""
+      }
+    ],
+    "aliases": [
+      "藍絲柏"
+    ],
+    "tags": [
+      "保護",
+      "放鬆"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "blue-spruce",
+    "name": "蓝雲杉",
+    "en": "Blue Spruce",
+    "scientificName": "",
+    "part": "針葉／枝",
+    "tone": "T",
+    "volatility": "T",
+    "drops": "5",
+    "aroma": "乾淨的針葉香＋微樟木／土木底韻，有種淨化空氣的效果",
+    "body": "呼吸系統支持、風寒型肌肉緊繃舒緩、自然香氛營造清新環境。",
+    "emotion": "帶來「清爽醒腦」、「從混亂返回清明」的感受。",
+    "warning": "",
+    "notes": "",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Blue Spruce",
+        "part": "針葉／枝",
+        "tone": "T",
+        "drops": "5",
+        "aroma": "乾淨的針葉香＋微樟木／土木底韻，有種淨化空氣的效果",
+        "body": "呼吸系統支持、風寒型肌肉緊繃舒緩、自然香氛營造清新環境。",
+        "emotion": "帶來「清爽醒腦」、「從混亂返回清明」的感受。",
+        "warning": "",
+        "notes": ""
+      }
+    ],
+    "aliases": [
+      "藍雲杉"
+    ],
+    "tags": [
+      "放鬆",
+      "淨化"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "blue-tansy",
+    "name": "蓝艾菊",
+    "en": "Blue Tansy",
+    "scientificName": "",
+    "part": "整株",
+    "tone": "M",
+    "volatility": "M",
+    "drops": "1-2",
+    "aroma": "花草甜＋微樟木＋藥草底",
+    "body": "適合肌膚紅癢、微發炎、敏感部位的鎮定護理",
+    "emotion": "其獨有的藍色與草藥感帶來「療癒、轉化」的氛圍，當你需要進入深度內在、釋放情緒的時候比較適合。",
+    "warning": "",
+    "notes": "",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Blue Tansy",
+        "part": "整株",
+        "tone": "M",
+        "drops": "1-2",
+        "aroma": "花草甜＋微樟木＋藥草底",
+        "body": "適合肌膚紅癢、微發炎、敏感部位的鎮定護理",
+        "emotion": "其獨有的藍色與草藥感帶來「療癒、轉化」的氛圍，當你需要進入深度內在、釋放情緒的時候比較適合。",
+        "warning": "",
+        "notes": ""
+      }
+    ],
+    "aliases": [
+      "藍艾菊"
+    ],
+    "tags": [],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "cardamom",
+    "name": "荳蒄",
+    "en": "Cardamom",
+    "scientificName": "",
+    "part": "種子",
+    "tone": "T",
+    "volatility": "T",
+    "drops": "4",
+    "aroma": "溫暖、辛香、甜、微木質調",
+    "body": "可舒緩消化系統（噁心、旅途暈車、腸胃氣脹）",
+    "emotion": "香氣甜辣溫暖，有提振精神、舒緩壓力、使人覺得振奮與清醒的作用。香調為溫暖辛香中帶甜香。",
+    "warning": "",
+    "notes": "在調香中常與木質、花香、香料調合，增添深度。",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Cardamom",
+        "part": "種子",
+        "tone": "T",
+        "drops": "4",
+        "aroma": "溫暖、辛香、甜、微木質調",
+        "body": "可舒緩消化系統（噁心、旅途暈車、腸胃氣脹）",
+        "emotion": "香氣甜辣溫暖，有提振精神、舒緩壓力、使人覺得振奮與清醒的作用。香調為溫暖辛香中帶甜香。",
+        "warning": "",
+        "notes": "在調香中常與木質、花香、香料調合，增添深度。"
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "放鬆"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "carrot-seed",
+    "name": "胡蘿萄種子",
+    "en": "Carrot Seed",
+    "scientificName": "",
+    "part": "種子",
+    "tone": "M/B",
+    "volatility": "M/B",
+    "drops": "6",
+    "aroma": "土質、微甜、草本底蘊＋輕微木質",
+    "body": "抗氧化、抗菌、抗真菌、保護皮膚、可作為輔助防曬成分（但不能替代防曬霜）",
+    "emotion": "香氣略帶土味、溫暖能量，有助於放鬆、靜心、浄化感覺。",
+    "warning": "孕婦、哺乳期建議避免使用，可能造成子宮收縮。皮膚敏感者亦需小心，易引起光敏感",
+    "notes": "",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Carrot Seed",
+        "part": "種子",
+        "tone": "M/B",
+        "drops": "6",
+        "aroma": "土質、微甜、草本底蘊＋輕微木質",
+        "body": "抗氧化、抗菌、抗真菌、保護皮膚、可作為輔助防曬成分（但不能替代防曬霜）",
+        "emotion": "香氣略帶土味、溫暖能量，有助於放鬆、靜心、浄化感覺。",
+        "warning": "孕婦、哺乳期建議避免使用，可能造成子宮收縮。皮膚敏感者亦需小心，易引起光敏感",
+        "notes": ""
+      }
+    ],
+    "aliases": [
+      "胡蘿蔔種子"
+    ],
+    "tags": [
+      "保護",
+      "放鬆",
+      "淨化"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "cedarwood",
+    "name": "雪松",
+    "en": "Cedarwood",
+    "scientificName": "",
+    "part": "木材／樹幹木頭",
+    "tone": "B",
+    "volatility": "B",
+    "drops": "7-8",
+    "aroma": "木質、溫潤，在靜坐、冥想、睡前擴香特別推薦",
+    "body": "抗菌、抗皮膚感染、幫助頭皮與掉髮、提振髮根、支持呼吸道",
+    "emotion": "深沉、穩定、安定情緒、減少焦躁、提供根基感與自信。",
+    "warning": "",
+    "notes": "",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Cedarwood",
+        "part": "木材／樹幹木頭",
+        "tone": "B",
+        "drops": "7-8",
+        "aroma": "木質、溫潤，在靜坐、冥想、睡前擴香特別推薦",
+        "body": "抗菌、抗皮膚感染、幫助頭皮與掉髮、提振髮根、支持呼吸道",
+        "emotion": "深沉、穩定、安定情緒、減少焦躁、提供根基感與自信。",
+        "warning": "",
+        "notes": ""
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "財富",
+      "保護",
+      "放鬆",
+      "睡眠",
+      "淨化"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "celery-seed",
+    "name": "芹菜種子",
+    "en": "Celery Seed",
+    "scientificName": "",
+    "part": "種子",
+    "tone": "M",
+    "volatility": "M",
+    "drops": "3",
+    "aroma": "草本、微辛香、種子香、帶地草感",
+    "body": "據部分草本資料種子油具利尿、排毒、改善腎／肝功能潛力。",
+    "emotion": "香氣較細膩、草本帶辛味，有助於清醒、淨化情緒。",
+    "warning": "",
+    "notes": "",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Celery Seed",
+        "part": "種子",
+        "tone": "M",
+        "drops": "3",
+        "aroma": "草本、微辛香、種子香、帶地草感",
+        "body": "據部分草本資料種子油具利尿、排毒、改善腎／肝功能潛力。",
+        "emotion": "香氣較細膩、草本帶辛味，有助於清醒、淨化情緒。",
+        "warning": "",
+        "notes": ""
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "淨化"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "cinnamon-bark",
+    "name": "肉桂",
+    "en": "Cinnamon Bark",
+    "scientificName": "",
+    "part": "內樹皮",
+    "tone": "M",
+    "volatility": "M",
+    "drops": "1",
+    "aroma": "辛香、甜香、木質＋香料感",
+    "body": "抗菌、抗真菌、溫暖肌肉／關節、促進循環、暖身。",
+    "emotion": "溫暖、辛香，能激發活力、提升心情、驅除寒意／沈鬱情緒。",
+    "warning": "因為非常強效、刺激，用量應極少，使用時請確保良好稀釋，避免灼傷皮膚",
+    "notes": "",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Cinnamon Bark",
+        "part": "內樹皮",
+        "tone": "M",
+        "drops": "1",
+        "aroma": "辛香、甜香、木質＋香料感",
+        "body": "抗菌、抗真菌、溫暖肌肉／關節、促進循環、暖身。",
+        "emotion": "溫暖、辛香，能激發活力、提升心情、驅除寒意／沈鬱情緒。",
+        "warning": "因為非常強效、刺激，用量應極少，使用時請確保良好稀釋，避免灼傷皮膚",
+        "notes": ""
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "保護",
+      "淨化"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "citronella",
+    "name": "香茅",
+    "en": "Citronella",
+    "scientificName": "",
+    "part": "葉／草莖",
+    "tone": "T/M",
+    "volatility": "T/M",
+    "drops": "3",
+    "aroma": "草本、清新、檸檬香調、少許辛香",
+    "body": "驅蟲、防蚊、淨化空氣、提神醒腦。",
+    "emotion": "清新、提振、淨化思緒、改善疲憊感。",
+    "warning": "",
+    "notes": "在室內環境、夏季蚊蟲多時常用。",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Citronella",
+        "part": "葉／草莖",
+        "tone": "T/M",
+        "drops": "3",
+        "aroma": "草本、清新、檸檬香調、少許辛香",
+        "body": "驅蟲、防蚊、淨化空氣、提神醒腦。",
+        "emotion": "清新、提振、淨化思緒、改善疲憊感。",
+        "warning": "",
+        "notes": "在室內環境、夏季蚊蟲多時常用。"
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "保護",
+      "淨化"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "clary-sage",
+    "name": "快樂鼠尾草",
+    "en": "Clary Sage",
+    "scientificName": "",
+    "part": "葉與花蕾／花朵",
+    "tone": "M",
+    "volatility": "M",
+    "drops": "3",
+    "aroma": "草本、微花香、略甜、淡木質",
+    "body": "可緩解月經不適、平衡荷爾蒙、抗痙攣、紓緩壓力。",
+    "emotion": "情緒平衡、減壓、放鬆身心、提升愉悅感。",
+    "warning": "",
+    "notes": "女性身心課題／經期、情緒起伏時常用。",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Clary Sage",
+        "part": "葉與花蕾／花朵",
+        "tone": "M",
+        "drops": "3",
+        "aroma": "草本、微花香、略甜、淡木質",
+        "body": "可緩解月經不適、平衡荷爾蒙、抗痙攣、紓緩壓力。",
+        "emotion": "情緒平衡、減壓、放鬆身心、提升愉悅感。",
+        "warning": "",
+        "notes": "女性身心課題／經期、情緒起伏時常用。"
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "放鬆"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "clove",
+    "name": "丁香",
+    "en": "Clove",
+    "scientificName": "",
+    "part": "花蕾",
+    "tone": "M",
+    "volatility": "M",
+    "drops": "2-3",
+    "aroma": "辛香、甜香、香料味、微木質",
+    "body": "強效抗菌、抗真菌、止痛（如牙痛）、促進血液循環。",
+    "emotion": "提振、喚醒感官、增強意志與專注，亦有暖心作用。",
+    "warning": "因辛熱、刺激性高，用量極少，孕婦、小兒、敏感肌膚、黏膜處使用要非常慎重。",
+    "notes": "常與肉桂、薑、橙香合用於「溫暖香氛」。",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Clove",
+        "part": "花蕾",
+        "tone": "M",
+        "drops": "2-3",
+        "aroma": "辛香、甜香、香料味、微木質",
+        "body": "強效抗菌、抗真菌、止痛（如牙痛）、促進血液循環。",
+        "emotion": "提振、喚醒感官、增強意志與專注，亦有暖心作用。",
+        "warning": "因辛熱、刺激性高，用量極少，孕婦、小兒、敏感肌膚、黏膜處使用要非常慎重。",
+        "notes": "常與肉桂、薑、橙香合用於「溫暖香氛」。"
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "愛情",
+      "保護",
+      "淨化"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "copaiba",
+    "name": "苦配巴",
+    "en": "Copaiba",
+    "scientificName": "",
+    "part": "樹脂",
+    "tone": "B",
+    "volatility": "B",
+    "drops": "3",
+    "aroma": "木質、樹脂、稍甜、地質感／暖香",
+    "body": "抗炎、止痛、促進傷口癒合、舒緩關節／肌肉不適、支援呼吸系統。",
+    "emotion": "深沉木質／樹脂香氣使人感到安心、穩定、舒緩焦慮。",
+    "warning": "",
+    "notes": "作為基底精油非常理想，可在香氛中增加持香與深度。",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Copaiba",
+        "part": "樹脂",
+        "tone": "B",
+        "drops": "3",
+        "aroma": "木質、樹脂、稍甜、地質感／暖香",
+        "body": "抗炎、止痛、促進傷口癒合、舒緩關節／肌肉不適、支援呼吸系統。",
+        "emotion": "深沉木質／樹脂香氣使人感到安心、穩定、舒緩焦慮。",
+        "warning": "",
+        "notes": "作為基底精油非常理想，可在香氛中增加持香與深度。"
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "放鬆"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "coriander",
+    "name": "芫荽",
+    "en": "Coriander",
+    "scientificName": "",
+    "part": "種子",
+    "tone": "M",
+    "volatility": "M",
+    "drops": "5-6",
+    "aroma": "草本＋辛香＋木質尾韻，帶甜辣與果香調",
+    "body": "促進消化、緩解肌肉／關節不適、淨化肌膚、提升循環。",
+    "emotion": "香氣帶有溫暖辛香、提振精神、幫助專注與清醒。",
+    "warning": "",
+    "notes": "",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Coriander",
+        "part": "種子",
+        "tone": "M",
+        "drops": "5-6",
+        "aroma": "草本＋辛香＋木質尾韻，帶甜辣與果香調",
+        "body": "促進消化、緩解肌肉／關節不適、淨化肌膚、提升循環。",
+        "emotion": "香氣帶有溫暖辛香、提振精神、幫助專注與清醒。",
+        "warning": "",
+        "notes": ""
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "淨化"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "cypress",
+    "name": "絲柏",
+    "en": "Cypress",
+    "scientificName": "",
+    "part": "針葉",
+    "tone": "M",
+    "volatility": "M",
+    "drops": "5",
+    "aroma": "木質香 + 草本／樹葉香，較「清新木質」為主",
+    "body": "促進血液循環、支援呼吸道、改善水腫、舒緩肌肉緊張。",
+    "emotion": "香氣清新木質、帶針葉氛圍，有助於內在靜定、清醒思考、穩定情緒。",
+    "warning": "",
+    "notes": "",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Cypress",
+        "part": "針葉",
+        "tone": "M",
+        "drops": "5",
+        "aroma": "木質香 + 草本／樹葉香，較「清新木質」為主",
+        "body": "促進血液循環、支援呼吸道、改善水腫、舒緩肌肉緊張。",
+        "emotion": "香氣清新木質、帶針葉氛圍，有助於內在靜定、清醒思考、穩定情緒。",
+        "warning": "",
+        "notes": ""
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "放鬆"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "dill",
+    "name": "蒔蘿",
+    "en": "Dill",
+    "scientificName": "",
+    "part": "葉莖花或種子",
+    "tone": "M",
+    "volatility": "M",
+    "drops": "2",
+    "aroma": "草香 + 辛香 + 清新綠葉香",
+    "body": "支援消化系統、舒緩胃腸不適、輕度神經放鬆。",
+    "emotion": "香氣為草本、微辛香，適合神經緊張、思緒紊亂時使用。",
+    "warning": "",
+    "notes": "",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Dill",
+        "part": "葉莖花或種子",
+        "tone": "M",
+        "drops": "2",
+        "aroma": "草香 + 辛香 + 清新綠葉香",
+        "body": "支援消化系統、舒緩胃腸不適、輕度神經放鬆。",
+        "emotion": "香氣為草本、微辛香，適合神經緊張、思緒紊亂時使用。",
+        "warning": "",
+        "notes": ""
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "放鬆"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "dorado-azul",
+    "name": "山香",
+    "en": "Dorado Azul",
+    "scientificName": "",
+    "part": "葉／樹幹",
+    "tone": "M/B",
+    "volatility": "M/B",
+    "drops": "4",
+    "aroma": "木質＋微樹脂調＋帶清新劑感",
+    "body": "支援呼吸道、可能具荷爾蒙平衡作用。",
+    "emotion": "香氣獨特、具轉化力，適合深層釋放、內在轉化。",
+    "warning": "",
+    "notes": "",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Dorado Azul",
+        "part": "葉／樹幹",
+        "tone": "M/B",
+        "drops": "4",
+        "aroma": "木質＋微樹脂調＋帶清新劑感",
+        "body": "支援呼吸道、可能具荷爾蒙平衡作用。",
+        "emotion": "香氣獨特、具轉化力，適合深層釋放、內在轉化。",
+        "warning": "",
+        "notes": ""
+      }
+    ],
+    "aliases": [],
+    "tags": [],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "elemi",
+    "name": "榄香脂",
+    "en": "Elemi",
+    "scientificName": "",
+    "part": "樹脂",
+    "tone": "M",
+    "volatility": "M",
+    "drops": "4-5",
+    "aroma": "木質＋樹脂香＋微辛柑橘調",
+    "body": "支援肌膚再生、紓緩肌肉／關節疲勞、呼吸系統支援。",
+    "emotion": "香氣具穩定作用，有助於冥想、焦慮時刻的安定。",
+    "warning": "",
+    "notes": "",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Elemi",
+        "part": "樹脂",
+        "tone": "M",
+        "drops": "4-5",
+        "aroma": "木質＋樹脂香＋微辛柑橘調",
+        "body": "支援肌膚再生、紓緩肌肉／關節疲勞、呼吸系統支援。",
+        "emotion": "香氣具穩定作用，有助於冥想、焦慮時刻的安定。",
+        "warning": "",
+        "notes": ""
+      }
+    ],
+    "aliases": [
+      "欖香脂"
+    ],
+    "tags": [
+      "放鬆"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "eucalyptus-blue",
+    "name": "蓝膠尤加利",
+    "en": "Eucalyptus Blue",
+    "scientificName": "",
+    "part": "葉",
+    "tone": "T/M",
+    "volatility": "T/M",
+    "drops": "5",
+    "aroma": "清新木質＋藥草／涼感",
+    "body": "支援呼吸道通暢、清潔作用、提振疲勞。",
+    "emotion": "香氣清涼、具有醒腦、清淨感。",
+    "warning": "",
+    "notes": "",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Eucalyptus Blue",
+        "part": "葉",
+        "tone": "T/M",
+        "drops": "5",
+        "aroma": "清新木質＋藥草／涼感",
+        "body": "支援呼吸道通暢、清潔作用、提振疲勞。",
+        "emotion": "香氣清涼、具有醒腦、清淨感。",
+        "warning": "",
+        "notes": ""
+      }
+    ],
+    "aliases": [
+      "藍膠尤加利"
+    ],
+    "tags": [
+      "淨化"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "eucalyptus-globulus",
+    "name": "特级尤加利",
+    "en": "Eucalyptus globulus",
+    "scientificName": "",
+    "part": "葉",
+    "tone": "T/M",
+    "volatility": "T/M",
+    "drops": "4",
+    "aroma": "涼感藥草＋木質＋清新氣息",
+    "body": "強效支持呼吸道、抗菌／清潔作用、肌肉疼痛支援。",
+    "emotion": "醒腦、清晰思緒、適合使用於需要振奮或換氣時刻。",
+    "warning": "",
+    "notes": "",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Eucalyptus globulus",
+        "part": "葉",
+        "tone": "T/M",
+        "drops": "4",
+        "aroma": "涼感藥草＋木質＋清新氣息",
+        "body": "強效支持呼吸道、抗菌／清潔作用、肌肉疼痛支援。",
+        "emotion": "醒腦、清晰思緒、適合使用於需要振奮或換氣時刻。",
+        "warning": "",
+        "notes": ""
+      }
+    ],
+    "aliases": [
+      "特級尤加利"
+    ],
+    "tags": [
+      "保護",
+      "淨化"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "eucalyptus-radiata",
+    "name": "尤加利",
+    "en": "Eucalyptus radiata",
+    "scientificName": "",
+    "part": "葉",
+    "tone": "T/M",
+    "volatility": "T/M",
+    "drops": "4",
+    "aroma": "清新藥草＋木質＋微涼感",
+    "body": "支援呼吸道、清潔作用。",
+    "emotion": "清新清醒、提升專注、換氣／換念時刻適用。",
+    "warning": "",
+    "notes": "",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Eucalyptus radiata",
+        "part": "葉",
+        "tone": "T/M",
+        "drops": "4",
+        "aroma": "清新藥草＋木質＋微涼感",
+        "body": "支援呼吸道、清潔作用。",
+        "emotion": "清新清醒、提升專注、換氣／換念時刻適用。",
+        "warning": "",
+        "notes": ""
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "淨化"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "fennel",
+    "name": "茴香",
+    "en": "Fennel",
+    "scientificName": "",
+    "part": "種子",
+    "tone": "M",
+    "volatility": "M",
+    "drops": "3-4",
+    "aroma": "草本＋甜香＋微藥草／香草調",
+    "body": "支持消化系統、調理腸胃、利尿、排毒。",
+    "emotion": "香氣甜中帶草本／甘香，有助於釋放壓力、舒緩情緒。",
+    "warning": "",
+    "notes": "",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Fennel",
+        "part": "種子",
+        "tone": "M",
+        "drops": "3-4",
+        "aroma": "草本＋甜香＋微藥草／香草調",
+        "body": "支持消化系統、調理腸胃、利尿、排毒。",
+        "emotion": "香氣甜中帶草本／甘香，有助於釋放壓力、舒緩情緒。",
+        "warning": "",
+        "notes": ""
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "放鬆",
+      "淨化"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "frankincense",
+    "name": "乳香",
+    "en": "Frankincense",
+    "scientificName": "",
+    "part": "樹脂",
+    "tone": "B",
+    "volatility": "B",
+    "drops": "4-5",
+    "aroma": "樹脂香＋木質香＋微香甜／溫暖調",
+    "body": "支援免疫系統、肌膚再生、減緩發炎、深層放鬆。",
+    "emotion": "香氣沉穩、冥想／靜心好助手，有助於內在平靜與靈性連結。",
+    "warning": "",
+    "notes": "",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Frankincense",
+        "part": "樹脂",
+        "tone": "B",
+        "drops": "4-5",
+        "aroma": "樹脂香＋木質香＋微香甜／溫暖調",
+        "body": "支援免疫系統、肌膚再生、減緩發炎、深層放鬆。",
+        "emotion": "香氣沉穩、冥想／靜心好助手，有助於內在平靜與靈性連結。",
+        "warning": "",
+        "notes": ""
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "保護",
+      "放鬆"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "galbanum",
+    "name": "白松香",
+    "en": "Galbanum",
+    "scientificName": "",
+    "part": "樹脂",
+    "tone": "M/B",
+    "volatility": "M/B",
+    "drops": "5",
+    "aroma": "草本 + 樹脂＋木質調",
+    "body": "有助於支援呼吸系統、淨化作用、皮膚保養。",
+    "emotion": "獨特草本／樹脂香氣，有助於釋放壓抑、促進內在覺醒。",
+    "warning": "",
+    "notes": "",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Galbanum",
+        "part": "樹脂",
+        "tone": "M/B",
+        "drops": "5",
+        "aroma": "草本 + 樹脂＋木質調",
+        "body": "有助於支援呼吸系統、淨化作用、皮膚保養。",
+        "emotion": "獨特草本／樹脂香氣，有助於釋放壓抑、促進內在覺醒。",
+        "warning": "",
+        "notes": ""
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "淨化"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "geranium",
+    "name": "天竺葵",
+    "en": "Geranium",
+    "scientificName": "",
+    "part": "葉及花",
+    "tone": "M",
+    "volatility": "M",
+    "drops": "3",
+    "aroma": "花香 + 草本＋微甜／香料調",
+    "body": "平衡皮脂、支持肌膚健康、改善循環與水腫。",
+    "emotion": "香氣柔和花香、舒緩焦慮、提升情緒穩定與自信。",
+    "warning": "",
+    "notes": "",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Geranium",
+        "part": "葉及花",
+        "tone": "M",
+        "drops": "3",
+        "aroma": "花香 + 草本＋微甜／香料調",
+        "body": "平衡皮脂、支持肌膚健康、改善循環與水腫。",
+        "emotion": "香氣柔和花香、舒緩焦慮、提升情緒穩定與自信。",
+        "warning": "",
+        "notes": ""
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "財富",
+      "放鬆"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "german-chamomile",
+    "name": "德國洋柑橘",
+    "en": "German Chamomile",
+    "scientificName": "",
+    "part": "花",
+    "tone": "M/B",
+    "volatility": "M/B",
+    "drops": "1",
+    "aroma": "草本＋花香＋微蘋果／甜調",
+    "body": "鎮靜／舒緩肌膚紅腫、緊張、幫助睡眠。",
+    "emotion": "非常適合焦慮、失眠、壓力大時使用，有助於平靜與釋放。",
+    "warning": "",
+    "notes": "",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "German Chamomile",
+        "part": "花",
+        "tone": "M/B",
+        "drops": "1",
+        "aroma": "草本＋花香＋微蘋果／甜調",
+        "body": "鎮靜／舒緩肌膚紅腫、緊張、幫助睡眠。",
+        "emotion": "非常適合焦慮、失眠、壓力大時使用，有助於平靜與釋放。",
+        "warning": "",
+        "notes": ""
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "放鬆",
+      "睡眠"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "ginger",
+    "name": "生薑",
+    "en": "Ginger",
+    "scientificName": "",
+    "part": "根莖",
+    "tone": "M",
+    "volatility": "M",
+    "drops": "4",
+    "aroma": "辛香 + 根茎香 + 微木質／暖調",
+    "body": "促進血液循環、緩解消化不適、提高體溫、緩解肌肉僵硬。",
+    "emotion": "香氣溫暖辛香，有助於振奮、驅除疲乏、喚醒意志。",
+    "warning": "",
+    "notes": "",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Ginger",
+        "part": "根莖",
+        "tone": "M",
+        "drops": "4",
+        "aroma": "辛香 + 根茎香 + 微木質／暖調",
+        "body": "促進血液循環、緩解消化不適、提高體溫、緩解肌肉僵硬。",
+        "emotion": "香氣溫暖辛香，有助於振奮、驅除疲乏、喚醒意志。",
+        "warning": "",
+        "notes": ""
+      }
+    ],
+    "aliases": [],
+    "tags": [],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "balsam-of-peru",
+    "name": "秘鲁香脂",
+    "en": "Balsam of Peru",
+    "scientificName": "",
+    "part": "樹脂",
+    "tone": "B",
+    "volatility": "B",
+    "drops": "2",
+    "aroma": "樹脂香＋甜暖香＋木質／香脂調",
+    "body": "常用於香氛配方、皮膚調理、支援呼吸系統／淨化。",
+    "emotion": "香氣溫暖、濃郁、帶安定及懷舊感，適合夜間或靜修時使用。",
+    "warning": "",
+    "notes": "",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Balsam of Peru",
+        "part": "樹脂",
+        "tone": "B",
+        "drops": "2",
+        "aroma": "樹脂香＋甜暖香＋木質／香脂調",
+        "body": "常用於香氛配方、皮膚調理、支援呼吸系統／淨化。",
+        "emotion": "香氣溫暖、濃郁、帶安定及懷舊感，適合夜間或靜修時使用。",
+        "warning": "",
+        "notes": ""
+      }
+    ],
+    "aliases": [
+      "秘魯香脂"
+    ],
+    "tags": [
+      "放鬆",
+      "淨化"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "benihi",
+    "name": "紅檜",
+    "en": "Benihi",
+    "scientificName": "",
+    "part": "木質部",
+    "tone": "M/B",
+    "volatility": "M/B",
+    "drops": "2",
+    "aroma": "溫潤木質＋森林氣息＋輕土壤",
+    "body": "肌膚安定、營造清新空氣氛圍、支援呼吸道的「森林感」舒適。",
+    "emotion": "香氣帶來沉穩與安定，可用於冥想、靜心、書寫或內在整合的時刻，協助從外在轉為內在適合情緒浮動、思緒紊亂、需要內在回歸時使用。",
+    "warning": "",
+    "notes": "",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Benihi",
+        "part": "木質部",
+        "tone": "M/B",
+        "drops": "2",
+        "aroma": "溫潤木質＋森林氣息＋輕土壤",
+        "body": "肌膚安定、營造清新空氣氛圍、支援呼吸道的「森林感」舒適。",
+        "emotion": "香氣帶來沉穩與安定，可用於冥想、靜心、書寫或內在整合的時刻，協助從外在轉為內在適合情緒浮動、思緒紊亂、需要內在回歸時使用。",
+        "warning": "",
+        "notes": ""
+      }
+    ],
+    "aliases": [
+      "檜木"
+    ],
+    "tags": [
+      "放鬆",
+      "淨化"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "goldenrod",
+    "name": "加拿大一枝黄花",
+    "en": "Goldenrod",
+    "scientificName": "",
+    "part": "花或全草",
+    "tone": "M",
+    "volatility": "M",
+    "drops": "1",
+    "aroma": "草香 + 花香 + 微木質調",
+    "body": "傳統用於支援泌尿系統／淋巴系統，改善水腫、促進排水。",
+    "emotion": "香氣較為柔和、草本清新，有助於釋放壓力、舒緩雜念。",
+    "warning": "",
+    "notes": "",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Goldenrod",
+        "part": "花或全草",
+        "tone": "M",
+        "drops": "1",
+        "aroma": "草香 + 花香 + 微木質調",
+        "body": "傳統用於支援泌尿系統／淋巴系統，改善水腫、促進排水。",
+        "emotion": "香氣較為柔和、草本清新，有助於釋放壓力、舒緩雜念。",
+        "warning": "",
+        "notes": ""
+      }
+    ],
+    "aliases": [
+      "加拿大一枝黃花"
+    ],
+    "tags": [
+      "放鬆"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "grapefruit",
+    "name": "葡萄柚",
+    "en": "Grapefruit",
+    "scientificName": "",
+    "part": "果皮",
+    "tone": "T",
+    "volatility": "T",
+    "drops": "8",
+    "aroma": "果香、清甜",
+    "body": "促進循環、排水腫、淨化肝臟與代謝。",
+    "emotion": "提振快樂與動能，釋放沉重情緒。",
+    "warning": "",
+    "notes": "與雪松或杜松並用可強化淨化與提振作用",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Grapefruit",
+        "part": "果皮",
+        "tone": "T",
+        "drops": "8",
+        "aroma": "果香、清甜",
+        "body": "促進循環、排水腫、淨化肝臟與代謝。",
+        "emotion": "提振快樂與動能，釋放沉重情緒。",
+        "warning": "",
+        "notes": "與雪松或杜松並用可強化淨化與提振作用"
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "淨化"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "helicrysum",
+    "name": "蠟菊",
+    "en": "Helicrysum",
+    "scientificName": "",
+    "part": "花朵",
+    "tone": "M/B",
+    "volatility": "M/B",
+    "drops": "5",
+    "aroma": "花草甜香",
+    "body": "消炎、抗瘀血、促進組織修復。",
+    "emotion": "協助原諒、放下與內在療癒。",
+    "warning": "",
+    "notes": "高價珍稀油，常被稱為「靈魂再生之油」。",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Helicrysum",
+        "part": "花朵",
+        "tone": "M/B",
+        "drops": "5",
+        "aroma": "花草甜香",
+        "body": "消炎、抗瘀血、促進組織修復。",
+        "emotion": "協助原諒、放下與內在療癒。",
+        "warning": "",
+        "notes": "高價珍稀油，常被稱為「靈魂再生之油」。"
+      }
+    ],
+    "aliases": [],
+    "tags": [],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "hyssop",
+    "name": "牛膝草",
+    "en": "Hyssop",
+    "scientificName": "",
+    "part": "花與葉",
+    "tone": "M",
+    "volatility": "M",
+    "drops": "3",
+    "aroma": "草本、微辛，藥草氣息濃郁，帶有潔淨感",
+    "body": "清肺、化痰、增強免疫。",
+    "emotion": "清理思緒，驅散恐懼與自我懷疑。",
+    "warning": "",
+    "notes": "屬靈性淨化用油，可用於空間能量清理。",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Hyssop",
+        "part": "花與葉",
+        "tone": "M",
+        "drops": "3",
+        "aroma": "草本、微辛，藥草氣息濃郁，帶有潔淨感",
+        "body": "清肺、化痰、增強免疫。",
+        "emotion": "清理思緒，驅散恐懼與自我懷疑。",
+        "warning": "",
+        "notes": "屬靈性淨化用油，可用於空間能量清理。"
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "保護",
+      "淨化"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "jasmine",
+    "name": "茉莉",
+    "en": "Jasmine",
+    "scientificName": "",
+    "part": "花朵",
+    "tone": "M/B",
+    "volatility": "M/B",
+    "drops": "1",
+    "aroma": "花香、甜潤，香氣濃郁甜美、富有女性魅力",
+    "body": "調節荷爾蒙、舒緩經痛、助眠與放鬆。",
+    "emotion": "開啟愛與自信，喚醒心輪。",
+    "warning": "",
+    "notes": "與檀香或雪松搭配，可增深厚度與柔和餘韻。",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Jasmine",
+        "part": "花朵",
+        "tone": "M/B",
+        "drops": "1",
+        "aroma": "花香、甜潤，香氣濃郁甜美、富有女性魅力",
+        "body": "調節荷爾蒙、舒緩經痛、助眠與放鬆。",
+        "emotion": "開啟愛與自信，喚醒心輪。",
+        "warning": "",
+        "notes": "與檀香或雪松搭配，可增深厚度與柔和餘韻。"
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "財富",
+      "愛情",
+      "放鬆",
+      "睡眠"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "juniper",
+    "name": "杜松",
+    "en": "Juniper",
+    "scientificName": "",
+    "part": "果實",
+    "tone": "M",
+    "volatility": "M",
+    "drops": "4",
+    "aroma": "木質、味道像高山上的空氣，清涼、帶著乾淨的樹脂氣",
+    "body": "利尿排毒、消除水腫、肝膽淨化、淨化氣場、清除負能量",
+    "emotion": "它是淨化者，能清除身體與能量場的濁氣。每當壓力或焦慮太重，杜松會像森林的風，帶走雜念，讓你重新呼吸。",
+    "warning": "",
+    "notes": "懷孕或腎病者避免使用",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Juniper",
+        "part": "果實",
+        "tone": "M",
+        "drops": "4",
+        "aroma": "木質、味道像高山上的空氣，清涼、帶著乾淨的樹脂氣",
+        "body": "利尿排毒、消除水腫、肝膽淨化、淨化氣場、清除負能量",
+        "emotion": "它是淨化者，能清除身體與能量場的濁氣。每當壓力或焦慮太重，杜松會像森林的風，帶走雜念，讓你重新呼吸。",
+        "warning": "",
+        "notes": "懷孕或腎病者避免使用"
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "放鬆",
+      "淨化"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "lauris-nobilis-bay-laurel",
+    "name": "月桂樹",
+    "en": "Lauris Nobilis \n(Bay Laurel)",
+    "scientificName": "",
+    "part": "葉",
+    "tone": "M",
+    "volatility": "M",
+    "drops": "2-4",
+    "aroma": "聞起來帶著草本與辛香",
+    "body": "強化免疫、祛痰抗病毒",
+    "emotion": "激發勇氣、強化表達、提振思緒、喚醒直覺，給予信心與行動力，適合在需要領導、發言、登場時使用。",
+    "warning": "",
+    "notes": "高濃度刺激皮膚，勿過量",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Lauris Nobilis \n(Bay Laurel)",
+        "part": "葉",
+        "tone": "M",
+        "drops": "2-4",
+        "aroma": "聞起來帶著草本與辛香",
+        "body": "強化免疫、祛痰抗病毒",
+        "emotion": "激發勇氣、強化表達、提振思緒、喚醒直覺，給予信心與行動力，適合在需要領導、發言、登場時使用。",
+        "warning": "",
+        "notes": "高濃度刺激皮膚，勿過量"
+      }
+    ],
+    "aliases": [
+      "月桂"
+    ],
+    "tags": [
+      "財富",
+      "保護"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "lavender",
+    "name": "薰衣草",
+    "en": "Lavender",
+    "scientificName": "",
+    "part": "花",
+    "tone": "M",
+    "volatility": "M",
+    "drops": "7",
+    "aroma": "花香、草本清新",
+    "body": "鎮靜安神、助眠、放鬆肌肉",
+    "emotion": "溫柔的守護者。像一條薄毯，平衡心緒、心輪調和、安撫焦慮不安。無論是頭痛、失眠或情緒起伏，皆能帶來穩定的平衡",
+    "warning": "",
+    "notes": "無明顯禁忌，最安全的萬用油",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Lavender",
+        "part": "花",
+        "tone": "M",
+        "drops": "7",
+        "aroma": "花香、草本清新",
+        "body": "鎮靜安神、助眠、放鬆肌肉",
+        "emotion": "溫柔的守護者。像一條薄毯，平衡心緒、心輪調和、安撫焦慮不安。無論是頭痛、失眠或情緒起伏，皆能帶來穩定的平衡",
+        "warning": "",
+        "notes": "無明顯禁忌，最安全的萬用油"
+      }
+    ],
+    "aliases": [
+      "高山薰衣草"
+    ],
+    "tags": [
+      "愛情",
+      "放鬆",
+      "睡眠"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "ledum",
+    "name": "杜香",
+    "en": "Ledum",
+    "scientificName": "",
+    "part": "葉與花",
+    "tone": "B",
+    "volatility": "B",
+    "drops": "4",
+    "aroma": "草本氣味，藥草調，帶有濕潤的土氣與藥草味，聞起來略帶野性",
+    "body": "肝臟排毒、抗發炎、平衡免疫",
+    "emotion": "釋放肝火與情緒毒素，是內在「排毒」的導師，有一種能讓靈魂靜下來的深沉力量。放下控制、進入深層療癒",
+    "warning": "",
+    "notes": "濃度過高可能嗆喉，建議低比例使用",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Ledum",
+        "part": "葉與花",
+        "tone": "B",
+        "drops": "4",
+        "aroma": "草本氣味，藥草調，帶有濕潤的土氣與藥草味，聞起來略帶野性",
+        "body": "肝臟排毒、抗發炎、平衡免疫",
+        "emotion": "釋放肝火與情緒毒素，是內在「排毒」的導師，有一種能讓靈魂靜下來的深沉力量。放下控制、進入深層療癒",
+        "warning": "",
+        "notes": "濃度過高可能嗆喉，建議低比例使用"
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "保護",
+      "淨化"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "lemongrass",
+    "name": "檸檬香茅",
+    "en": "Lemongrass",
+    "scientificName": "",
+    "part": "葉",
+    "tone": "T/M",
+    "volatility": "T/M",
+    "drops": "1",
+    "aroma": "清新又帶點辛辣，像一把風掃過整個空間",
+    "body": "驅除雜氣、防蟎除臭，抗菌、防蟎、除臭、促循環。它有「清理能量場」的力量，噴上後空間會變得乾淨清亮。",
+    "emotion": "能迅速喚醒疲憊的思緒，提振專注力、清理能量場",
+    "warning": "",
+    "notes": "皮膚刺激性高，濃度勿超2%",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Lemongrass",
+        "part": "葉",
+        "tone": "T/M",
+        "drops": "1",
+        "aroma": "清新又帶點辛辣，像一把風掃過整個空間",
+        "body": "驅除雜氣、防蟎除臭，抗菌、防蟎、除臭、促循環。它有「清理能量場」的力量，噴上後空間會變得乾淨清亮。",
+        "emotion": "能迅速喚醒疲憊的思緒，提振專注力、清理能量場",
+        "warning": "",
+        "notes": "皮膚刺激性高，濃度勿超2%"
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "保護",
+      "淨化"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "lemon",
+    "name": "檸檬",
+    "en": "Lemon",
+    "scientificName": "",
+    "part": "果皮",
+    "tone": "T",
+    "volatility": "T",
+    "drops": "6-7",
+    "aroma": "果香，它是最單純的快樂香氣，太陽的孩子。明亮、乾淨、充滿喜悅",
+    "body": "它能淨化血液，讓頭腦清醒，淨化血液、提神、抗菌清理腦霧",
+    "emotion": "驅散憂鬱，讓心情清新明亮，提升正向思維，提醒人：幸福有時就是一口新鮮的呼吸。",
+    "warning": "",
+    "notes": "光敏性，避免日曬",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Lemon",
+        "part": "果皮",
+        "tone": "T",
+        "drops": "6-7",
+        "aroma": "果香，它是最單純的快樂香氣，太陽的孩子。明亮、乾淨、充滿喜悅",
+        "body": "它能淨化血液，讓頭腦清醒，淨化血液、提神、抗菌清理腦霧",
+        "emotion": "驅散憂鬱，讓心情清新明亮，提升正向思維，提醒人：幸福有時就是一口新鮮的呼吸。",
+        "warning": "",
+        "notes": "光敏性，避免日曬"
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "保護",
+      "淨化"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "lime",
+    "name": "萊姆／青檸",
+    "en": "Lime",
+    "scientificName": "",
+    "part": "果皮",
+    "tone": "T",
+    "volatility": "T",
+    "drops": "3",
+    "aroma": "果香、酸甜清脆、酸中帶甜，像是年輕版的檸檬，更俏皮",
+    "body": "它讓人精神振奮，解油膩、清理消化系統",
+    "emotion": "快樂、青春、重啟創造力。當生活變得太嚴肅，萊姆會讓氣氛重新變得輕盈",
+    "warning": "",
+    "notes": "光敏性，避免日曬",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Lime",
+        "part": "果皮",
+        "tone": "T",
+        "drops": "3",
+        "aroma": "果香、酸甜清脆、酸中帶甜，像是年輕版的檸檬，更俏皮",
+        "body": "它讓人精神振奮，解油膩、清理消化系統",
+        "emotion": "快樂、青春、重啟創造力。當生活變得太嚴肅，萊姆會讓氣氛重新變得輕盈",
+        "warning": "",
+        "notes": "光敏性，避免日曬"
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "財富",
+      "淨化"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "manuka",
+    "name": "麥盧卡",
+    "en": "Manuka",
+    "scientificName": "",
+    "part": "葉與樹枝",
+    "tone": "M/B",
+    "volatility": "M/B",
+    "drops": "5",
+    "aroma": "木質、藥草甜香，大地的醫者。它氣味厚實，帶著木質與甜草香",
+    "body": "護膚、抗菌、消炎抗病毒、修復皮膚",
+    "emotion": "在能量上帶來「自我價值感」的重建。提升自我價值感、清理情緒創傷，當你覺得被世界削弱、失去自信時，麥盧卡會讓你重新記起：你本來就足夠。",
+    "warning": "",
+    "notes": "濃度高易黏稠，與花香調配柔化效果佳",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Manuka",
+        "part": "葉與樹枝",
+        "tone": "M/B",
+        "drops": "5",
+        "aroma": "木質、藥草甜香，大地的醫者。它氣味厚實，帶著木質與甜草香",
+        "body": "護膚、抗菌、消炎抗病毒、修復皮膚",
+        "emotion": "在能量上帶來「自我價值感」的重建。提升自我價值感、清理情緒創傷，當你覺得被世界削弱、失去自信時，麥盧卡會讓你重新記起：你本來就足夠。",
+        "warning": "",
+        "notes": "濃度高易黏稠，與花香調配柔化效果佳"
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "財富",
+      "保護",
+      "淨化"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "marjoram",
+    "name": "馬鬱蘭",
+    "en": "Marjoram",
+    "scientificName": "",
+    "part": "花",
+    "tone": "M",
+    "volatility": "M",
+    "drops": "3",
+    "aroma": "草本、溫暖、略帶辛甜",
+    "body": "放鬆肌肉、改善睡眠、舒緩痙攣與經痛，支持神經系統平衡",
+    "emotion": "帶來柔和的安全感與「被擁抱」的氛圍，能安撫孤單與焦慮，又被稱為「幸福之油」，在情緒低落或關係療癒時極具效果。",
+    "warning": "",
+    "notes": "",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Marjoram",
+        "part": "花",
+        "tone": "M",
+        "drops": "3",
+        "aroma": "草本、溫暖、略帶辛甜",
+        "body": "放鬆肌肉、改善睡眠、舒緩痙攣與經痛，支持神經系統平衡",
+        "emotion": "帶來柔和的安全感與「被擁抱」的氛圍，能安撫孤單與焦慮，又被稱為「幸福之油」，在情緒低落或關係療癒時極具效果。",
+        "warning": "",
+        "notes": ""
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "放鬆",
+      "睡眠"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "mastrante",
+    "name": "白棘枝",
+    "en": "Mastrante",
+    "scientificName": "",
+    "part": "葉與花頂",
+    "tone": "M",
+    "volatility": "M",
+    "drops": "1",
+    "aroma": "柔和草本中帶微甜，略似廣藿香但更乾淨輕盈。",
+    "body": "抗發炎、鎮痛、放鬆肌肉緊繃，協助睡眠與呼吸調節。",
+    "emotion": "讓人放慢步調、靜下心，減輕過度思考的疲憊。",
+    "warning": "",
+    "notes": "",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Mastrante",
+        "part": "葉與花頂",
+        "tone": "M",
+        "drops": "1",
+        "aroma": "柔和草本中帶微甜，略似廣藿香但更乾淨輕盈。",
+        "body": "抗發炎、鎮痛、放鬆肌肉緊繃，協助睡眠與呼吸調節。",
+        "emotion": "讓人放慢步調、靜下心，減輕過度思考的疲憊。",
+        "warning": "",
+        "notes": ""
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "放鬆",
+      "睡眠"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "melissa",
+    "name": "香蜂草",
+    "en": "Melissa",
+    "scientificName": "",
+    "part": "葉與花頂",
+    "tone": "M",
+    "volatility": "M",
+    "drops": "1",
+    "aroma": "清甜檸檬草調中帶花香，明亮而細膩。",
+    "body": "鎮靜心跳、穩定血壓、抗病毒、平衡消化系統。",
+    "emotion": "帶來希望與輕盈，安撫焦慮與悲傷，是「微笑的太陽油」。讓人重拾信任與生命的溫度。",
+    "warning": "",
+    "notes": "稀釋後使用，濃度不超 0.5%",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Melissa",
+        "part": "葉與花頂",
+        "tone": "M",
+        "drops": "1",
+        "aroma": "清甜檸檬草調中帶花香，明亮而細膩。",
+        "body": "鎮靜心跳、穩定血壓、抗病毒、平衡消化系統。",
+        "emotion": "帶來希望與輕盈，安撫焦慮與悲傷，是「微笑的太陽油」。讓人重拾信任與生命的溫度。",
+        "warning": "",
+        "notes": "稀釋後使用，濃度不超 0.5%"
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "保護",
+      "放鬆"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "myrrh",
+    "name": "沒藥",
+    "en": "Myrrh",
+    "scientificName": "",
+    "part": "樹脂",
+    "tone": "B",
+    "volatility": "B",
+    "drops": "5-6",
+    "aroma": "樹脂木質調，溫暖厚重、略帶煙燻感。",
+    "body": "抗炎、抗菌、促進傷口癒合，支援呼吸系統與免疫力。",
+    "emotion": "幫助靜心與冥想，放下悲傷與焦慮，使人回到安定與臣服狀態。",
+    "warning": "",
+    "notes": "古埃及祭祀香料之一，象徵靈魂回歸與淨化。與乳香搭配，是強效的靈性修復配方。",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Myrrh",
+        "part": "樹脂",
+        "tone": "B",
+        "drops": "5-6",
+        "aroma": "樹脂木質調，溫暖厚重、略帶煙燻感。",
+        "body": "抗炎、抗菌、促進傷口癒合，支援呼吸系統與免疫力。",
+        "emotion": "幫助靜心與冥想，放下悲傷與焦慮，使人回到安定與臣服狀態。",
+        "warning": "",
+        "notes": "古埃及祭祀香料之一，象徵靈魂回歸與淨化。與乳香搭配，是強效的靈性修復配方。"
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "保護",
+      "放鬆",
+      "淨化"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "myrtle",
+    "name": "香桃木",
+    "en": "Myrtle",
+    "scientificName": "",
+    "part": "葉與枝",
+    "tone": "M",
+    "volatility": "M",
+    "drops": "6",
+    "aroma": "清新草木中帶花香調，潔淨明亮。",
+    "body": "清肺祛痰、調理呼吸道、抗菌除臭。",
+    "emotion": "帶來純淨與輕盈，淨化能量場，讓人恢復呼吸的自由感。",
+    "warning": "",
+    "notes": "對應喉輪，有助真誠表達與清晰思緒，適合講師、溝通者使用。",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Myrtle",
+        "part": "葉與枝",
+        "tone": "M",
+        "drops": "6",
+        "aroma": "清新草木中帶花香調，潔淨明亮。",
+        "body": "清肺祛痰、調理呼吸道、抗菌除臭。",
+        "emotion": "帶來純淨與輕盈，淨化能量場，讓人恢復呼吸的自由感。",
+        "warning": "",
+        "notes": "對應喉輪，有助真誠表達與清晰思緒，適合講師、溝通者使用。"
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "保護",
+      "淨化"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "neroli",
+    "name": "橙花",
+    "en": "Neroli",
+    "scientificName": "",
+    "part": "花",
+    "tone": "M",
+    "volatility": "M",
+    "drops": "2-3",
+    "aroma": "花香中帶淡淡苦橙調，清甜而高貴",
+    "body": "鎮靜神經、緩解焦慮與失眠、促進皮膚修復、改善循環。",
+    "emotion": "橙花象徵純淨與重生，是「心輪之花」。穩定情緒，帶來柔和的幸福與被愛感。常用於釋放緊張與恢復女性能量。",
+    "warning": "",
+    "notes": "與佛手柑、檀香並用極為柔順。",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Neroli",
+        "part": "花",
+        "tone": "M",
+        "drops": "2-3",
+        "aroma": "花香中帶淡淡苦橙調，清甜而高貴",
+        "body": "鎮靜神經、緩解焦慮與失眠、促進皮膚修復、改善循環。",
+        "emotion": "橙花象徵純淨與重生，是「心輪之花」。穩定情緒，帶來柔和的幸福與被愛感。常用於釋放緊張與恢復女性能量。",
+        "warning": "",
+        "notes": "與佛手柑、檀香並用極為柔順。"
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "愛情",
+      "放鬆",
+      "睡眠"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "melaleuca-quinquenervia",
+    "name": "綠花白千層",
+    "en": "Melaleuca quinquenervia",
+    "scientificName": "",
+    "part": "葉與枝",
+    "tone": "M",
+    "volatility": "M",
+    "drops": "4",
+    "aroma": "草本、微樟香、清新乾淨。",
+    "body": "抗菌、抗病毒、清肺與強化免疫。",
+    "emotion": "淨化能量場，清理思緒與雜氣，使人頭腦清明。",
+    "warning": "",
+    "notes": "喉輪與眉心輪的清理能量，適用於儀式或空間清潔。",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Melaleuca quinquenervia",
+        "part": "葉與枝",
+        "tone": "M",
+        "drops": "4",
+        "aroma": "草本、微樟香、清新乾淨。",
+        "body": "抗菌、抗病毒、清肺與強化免疫。",
+        "emotion": "淨化能量場，清理思緒與雜氣，使人頭腦清明。",
+        "warning": "",
+        "notes": "喉輪與眉心輪的清理能量，適用於儀式或空間清潔。"
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "愛情",
+      "保護",
+      "淨化"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "nutmeg",
+    "name": "肉荳蒄",
+    "en": "Nutmeg",
+    "scientificName": "",
+    "part": "種子",
+    "tone": "M/B",
+    "volatility": "M/B",
+    "drops": "2-3",
+    "aroma": "辛甜、溫暖、略帶煙燻木香。",
+    "body": "促進血液循環、溫暖身體、舒緩肌肉酸痛。",
+    "emotion": "激勵鬥志、驅散倦怠，喚醒內在行動力與創造欲。",
+    "warning": "",
+    "notes": "適合寒冷或能量低落時使用，增添動能與熱度。",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Nutmeg",
+        "part": "種子",
+        "tone": "M/B",
+        "drops": "2-3",
+        "aroma": "辛甜、溫暖、略帶煙燻木香。",
+        "body": "促進血液循環、溫暖身體、舒緩肌肉酸痛。",
+        "emotion": "激勵鬥志、驅散倦怠，喚醒內在行動力與創造欲。",
+        "warning": "",
+        "notes": "適合寒冷或能量低落時使用，增添動能與熱度。"
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "財富",
+      "放鬆"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "onycha",
+    "name": "安息香",
+    "en": "Onycha／Benzoin resinold",
+    "scientificName": "",
+    "part": "樹脂",
+    "tone": "B",
+    "volatility": "B",
+    "drops": "1／3",
+    "aroma": "濃厚香脂、甜中帶煙氣。\n甜潤溫暖，帶香草與焦糖氣息，像一條柔軟的毛毯。",
+    "body": "鎮靜、抗菌、潤膚，對皮膚乾裂特別有幫助。\n潤肺止咳、舒緩乾燥與皮膚龜裂，常被用於護手霜與按摩油。它還能放鬆肌肉、鎮定心律，幫助身體釋放緊張。",
+    "emotion": "助情感釋放與深層療癒，安撫靈魂創傷。\n是「情緒安撫」的香氣。能撫平悲傷與孤單感，帶來被包覆的溫度。適合冬夜、哀傷、失眠與冥想時使用。",
+    "warning": "",
+    "notes": "靈性沉香系的定香能量油。\n象徵「慈悲與溫柔」。在能量層中屬於安撫與修復頻率，可搭配乳香或玫瑰創造深層慰藉感。",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Onycha",
+        "part": "樹脂",
+        "tone": "B",
+        "drops": "1",
+        "aroma": "濃厚香脂、甜中帶煙氣。",
+        "body": "鎮靜、抗菌、潤膚，對皮膚乾裂特別有幫助。",
+        "emotion": "助情感釋放與深層療癒，安撫靈魂創傷。",
+        "warning": "",
+        "notes": "靈性沉香系的定香能量油。"
+      },
+      {
+        "en": "Benzoin resinold",
+        "part": "樹脂",
+        "tone": "B",
+        "drops": "3",
+        "aroma": "甜潤溫暖，帶香草與焦糖氣息，像一條柔軟的毛毯。",
+        "body": "潤肺止咳、舒緩乾燥與皮膚龜裂，常被用於護手霜與按摩油。它還能放鬆肌肉、鎮定心律，幫助身體釋放緊張。",
+        "emotion": "是「情緒安撫」的香氣。能撫平悲傷與孤單感，帶來被包覆的溫度。適合冬夜、哀傷、失眠與冥想時使用。",
+        "warning": "",
+        "notes": "象徵「慈悲與溫柔」。在能量層中屬於安撫與修復頻率，可搭配乳香或玫瑰創造深層慰藉感。"
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "保護",
+      "放鬆",
+      "睡眠",
+      "淨化"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "orange",
+    "name": "甜橙",
+    "en": "Orange／Sweet orange",
+    "scientificName": "",
+    "part": "果皮",
+    "tone": "T",
+    "volatility": "T",
+    "drops": "7／6",
+    "aroma": "甜美果香、明亮柔和。\n香氣飽滿柔和，溫暖親切。",
+    "body": "促進消化、緩解緊繃、幫助入眠。\n放鬆神經、改善腸胃功能、促進血液循環、提振免疫力。",
+    "emotion": "帶來喜悅與放鬆，是快樂能量的最佳代表，能喚醒童心與玩心。\n「幸福頻率之油」，能喚醒微笑、融化緊張。它提醒我們：「輕鬆，也是一種力量。」",
+    "warning": "",
+    "notes": "是療癒低氣壓與心悶的陽光之油。\n象徵「快樂與滋養」。非常適合家庭與兒童空間使用，帶來溫暖氛圍。",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Orange",
+        "part": "果皮",
+        "tone": "T",
+        "drops": "7",
+        "aroma": "甜美果香、明亮柔和。",
+        "body": "促進消化、緩解緊繃、幫助入眠。",
+        "emotion": "帶來喜悅與放鬆，是快樂能量的最佳代表，能喚醒童心與玩心。",
+        "warning": "",
+        "notes": "是療癒低氣壓與心悶的陽光之油。"
+      },
+      {
+        "en": "Sweet orange",
+        "part": "果皮",
+        "tone": "T",
+        "drops": "6",
+        "aroma": "香氣飽滿柔和，溫暖親切。",
+        "body": "放鬆神經、改善腸胃功能、促進血液循環、提振免疫力。",
+        "emotion": "「幸福頻率之油」，能喚醒微笑、融化緊張。它提醒我們：「輕鬆，也是一種力量。」",
+        "warning": "",
+        "notes": "象徵「快樂與滋養」。非常適合家庭與兒童空間使用，帶來溫暖氛圍。"
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "保護",
+      "放鬆"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "oregano",
+    "name": "牛至",
+    "en": "Oregano",
+    "scientificName": "",
+    "part": "葉與花頂",
+    "tone": "M/B",
+    "volatility": "M/B",
+    "drops": "5",
+    "aroma": "濃烈辛香、藥草氣息強。",
+    "body": "強力抗菌、抗病毒、支援免疫系統。",
+    "emotion": "清除負能量、提升勇氣，適合需要強勢界線的人使用，屬於火元素能量，象徵決斷與行動。",
+    "warning": "",
+    "notes": "僅限極低劑量使用，按摩濃度不超 0.5%",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Oregano",
+        "part": "葉與花頂",
+        "tone": "M/B",
+        "drops": "5",
+        "aroma": "濃烈辛香、藥草氣息強。",
+        "body": "強力抗菌、抗病毒、支援免疫系統。",
+        "emotion": "清除負能量、提升勇氣，適合需要強勢界線的人使用，屬於火元素能量，象徵決斷與行動。",
+        "warning": "",
+        "notes": "僅限極低劑量使用，按摩濃度不超 0.5%"
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "財富",
+      "保護",
+      "淨化"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "palmarosa",
+    "name": "玫瑰草",
+    "en": "Palmarosa",
+    "scientificName": "",
+    "part": "草葉",
+    "tone": "M",
+    "volatility": "M",
+    "drops": "5-6",
+    "aroma": "甜潤花草香，帶微微玫瑰氣息。",
+    "body": "保濕、抗菌、修復肌膚、平衡油脂分泌。",
+    "emotion": "柔軟而寧靜，安撫焦慮與孤單感，帶來心靈的溫度。",
+    "warning": "",
+    "notes": "心輪能量之油，象徵「愛與自我照顧」，適合搭配薰衣草與橙花共用。",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Palmarosa",
+        "part": "草葉",
+        "tone": "M",
+        "drops": "5-6",
+        "aroma": "甜潤花草香，帶微微玫瑰氣息。",
+        "body": "保濕、抗菌、修復肌膚、平衡油脂分泌。",
+        "emotion": "柔軟而寧靜，安撫焦慮與孤單感，帶來心靈的溫度。",
+        "warning": "",
+        "notes": "心輪能量之油，象徵「愛與自我照顧」，適合搭配薰衣草與橙花共用。"
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "愛情",
+      "保護",
+      "放鬆",
+      "淨化"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "palo-santo",
+    "name": "秘鲁聖木",
+    "en": "Palo Santo",
+    "scientificName": "",
+    "part": "倒木木材",
+    "tone": "M/B",
+    "volatility": "M/B",
+    "drops": "3-4",
+    "aroma": "木質、煙燻、帶有微甜與柑橘底韻。",
+    "body": "抗菌、鎮靜神經、支援呼吸與免疫系統。",
+    "emotion": "強化能量場、驅散低頻與焦慮，是「靈性潔淨」與冥想時的保護能量。",
+    "warning": "",
+    "notes": "又稱「聖木」，被南美薩滿用於淨化與祈禱。與雪松、乳香、岩蘭草共調，可創造穩定而神聖的氣場。",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Palo Santo",
+        "part": "倒木木材",
+        "tone": "M/B",
+        "drops": "3-4",
+        "aroma": "木質、煙燻、帶有微甜與柑橘底韻。",
+        "body": "抗菌、鎮靜神經、支援呼吸與免疫系統。",
+        "emotion": "強化能量場、驅散低頻與焦慮，是「靈性潔淨」與冥想時的保護能量。",
+        "warning": "",
+        "notes": "又稱「聖木」，被南美薩滿用於淨化與祈禱。與雪松、乳香、岩蘭草共調，可創造穩定而神聖的氣場。"
+      }
+    ],
+    "aliases": [
+      "秘魯聖木"
+    ],
+    "tags": [
+      "保護",
+      "放鬆",
+      "睡眠",
+      "淨化"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "patchouli",
+    "name": "廣藿香",
+    "en": "Patchouli",
+    "scientificName": "",
+    "part": "葉片",
+    "tone": "B",
+    "volatility": "B",
+    "drops": "4",
+    "aroma": "濕潤土氣、木質厚重、帶煙甜韻。",
+    "body": "促進循環、抗炎、改善皮膚鬆弛。",
+    "emotion": "接地、穩定、增強安全感與現實行動力，讓人腳踏實地，重新與物質世界連結。",
+    "warning": "",
+    "notes": "",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Patchouli",
+        "part": "葉片",
+        "tone": "B",
+        "drops": "4",
+        "aroma": "濕潤土氣、木質厚重、帶煙甜韻。",
+        "body": "促進循環、抗炎、改善皮膚鬆弛。",
+        "emotion": "接地、穩定、增強安全感與現實行動力，讓人腳踏實地，重新與物質世界連結。",
+        "warning": "",
+        "notes": ""
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "財富",
+      "放鬆"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "peppermint",
+    "name": "歐薄荷",
+    "en": "Peppermint",
+    "scientificName": "",
+    "part": "葉",
+    "tone": "T",
+    "volatility": "T",
+    "drops": "1-2",
+    "aroma": "清涼、辛薄荷香氣強烈。",
+    "body": "提神、清頭腦、舒緩頭痛、促進消化。",
+    "emotion": "清醒、專注、理智，幫助整理混亂思緒。",
+    "warning": "",
+    "notes": "對應喉輪與眉心輪，是「清晰決斷」的氣場之油。",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Peppermint",
+        "part": "葉",
+        "tone": "T",
+        "drops": "1-2",
+        "aroma": "清涼、辛薄荷香氣強烈。",
+        "body": "提神、清頭腦、舒緩頭痛、促進消化。",
+        "emotion": "清醒、專注、理智，幫助整理混亂思緒。",
+        "warning": "",
+        "notes": "對應喉輪與眉心輪，是「清晰決斷」的氣場之油。"
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "愛情",
+      "放鬆"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "petitgrain",
+    "name": "苦橙葉",
+    "en": "Petitgrain",
+    "scientificName": "",
+    "part": "嫩枝與葉",
+    "tone": "M",
+    "volatility": "M",
+    "drops": "5-6",
+    "aroma": "清新花木調，融合花香與綠葉氣息。",
+    "body": "鎮靜神經、平衡情緒、幫助入眠。",
+    "emotion": "帶來溫柔安定的力量，減輕緊張與壓力。",
+    "warning": "",
+    "notes": "心輪之油，像是橙花的弟弟，溫和卻深具療癒力。",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Petitgrain",
+        "part": "嫩枝與葉",
+        "tone": "M",
+        "drops": "5-6",
+        "aroma": "清新花木調，融合花香與綠葉氣息。",
+        "body": "鎮靜神經、平衡情緒、幫助入眠。",
+        "emotion": "帶來溫柔安定的力量，減輕緊張與壓力。",
+        "warning": "",
+        "notes": "心輪之油，像是橙花的弟弟，溫和卻深具療癒力。"
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "愛情",
+      "放鬆",
+      "睡眠"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "pine",
+    "name": "松樹",
+    "en": "Pine",
+    "scientificName": "",
+    "part": "針葉與枝",
+    "tone": "M",
+    "volatility": "M",
+    "drops": "6",
+    "aroma": "乾淨木質調，帶森林氣息。",
+    "body": "強化免疫、清肺抗菌、提振呼吸道。",
+    "emotion": "恢復清新感與堅毅力，幫助排除疲憊氣息，恢復自我內在力量。",
+    "warning": "",
+    "notes": "",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Pine",
+        "part": "針葉與枝",
+        "tone": "M",
+        "drops": "6",
+        "aroma": "乾淨木質調，帶森林氣息。",
+        "body": "強化免疫、清肺抗菌、提振呼吸道。",
+        "emotion": "恢復清新感與堅毅力，幫助排除疲憊氣息，恢復自我內在力量。",
+        "warning": "",
+        "notes": ""
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "保護",
+      "淨化"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "ravintsara",
+    "name": "羅文沙葉",
+    "en": "Ravintsara",
+    "scientificName": "",
+    "part": "葉",
+    "tone": "M",
+    "volatility": "M",
+    "drops": "5",
+    "aroma": "清新草本帶微樟香。",
+    "body": "強效抗病毒、抗菌、提振免疫與呼吸。",
+    "emotion": "清潔氣場、穩定思緒，是精神疲倦時的再生能量。",
+    "warning": "",
+    "notes": "眉心輪之油，有助專注與靜心，是「呼吸與覺知」的調整者。",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Ravintsara",
+        "part": "葉",
+        "tone": "M",
+        "drops": "5",
+        "aroma": "清新草本帶微樟香。",
+        "body": "強效抗病毒、抗菌、提振免疫與呼吸。",
+        "emotion": "清潔氣場、穩定思緒，是精神疲倦時的再生能量。",
+        "warning": "",
+        "notes": "眉心輪之油，有助專注與靜心，是「呼吸與覺知」的調整者。"
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "愛情",
+      "保護",
+      "放鬆",
+      "淨化"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "roman-chamomile",
+    "name": "羅馬洋甘菊",
+    "en": "Roman Chamomile",
+    "scientificName": "",
+    "part": "花",
+    "tone": "M",
+    "volatility": "M",
+    "drops": "1",
+    "aroma": "柔和果香花香，帶蘋果甜韻。",
+    "body": "鎮靜神經、舒緩焦慮、緩解經痛與腸胃不適。",
+    "emotion": "帶來寧靜與安撫，幫助釋放壓力、溫柔表達，像母親般的擁抱。",
+    "warning": "",
+    "notes": "",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Roman Chamomile",
+        "part": "花",
+        "tone": "M",
+        "drops": "1",
+        "aroma": "柔和果香花香，帶蘋果甜韻。",
+        "body": "鎮靜神經、舒緩焦慮、緩解經痛與腸胃不適。",
+        "emotion": "帶來寧靜與安撫，幫助釋放壓力、溫柔表達，像母親般的擁抱。",
+        "warning": "",
+        "notes": ""
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "放鬆",
+      "睡眠"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "rose",
+    "name": "玫瑰",
+    "en": "Rose",
+    "scientificName": "",
+    "part": "花",
+    "tone": "M",
+    "volatility": "M",
+    "drops": "1",
+    "aroma": "濃郁花香、甜潤高雅、帶柔滑粉感。",
+    "body": "調節荷爾蒙、滋潤肌膚、助眠、舒緩經期不適。對心臟與循環系統有穩定作用，亦能平衡女性生理週期。",
+    "emotion": "打開心輪、帶來愛與寬恕，治癒情感創傷。適合在情緒受傷、缺乏自我價值時使用，讓人重新相信愛的可能。",
+    "warning": "",
+    "notes": "心輪之王，象徵「無條件的愛」。玫瑰的頻率極高（約 320 MHz），是靈性療癒與情感復甦最溫柔的守護油。",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Rose",
+        "part": "花",
+        "tone": "M",
+        "drops": "1",
+        "aroma": "濃郁花香、甜潤高雅、帶柔滑粉感。",
+        "body": "調節荷爾蒙、滋潤肌膚、助眠、舒緩經期不適。對心臟與循環系統有穩定作用，亦能平衡女性生理週期。",
+        "emotion": "打開心輪、帶來愛與寬恕，治癒情感創傷。適合在情緒受傷、缺乏自我價值時使用，讓人重新相信愛的可能。",
+        "warning": "",
+        "notes": "心輪之王，象徵「無條件的愛」。玫瑰的頻率極高（約 320 MHz），是靈性療癒與情感復甦最溫柔的守護油。"
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "愛情",
+      "放鬆",
+      "睡眠"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "rosemary",
+    "name": "迷选香",
+    "en": "Rosemary",
+    "scientificName": "",
+    "part": "葉與花",
+    "tone": "M",
+    "volatility": "M",
+    "drops": "4-5",
+    "aroma": "清新草本、微樟木氣息、明亮提神。",
+    "body": "促進循環、提神醒腦、強健記憶力、改善頭皮與落髮狀況。可活化肝功能與新陳代謝。",
+    "emotion": "清晰頭腦、提升專注力與決斷力，驅散遲鈍與混亂。適合學習、工作或演講前使用，能喚醒潛能與自信。",
+    "warning": "",
+    "notes": "",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Rosemary",
+        "part": "葉與花",
+        "tone": "M",
+        "drops": "4-5",
+        "aroma": "清新草本、微樟木氣息、明亮提神。",
+        "body": "促進循環、提神醒腦、強健記憶力、改善頭皮與落髮狀況。可活化肝功能與新陳代謝。",
+        "emotion": "清晰頭腦、提升專注力與決斷力，驅散遲鈍與混亂。適合學習、工作或演講前使用，能喚醒潛能與自信。",
+        "warning": "",
+        "notes": ""
+      }
+    ],
+    "aliases": [
+      "迷迭香"
+    ],
+    "tags": [
+      "財富"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "sacred-frankincense",
+    "name": "神聖乳香",
+    "en": "Sacred Frankincense",
+    "scientificName": "",
+    "part": "樹脂",
+    "tone": "M/B",
+    "volatility": "M/B",
+    "drops": "4-5",
+    "aroma": "木質、樹脂、微甜煙香，帶靜謐神聖感。",
+    "body": "抗炎、促進細胞再生、強化免疫系統，對呼吸道與皮膚再生效果極佳。",
+    "emotion": "穩定心靈、清理能量場，開啟內在智慧與直覺。能協助進入深層冥想與祈禱狀態。",
+    "warning": "",
+    "notes": "象徵「神聖連結」。常用於靈修、祈禱、冥想與儀式中，被譽為「通往高我之橋」。",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Sacred Frankincense",
+        "part": "樹脂",
+        "tone": "M/B",
+        "drops": "4-5",
+        "aroma": "木質、樹脂、微甜煙香，帶靜謐神聖感。",
+        "body": "抗炎、促進細胞再生、強化免疫系統，對呼吸道與皮膚再生效果極佳。",
+        "emotion": "穩定心靈、清理能量場，開啟內在智慧與直覺。能協助進入深層冥想與祈禱狀態。",
+        "warning": "",
+        "notes": "象徵「神聖連結」。常用於靈修、祈禱、冥想與儀式中，被譽為「通往高我之橋」。"
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "保護",
+      "放鬆",
+      "淨化"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "sage",
+    "name": "鼠尾草",
+    "en": "Sage",
+    "scientificName": "",
+    "part": "葉",
+    "tone": "M/B",
+    "volatility": "M/B",
+    "drops": "4-5",
+    "aroma": "草本、辛香、略帶乾燥木氣。",
+    "body": "抗菌、調理荷爾蒙、促進循環、改善消化與呼吸系統。",
+    "emotion": "清理負能量與情緒殘留，幫助放下舊有信念與執著，是「能量重啟」之油。",
+    "warning": "",
+    "notes": "象徵「智慧與覺醒」。在薩滿傳統中被視為淨化與保護空間的神聖草本。",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Sage",
+        "part": "葉",
+        "tone": "M/B",
+        "drops": "4-5",
+        "aroma": "草本、辛香、略帶乾燥木氣。",
+        "body": "抗菌、調理荷爾蒙、促進循環、改善消化與呼吸系統。",
+        "emotion": "清理負能量與情緒殘留，幫助放下舊有信念與執著，是「能量重啟」之油。",
+        "warning": "",
+        "notes": "象徵「智慧與覺醒」。在薩滿傳統中被視為淨化與保護空間的神聖草本。"
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "保護",
+      "淨化"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "sandalwood-royal-hawaiian",
+    "name": "皇家夏威夷檀香",
+    "en": "Sandalwood\n (Royal Hawaiian)",
+    "scientificName": "",
+    "part": "木",
+    "tone": "B",
+    "volatility": "B",
+    "drops": "6",
+    "aroma": "溫潤木質、奶香柔和，帶靜謐甜感。",
+    "body": "鎮靜心神、抗炎、滋潤皮膚、助眠。",
+    "emotion": "帶來寧靜與神聖感，連結內在靈性與智慧。",
+    "warning": "",
+    "notes": "象徵「靜心與慈悲」。是冥想與能量香水中最常見的靈性基調。",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Sandalwood\n (Royal Hawaiian)",
+        "part": "木",
+        "tone": "B",
+        "drops": "6",
+        "aroma": "溫潤木質、奶香柔和，帶靜謐甜感。",
+        "body": "鎮靜心神、抗炎、滋潤皮膚、助眠。",
+        "emotion": "帶來寧靜與神聖感，連結內在靈性與智慧。",
+        "warning": "",
+        "notes": "象徵「靜心與慈悲」。是冥想與能量香水中最常見的靈性基調。"
+      }
+    ],
+    "aliases": [
+      "檀香"
+    ],
+    "tags": [
+      "睡眠"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "litsea-cubeba",
+    "name": "山雞椒",
+    "en": "Litsea cubeba",
+    "scientificName": "",
+    "part": "果實",
+    "tone": "T/M",
+    "volatility": "T/M",
+    "drops": "4",
+    "aroma": "清爽明亮的柑橘香中混合一絲草本辛甜氣息，像黎明前的陽光劃開濃霧。",
+    "body": "強效抗菌與抗發炎精油，能淨化空氣、促進循環、提振代謝，也能幫助油性肌膚與痘痘肌恢復平衡。其氣味中的檸檬醛成分能清理呼吸道、提升氧氣吸收，讓人精神集中又不緊繃。",
+    "emotion": "「晨光之油」，可在心情低落時喚起希望與快樂。它能掃除思緒中的雜塵，讓人感受到潔淨、明朗與自由。非常適合在新計畫啟動前或想轉化低頻時使用。",
+    "warning": "",
+    "notes": "象徵「喜悅與覺醒」。在能量層中屬於清理與提振的高頻光體香氣，常被用於開啟新篇章的儀式。",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Litsea cubeba",
+        "part": "果實",
+        "tone": "T/M",
+        "drops": "4",
+        "aroma": "清爽明亮的柑橘香中混合一絲草本辛甜氣息，像黎明前的陽光劃開濃霧。",
+        "body": "強效抗菌與抗發炎精油，能淨化空氣、促進循環、提振代謝，也能幫助油性肌膚與痘痘肌恢復平衡。其氣味中的檸檬醛成分能清理呼吸道、提升氧氣吸收，讓人精神集中又不緊繃。",
+        "emotion": "「晨光之油」，可在心情低落時喚起希望與快樂。它能掃除思緒中的雜塵，讓人感受到潔淨、明朗與自由。非常適合在新計畫啟動前或想轉化低頻時使用。",
+        "warning": "",
+        "notes": "象徵「喜悅與覺醒」。在能量層中屬於清理與提振的高頻光體香氣，常被用於開啟新篇章的儀式。"
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "保護",
+      "淨化"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "spearmint",
+    "name": "綠薄荷",
+    "en": "Spearmint",
+    "scientificName": "",
+    "part": "葉",
+    "tone": "T",
+    "volatility": "T",
+    "drops": "2-3",
+    "aroma": "清涼薄荷中帶甜意，比胡椒薄荷柔和許多，像春風拂過臉頰。",
+    "body": "能幫助消化、清新口氣、緩解噁心感與頭暈，同時舒緩肌肉緊繃與頭痛。綠薄荷富含香芹酮，對呼吸道有放鬆效果，適合長時間用腦或需要專注時使用。",
+    "emotion": "能量像清晨微笑的風，能驅散沉悶與煩躁，使人重新感覺清爽與輕盈。它帶來柔和的清醒，不是突兀的刺激，而是一種「我準備好迎接今天」的平衡感。",
+    "warning": "",
+    "notes": "喉輪與眉心輪之油，象徵「清晰與真誠表達」。能量頻率高而純淨，適合用於言語療癒、教學或公開演說前，幫助語言流暢與氣場穩定。",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Spearmint",
+        "part": "葉",
+        "tone": "T",
+        "drops": "2-3",
+        "aroma": "清涼薄荷中帶甜意，比胡椒薄荷柔和許多，像春風拂過臉頰。",
+        "body": "能幫助消化、清新口氣、緩解噁心感與頭暈，同時舒緩肌肉緊繃與頭痛。綠薄荷富含香芹酮，對呼吸道有放鬆效果，適合長時間用腦或需要專注時使用。",
+        "emotion": "能量像清晨微笑的風，能驅散沉悶與煩躁，使人重新感覺清爽與輕盈。它帶來柔和的清醒，不是突兀的刺激，而是一種「我準備好迎接今天」的平衡感。",
+        "warning": "",
+        "notes": "喉輪與眉心輪之油，象徵「清晰與真誠表達」。能量頻率高而純淨，適合用於言語療癒、教學或公開演說前，幫助語言流暢與氣場穩定。"
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "愛情",
+      "放鬆"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "spikenard",
+    "name": "穗甘松",
+    "en": "Spikenard",
+    "scientificName": "",
+    "part": "根部",
+    "tone": "B",
+    "volatility": "B",
+    "drops": "1-2",
+    "aroma": "濕潤厚重的草根香，略帶泥土與苔蘚氣息，像雨後森林深處的呼吸。",
+    "body": "以鎮靜與助眠著稱，可降低焦慮、穩定血壓與心跳。它有助於調整自律神經，讓身體恢復自然節奏。亦可用於按摩腳底或背部，以幫助深層放鬆。",
+    "emotion": "香氣深沉如大地懷抱，是極具「臣服」能量的香氣。當人陷於悲傷、焦慮或不安時，穗甘松像母親一樣將靈魂包裹，溫柔地讓你記起：「你被大地承接著。」",
+    "warning": "",
+    "notes": "「靈魂歸根」的能量油。古代修行者常在祈禱與冥想中使用它，以協助靜心、連結內在與天地頻率。",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Spikenard",
+        "part": "根部",
+        "tone": "B",
+        "drops": "1-2",
+        "aroma": "濕潤厚重的草根香，略帶泥土與苔蘚氣息，像雨後森林深處的呼吸。",
+        "body": "以鎮靜與助眠著稱，可降低焦慮、穩定血壓與心跳。它有助於調整自律神經，讓身體恢復自然節奏。亦可用於按摩腳底或背部，以幫助深層放鬆。",
+        "emotion": "香氣深沉如大地懷抱，是極具「臣服」能量的香氣。當人陷於悲傷、焦慮或不安時，穗甘松像母親一樣將靈魂包裹，溫柔地讓你記起：「你被大地承接著。」",
+        "warning": "",
+        "notes": "「靈魂歸根」的能量油。古代修行者常在祈禱與冥想中使用它，以協助靜心、連結內在與天地頻率。"
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "放鬆",
+      "睡眠"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "tangerine",
+    "name": "紅橘",
+    "en": "Tangerine",
+    "scientificName": "",
+    "part": "果皮",
+    "tone": "T",
+    "volatility": "T",
+    "drops": "7",
+    "aroma": "甜潤多汁的果香中帶細緻花氣，彷彿午後陽光灑在橘園裡的微笑。",
+    "body": "能幫助放鬆神經、改善睡眠品質，緩解腸胃脹氣與消化不良。它的成分富含檸烯，能提升免疫力與皮膚淨化作用。晚上泡澡時加幾滴柑橘，能讓身體釋放壓力、入睡更深沉。",
+    "emotion": "「快樂的內在小孩之油」。溫暖、陽光、甜美，能融化心中的冷漠與緊張，讓人重新擁抱生活的可愛。特別適合憂鬱、焦慮或對生活失去熱情時使用。",
+    "warning": "",
+    "notes": "柑橘的頻率輕盈卻極具療癒力，能開啟創作靈感與人際溫度，是「讓靈魂微笑」的香氣。",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Tangerine",
+        "part": "果皮",
+        "tone": "T",
+        "drops": "7",
+        "aroma": "甜潤多汁的果香中帶細緻花氣，彷彿午後陽光灑在橘園裡的微笑。",
+        "body": "能幫助放鬆神經、改善睡眠品質，緩解腸胃脹氣與消化不良。它的成分富含檸烯，能提升免疫力與皮膚淨化作用。晚上泡澡時加幾滴柑橘，能讓身體釋放壓力、入睡更深沉。",
+        "emotion": "「快樂的內在小孩之油」。溫暖、陽光、甜美，能融化心中的冷漠與緊張，讓人重新擁抱生活的可愛。特別適合憂鬱、焦慮或對生活失去熱情時使用。",
+        "warning": "",
+        "notes": "柑橘的頻率輕盈卻極具療癒力，能開啟創作靈感與人際溫度，是「讓靈魂微笑」的香氣。"
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "愛情",
+      "保護",
+      "放鬆",
+      "睡眠",
+      "淨化"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "tarragon",
+    "name": "龍蒿",
+    "en": "Tarragon",
+    "scientificName": "",
+    "part": "葉與花頂",
+    "tone": "M",
+    "volatility": "M",
+    "drops": "3-4",
+    "aroma": "清新草本帶辛香氣息，微涼中透出淡淡甜意，乾淨而有力量。",
+    "body": "幫助腸胃蠕動、舒緩脹氣與經期痙攣。它具有天然的抗發炎與鎮痛功效，對於緊繃的神經與肌肉僵硬也有放鬆作用。",
+    "emotion": "氣味有一種「鬆開執著」的力量。當思緒卡住、情緒堆積或被壓抑時，它能幫助鬆動能量結構，讓心重新變得柔軟與有彈性。",
+    "warning": "",
+    "notes": "「釋放控制與恢復流動」。教會我們在力量與柔軟之間找到平衡，是勇敢又溫和的療癒能量。",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Tarragon",
+        "part": "葉與花頂",
+        "tone": "M",
+        "drops": "3-4",
+        "aroma": "清新草本帶辛香氣息，微涼中透出淡淡甜意，乾淨而有力量。",
+        "body": "幫助腸胃蠕動、舒緩脹氣與經期痙攣。它具有天然的抗發炎與鎮痛功效，對於緊繃的神經與肌肉僵硬也有放鬆作用。",
+        "emotion": "氣味有一種「鬆開執著」的力量。當思緒卡住、情緒堆積或被壓抑時，它能幫助鬆動能量結構，讓心重新變得柔軟與有彈性。",
+        "warning": "",
+        "notes": "「釋放控制與恢復流動」。教會我們在力量與柔軟之間找到平衡，是勇敢又溫和的療癒能量。"
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "放鬆"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "tea-tree",
+    "name": "茶樹",
+    "en": "Tea Tree",
+    "scientificName": "",
+    "part": "葉",
+    "tone": "M",
+    "volatility": "M",
+    "drops": "3-4",
+    "aroma": "草本清新中帶樟木調，乾淨、純粹、帶少許藥草氣。",
+    "body": "最經典的抗菌抗病毒精油，能快速淨化傷口、改善皮膚炎與痘痘問題，亦可舒緩呼吸道不適。它像一位嚴謹的守護者，幫助身體恢復防禦力。",
+    "emotion": "能量乾淨明亮，有強大的「界線」頻率。當人情緒受到污染、能量被吸取或環境混濁時，茶樹能幫你切斷負連結，重啟清晰與獨立。",
+    "warning": "",
+    "notes": "喉輪與眉心輪共振之油，象徵「清理、界線與覺醒」。它是一種「潔淨真理」的力量，提醒人回到真實、自我與光。",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Tea Tree",
+        "part": "葉",
+        "tone": "M",
+        "drops": "3-4",
+        "aroma": "草本清新中帶樟木調，乾淨、純粹、帶少許藥草氣。",
+        "body": "最經典的抗菌抗病毒精油，能快速淨化傷口、改善皮膚炎與痘痘問題，亦可舒緩呼吸道不適。它像一位嚴謹的守護者，幫助身體恢復防禦力。",
+        "emotion": "能量乾淨明亮，有強大的「界線」頻率。當人情緒受到污染、能量被吸取或環境混濁時，茶樹能幫你切斷負連結，重啟清晰與獨立。",
+        "warning": "",
+        "notes": "喉輪與眉心輪共振之油，象徵「清理、界線與覺醒」。它是一種「潔淨真理」的力量，提醒人回到真實、自我與光。"
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "愛情",
+      "保護",
+      "放鬆",
+      "淨化"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "thyme",
+    "name": "百里香",
+    "en": "Thyme",
+    "scientificName": "",
+    "part": "花與葉",
+    "tone": "M",
+    "volatility": "M",
+    "drops": "1",
+    "aroma": "辛香草本，濃烈具穿透力。",
+    "body": "強力抗菌、抗病毒、提振免疫系統。",
+    "emotion": "激發勇氣、斬斷恐懼與拖延，恢復生命動能，象徵「行動與決斷」。適用於需要堅定與突破時期。",
+    "warning": "",
+    "notes": "濃度不超過 0.5%",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Thyme",
+        "part": "花與葉",
+        "tone": "M",
+        "drops": "1",
+        "aroma": "辛香草本，濃烈具穿透力。",
+        "body": "強力抗菌、抗病毒、提振免疫系統。",
+        "emotion": "激發勇氣、斬斷恐懼與拖延，恢復生命動能，象徵「行動與決斷」。適用於需要堅定與突破時期。",
+        "warning": "",
+        "notes": "濃度不超過 0.5%"
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "財富",
+      "保護",
+      "淨化"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "valerian",
+    "name": "纈草",
+    "en": "Valerian",
+    "scientificName": "",
+    "part": "根部",
+    "tone": "B",
+    "volatility": "B",
+    "drops": "1-2",
+    "aroma": "濃厚草根氣，帶泥土與木香。",
+    "body": "鎮靜神經、助眠、緩解焦慮與失眠。",
+    "emotion": "放下控制、進入深層休息，是靈魂的「關機之油」。",
+    "warning": "",
+    "notes": "適合睡前或靜心使用。",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Valerian",
+        "part": "根部",
+        "tone": "B",
+        "drops": "1-2",
+        "aroma": "濃厚草根氣，帶泥土與木香。",
+        "body": "鎮靜神經、助眠、緩解焦慮與失眠。",
+        "emotion": "放下控制、進入深層休息，是靈魂的「關機之油」。",
+        "warning": "",
+        "notes": "適合睡前或靜心使用。"
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "放鬆",
+      "睡眠"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "vetiver",
+    "name": "岩蘭草",
+    "en": "Vetiver",
+    "scientificName": "",
+    "part": "根部",
+    "tone": "B",
+    "volatility": "B",
+    "drops": "1",
+    "aroma": "濕潤木根香，濃郁而厚實。",
+    "body": "穩定神經、緩解焦慮、調理循環。",
+    "emotion": "強化根基與專注力，幫助過度思緒回到身體。",
+    "warning": "",
+    "notes": "象徵「扎根與存在感」。是最經典的冥想接地用油。",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Vetiver",
+        "part": "根部",
+        "tone": "B",
+        "drops": "1",
+        "aroma": "濕潤木根香，濃郁而厚實。",
+        "body": "穩定神經、緩解焦慮、調理循環。",
+        "emotion": "強化根基與專注力，幫助過度思緒回到身體。",
+        "warning": "",
+        "notes": "象徵「扎根與存在感」。是最經典的冥想接地用油。"
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "放鬆"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "wintergreen",
+    "name": "冬青",
+    "en": "Wintergreen",
+    "scientificName": "",
+    "part": "葉",
+    "tone": "M/B",
+    "volatility": "M/B",
+    "drops": "2-3",
+    "aroma": "清涼薄荷甜香，帶樹脂氣。",
+    "body": "消炎止痛、舒緩肌肉痠痛、鎮靜神經。",
+    "emotion": "幫助釋放壓力與情緒緊繃，帶來清新與釋放感。",
+    "warning": "",
+    "notes": "對應喉輪，象徵「清理壓抑與重新呼吸。",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Wintergreen",
+        "part": "葉",
+        "tone": "M/B",
+        "drops": "2-3",
+        "aroma": "清涼薄荷甜香，帶樹脂氣。",
+        "body": "消炎止痛、舒緩肌肉痠痛、鎮靜神經。",
+        "emotion": "幫助釋放壓力與情緒緊繃，帶來清新與釋放感。",
+        "warning": "",
+        "notes": "對應喉輪，象徵「清理壓抑與重新呼吸。"
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "放鬆",
+      "睡眠",
+      "淨化"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "lang-ylang",
+    "name": "依蘭",
+    "en": "lang Ylang",
+    "scientificName": "",
+    "part": "花",
+    "tone": "M/B",
+    "volatility": "M/B",
+    "drops": "4",
+    "aroma": "濃郁甜花香，性感又柔美。",
+    "body": "調節荷爾蒙、降低血壓、舒緩焦慮。",
+    "emotion": "開啟愛與自我接納，讓人重新感覺被欣賞與美麗。",
+    "warning": "",
+    "notes": "心輪與臍輪能量之油，象徵「愛、感官與流動」。",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "lang Ylang",
+        "part": "花",
+        "tone": "M/B",
+        "drops": "4",
+        "aroma": "濃郁甜花香，性感又柔美。",
+        "body": "調節荷爾蒙、降低血壓、舒緩焦慮。",
+        "emotion": "開啟愛與自我接納，讓人重新感覺被欣賞與美麗。",
+        "warning": "",
+        "notes": "心輪與臍輪能量之油，象徵「愛、感官與流動」。"
+      }
+    ],
+    "aliases": [
+      "依蘭依蘭"
+    ],
+    "tags": [
+      "愛情",
+      "放鬆"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "lemongrass",
+    "name": "檸檬草",
+    "en": "Lemongrass",
+    "scientificName": "",
+    "part": "葉",
+    "tone": "M",
+    "volatility": "M",
+    "drops": "1",
+    "aroma": "鮮明的檸檬香中帶草本辛辣氣息，潔淨而充滿動力。",
+    "body": "富含檸檬醛與香葉醛，是極佳的抗菌與抗炎精油。能促進血液循環、舒緩肌肉酸痛、幫助消化與利尿。",
+    "emotion": "能驅散精神倦怠、提振情緒、清理負面能量，像一束光穿透混濁空氣，帶來「重新開始」的力量。當生活陷入停滯、情緒混亂時，檸檬草能快速切換頻率，讓能量重新流動。",
+    "warning": "",
+    "notes": "能淨化環境氣味、驅蟲防蚊，是家庭中常備的「清潔能量」，是淨化儀式與空間香氣的經典選擇。",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Lemongrass",
+        "part": "葉",
+        "tone": "M",
+        "drops": "1",
+        "aroma": "鮮明的檸檬香中帶草本辛辣氣息，潔淨而充滿動力。",
+        "body": "富含檸檬醛與香葉醛，是極佳的抗菌與抗炎精油。能促進血液循環、舒緩肌肉酸痛、幫助消化與利尿。",
+        "emotion": "能驅散精神倦怠、提振情緒、清理負面能量，像一束光穿透混濁空氣，帶來「重新開始」的力量。當生活陷入停滯、情緒混亂時，檸檬草能快速切換頻率，讓能量重新流動。",
+        "warning": "",
+        "notes": "能淨化環境氣味、驅蟲防蚊，是家庭中常備的「清潔能量」，是淨化儀式與空間香氣的經典選擇。"
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "財富",
+      "保護",
+      "放鬆",
+      "淨化"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "alang-complete",
+    "name": "完全衣蘭",
+    "en": "Alang complete",
+    "scientificName": "",
+    "part": "花",
+    "tone": "M/B",
+    "volatility": "M/B",
+    "drops": "4",
+    "aroma": "濃郁甜花香、柔滑性感，層次深厚。",
+    "body": "能調節心率與血壓、平衡荷爾蒙、改善焦慮與壓力。對皮膚與頭皮都有柔潤與平衡的效果。",
+    "emotion": "象徵「接納與愛自己」。當你覺得不被看見、缺乏價值時，依蘭會以溫柔香氣提醒：「你本來就足夠美麗」。它能讓人從緊繃與防衛中放鬆，重新連結愛與感官愉悅。",
+    "warning": "",
+    "notes": "心輪與臍輪之油，象徵「愛與流動」。是恢復女性能量、自我柔軟與心靈開放的代表香氣。",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Alang complete",
+        "part": "花",
+        "tone": "M/B",
+        "drops": "4",
+        "aroma": "濃郁甜花香、柔滑性感，層次深厚。",
+        "body": "能調節心率與血壓、平衡荷爾蒙、改善焦慮與壓力。對皮膚與頭皮都有柔潤與平衡的效果。",
+        "emotion": "象徵「接納與愛自己」。當你覺得不被看見、缺乏價值時，依蘭會以溫柔香氣提醒：「你本來就足夠美麗」。它能讓人從緊繃與防衛中放鬆，重新連結愛與感官愉悅。",
+        "warning": "",
+        "notes": "心輪與臍輪之油，象徵「愛與流動」。是恢復女性能量、自我柔軟與心靈開放的代表香氣。"
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "愛情",
+      "放鬆"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "vetiver-oil-haiti",
+    "name": "海地岩蘭草",
+    "en": "Vetiver oil haiti",
+    "scientificName": "",
+    "part": "根部",
+    "tone": "B",
+    "volatility": "B",
+    "drops": "1",
+    "aroma": "厚重泥土木根氣息，深沈穩定，帶微甜煙氣。",
+    "body": "極佳的鎮靜與抗焦慮精油，能調整自律神經、放鬆緊繃肌肉與關節。適合失眠、焦慮、過度用腦者。",
+    "emotion": "是「大地之心」的香氣。當人漂浮於思緒與焦慮中時，岩蘭草能引領靈魂回到身體，讓你再次感覺「我在這裡」。",
+    "warning": "",
+    "notes": "象徵「扎根與穩定」。海地岩蘭草的頻率深沉，是冥想、接地與靜修最強的守護油之一。",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Vetiver oil haiti",
+        "part": "根部",
+        "tone": "B",
+        "drops": "1",
+        "aroma": "厚重泥土木根氣息，深沈穩定，帶微甜煙氣。",
+        "body": "極佳的鎮靜與抗焦慮精油，能調整自律神經、放鬆緊繃肌肉與關節。適合失眠、焦慮、過度用腦者。",
+        "emotion": "是「大地之心」的香氣。當人漂浮於思緒與焦慮中時，岩蘭草能引領靈魂回到身體，讓你再次感覺「我在這裡」。",
+        "warning": "",
+        "notes": "象徵「扎根與穩定」。海地岩蘭草的頻率深沉，是冥想、接地與靜修最強的守護油之一。"
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "放鬆",
+      "睡眠"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "rose-geranium",
+    "name": "玫瑰天竺葵",
+    "en": "Rose geranium",
+    "scientificName": "",
+    "part": "葉與花頂",
+    "tone": "M",
+    "volatility": "M",
+    "drops": "4",
+    "aroma": "甜花香中帶淡淡青草氣，柔中帶平衡。",
+    "body": "平衡荷爾蒙、調理女性經期與更年期不適、促進皮膚修復與油脂平衡。",
+    "emotion": "「情緒平衡之油」。能在極端的情緒間架起橋樑，讓人從憤怒、悲傷、焦慮中回到溫柔穩定。",
+    "warning": "",
+    "notes": "心輪能量之油，象徵「溫柔的力量」。是情緒風暴時的心靈中樞，提醒我們即使波動，也能回到愛的中心。",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Rose geranium",
+        "part": "葉與花頂",
+        "tone": "M",
+        "drops": "4",
+        "aroma": "甜花香中帶淡淡青草氣，柔中帶平衡。",
+        "body": "平衡荷爾蒙、調理女性經期與更年期不適、促進皮膚修復與油脂平衡。",
+        "emotion": "「情緒平衡之油」。能在極端的情緒間架起橋樑，讓人從憤怒、悲傷、焦慮中回到溫柔穩定。",
+        "warning": "",
+        "notes": "心輪能量之油，象徵「溫柔的力量」。是情緒風暴時的心靈中樞，提醒我們即使波動，也能回到愛的中心。"
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "愛情",
+      "放鬆"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "geranium-oil-bourbon-type",
+    "name": "波旁天竺葵",
+    "en": "Geranium oil bourbon type",
+    "scientificName": "",
+    "part": "葉與花頂",
+    "tone": "M",
+    "volatility": "M",
+    "drops": "3",
+    "aroma": "花香濃郁且帶果甜氣，比一般天竺葵更圓潤豐厚",
+    "body": "能調整女性內分泌、舒緩經痛與焦慮、滋潤乾燥肌膚。其平衡油脂分泌的效果極佳。",
+    "emotion": "「身心和諧」。當你感到內在衝突或疲憊，它能喚醒內在柔軟與包容感，讓心再次穩定。",
+    "warning": "",
+    "notes": "心輪之油，帶「平衡陰陽」的能量，適合用於情緒療癒、親密關係與自我接納練習。",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Geranium oil bourbon type",
+        "part": "葉與花頂",
+        "tone": "M",
+        "drops": "3",
+        "aroma": "花香濃郁且帶果甜氣，比一般天竺葵更圓潤豐厚",
+        "body": "能調整女性內分泌、舒緩經痛與焦慮、滋潤乾燥肌膚。其平衡油脂分泌的效果極佳。",
+        "emotion": "「身心和諧」。當你感到內在衝突或疲憊，它能喚醒內在柔軟與包容感，讓心再次穩定。",
+        "warning": "",
+        "notes": "心輪之油，帶「平衡陰陽」的能量，適合用於情緒療癒、親密關係與自我接納練習。"
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "愛情",
+      "放鬆"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "clove-leaf-oil",
+    "name": "丁香葉",
+    "en": "Clove leaf oil",
+    "scientificName": "",
+    "part": "葉",
+    "tone": "M/B",
+    "volatility": "M/B",
+    "drops": "2",
+    "aroma": "溫暖辛香、帶甜辣感，氣味厚實。",
+    "body": "強效抗菌、抗病毒、止痛、促進循環。能緩解牙痛、肌肉痠痛與風濕。",
+    "emotion": "是「重燃意志」的香氣。當人陷入冷漠或意志低落時，丁香能喚醒生命火焰，恢復行動與自信。",
+    "warning": "",
+    "notes": "象徵「勇氣與生命力」。它像一團溫暖的火，提醒我們：你的力量仍在。",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Clove leaf oil",
+        "part": "葉",
+        "tone": "M/B",
+        "drops": "2",
+        "aroma": "溫暖辛香、帶甜辣感，氣味厚實。",
+        "body": "強效抗菌、抗病毒、止痛、促進循環。能緩解牙痛、肌肉痠痛與風濕。",
+        "emotion": "是「重燃意志」的香氣。當人陷入冷漠或意志低落時，丁香能喚醒生命火焰，恢復行動與自信。",
+        "warning": "",
+        "notes": "象徵「勇氣與生命力」。它像一團溫暖的火，提醒我們：你的力量仍在。"
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "財富",
+      "保護",
+      "淨化"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "coriander-seed-oil",
+    "name": "芫荽籽",
+    "en": "Coriander seed oil",
+    "scientificName": "",
+    "part": "種子",
+    "tone": "M",
+    "volatility": "M",
+    "drops": "4",
+    "aroma": "辛香溫暖中帶木質氣息，略帶甜感，如陽光曬過的香料田。",
+    "body": "促進血液循環、刺激消化與活化新陳代謝的特性。可緩解肌肉痠痛、關節不適與胃腸脹氣，同時幫助身體恢復能量。它還能促進食慾與溫暖身體，適合寒性體質與疲倦者使用。",
+    "emotion": "「重燃熱情」的香氣。當你感到倦怠、缺乏靈感或陷入無力時，芫荽籽的溫潤辛香能喚醒內在動力，讓思緒重新流動。它也幫助放下過度理性，回歸身體的智慧與直覺行動。",
+    "warning": "",
+    "notes": "象徵「意志與生命力的重新啟動」。適合用於啟動行動力的晨間配方，或冥想前暖身呼吸儀式。",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Coriander seed oil",
+        "part": "種子",
+        "tone": "M",
+        "drops": "4",
+        "aroma": "辛香溫暖中帶木質氣息，略帶甜感，如陽光曬過的香料田。",
+        "body": "促進血液循環、刺激消化與活化新陳代謝的特性。可緩解肌肉痠痛、關節不適與胃腸脹氣，同時幫助身體恢復能量。它還能促進食慾與溫暖身體，適合寒性體質與疲倦者使用。",
+        "emotion": "「重燃熱情」的香氣。當你感到倦怠、缺乏靈感或陷入無力時，芫荽籽的溫潤辛香能喚醒內在動力，讓思緒重新流動。它也幫助放下過度理性，回歸身體的智慧與直覺行動。",
+        "warning": "",
+        "notes": "象徵「意志與生命力的重新啟動」。適合用於啟動行動力的晨間配方，或冥想前暖身呼吸儀式。"
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "財富"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "galbanum",
+    "name": "格蓬（白松香）",
+    "en": "Galbanum",
+    "scientificName": "",
+    "part": "樹脂",
+    "tone": "M/B",
+    "volatility": "M/B",
+    "drops": "2",
+    "aroma": "青綠草木調中帶樹脂氣，濕潤、厚實又略帶神祕感。",
+    "body": "能強化呼吸系統、鎮靜神經與抗發炎。對緊繃的胸腔與淺呼吸者特別有幫助。它還能促進皮膚再生與細胞修復，常用於修護性按摩或養膚油中。",
+    "emotion": "當你陷於壓力、疏離感或與身體斷連時，它幫助你回到內在最原始的生命節奏，像走進靜謐森林般恢復真實。",
+    "warning": "",
+    "notes": "象徵「真實與歸根」。它能清理現代壓力的人工氣場，重建與自然的能量連結。",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Galbanum",
+        "part": "樹脂",
+        "tone": "M/B",
+        "drops": "2",
+        "aroma": "青綠草木調中帶樹脂氣，濕潤、厚實又略帶神祕感。",
+        "body": "能強化呼吸系統、鎮靜神經與抗發炎。對緊繃的胸腔與淺呼吸者特別有幫助。它還能促進皮膚再生與細胞修復，常用於修護性按摩或養膚油中。",
+        "emotion": "當你陷於壓力、疏離感或與身體斷連時，它幫助你回到內在最原始的生命節奏，像走進靜謐森林般恢復真實。",
+        "warning": "",
+        "notes": "象徵「真實與歸根」。它能清理現代壓力的人工氣場，重建與自然的能量連結。"
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "睡眠",
+      "淨化"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "cajeput",
+    "name": "白千層",
+    "en": "Cajeput",
+    "scientificName": "",
+    "part": "葉與枝",
+    "tone": "M",
+    "volatility": "M",
+    "drops": "3",
+    "aroma": "清新木質樟氣，介於茶樹與尤加利之間。",
+    "body": "極佳的呼吸道保養油，可減輕鼻塞、咳嗽與支氣管炎症狀。它同時具有抗菌、退燒與緩解肌肉疼痛的效果，是自然療法中的「白光淨化油」。",
+    "emotion": "散發清透能量，能幫助釋放焦慮與混亂思緒。它像清晨第一口深呼吸，使人重新感覺頭腦清明、界線分明。",
+    "warning": "",
+    "notes": "象徵「清晰與守護」。在靈氣療癒與能量工作中，常用於清理負能量與空間調頻。",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Cajeput",
+        "part": "葉與枝",
+        "tone": "M",
+        "drops": "3",
+        "aroma": "清新木質樟氣，介於茶樹與尤加利之間。",
+        "body": "極佳的呼吸道保養油，可減輕鼻塞、咳嗽與支氣管炎症狀。它同時具有抗菌、退燒與緩解肌肉疼痛的效果，是自然療法中的「白光淨化油」。",
+        "emotion": "散發清透能量，能幫助釋放焦慮與混亂思緒。它像清晨第一口深呼吸，使人重新感覺頭腦清明、界線分明。",
+        "warning": "",
+        "notes": "象徵「清晰與守護」。在靈氣療癒與能量工作中，常用於清理負能量與空間調頻。"
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "保護",
+      "放鬆",
+      "淨化"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "copaiba-oil",
+    "name": "古巴香脂",
+    "en": "Copaiba oil",
+    "scientificName": "",
+    "part": "樹脂",
+    "tone": "B",
+    "volatility": "B",
+    "drops": "2",
+    "aroma": "柔和木質與甜樹脂氣息，平靜且乾淨。",
+    "body": "具有抗炎與止痛特性，可舒緩關節疼痛、呼吸不順與皮膚紅腫。它溫和無刺激，是療癒與修護性調油的優良基底。",
+    "emotion": "散發溫柔而穩定的力量，幫助人釋放焦慮與怒氣。它像深層的擁抱，讓靈魂安靜下來，重新找到內在節奏。",
+    "warning": "",
+    "notes": "象徵「穩定與信任」。是非常適合靜心、冥想或深層療癒儀式的香氣。",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Copaiba oil",
+        "part": "樹脂",
+        "tone": "B",
+        "drops": "2",
+        "aroma": "柔和木質與甜樹脂氣息，平靜且乾淨。",
+        "body": "具有抗炎與止痛特性，可舒緩關節疼痛、呼吸不順與皮膚紅腫。它溫和無刺激，是療癒與修護性調油的優良基底。",
+        "emotion": "散發溫柔而穩定的力量，幫助人釋放焦慮與怒氣。它像深層的擁抱，讓靈魂安靜下來，重新找到內在節奏。",
+        "warning": "",
+        "notes": "象徵「穩定與信任」。是非常適合靜心、冥想或深層療癒儀式的香氣。"
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "放鬆"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "lavandin-grosso",
+    "name": "醒目薰衣草",
+    "en": "Lavandin grosso",
+    "scientificName": "",
+    "part": "花頂",
+    "tone": "M",
+    "volatility": "M",
+    "drops": "4",
+    "aroma": "薰衣草香氣更清涼、草本感更強",
+    "body": "具鎮痛、抗菌與放鬆作用。適合按摩肌肉、舒緩焦慮。是旅行、睡前、壓力大時的必備安撫油。",
+    "emotion": "醒目薰衣草的能量清新卻不飄逸，能使人放下控制、重回自然流動。它帶來「深呼吸」的感覺，提醒心放慢。",
+    "warning": "",
+    "notes": "象徵「清醒的寧靜」。是穩定能量場、恢復平衡的療癒型花草香氣。",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Lavandin grosso",
+        "part": "花頂",
+        "tone": "M",
+        "drops": "4",
+        "aroma": "薰衣草香氣更清涼、草本感更強",
+        "body": "具鎮痛、抗菌與放鬆作用。適合按摩肌肉、舒緩焦慮。是旅行、睡前、壓力大時的必備安撫油。",
+        "emotion": "醒目薰衣草的能量清新卻不飄逸，能使人放下控制、重回自然流動。它帶來「深呼吸」的感覺，提醒心放慢。",
+        "warning": "",
+        "notes": "象徵「清醒的寧靜」。是穩定能量場、恢復平衡的療癒型花草香氣。"
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "保護",
+      "放鬆",
+      "睡眠",
+      "淨化"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "grapefruit-pink",
+    "name": "粉紅葡萄柚",
+    "en": "Grapefruit pink",
+    "scientificName": "",
+    "part": "果皮",
+    "tone": "T",
+    "volatility": "T",
+    "drops": "6",
+    "aroma": "清新甜潤的柑橘香中帶微苦，輕盈如晨曦。",
+    "body": "促進淋巴循環與排毒，幫助消水腫、提升代謝。它還能改善膚色暗沉與疲勞感，是美容與減壓的經典之選。",
+    "emotion": "葡萄柚香氣如陽光穿過窗簾，瞬間點亮心房。它帶來希望與清新感，能掃除沮喪、提振信心，讓人重新愛上生活的節奏。",
+    "warning": "",
+    "notes": "象徵「樂觀與自我肯定」。是早晨香氣與心靈喚醒儀式的代表精油。",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Grapefruit pink",
+        "part": "果皮",
+        "tone": "T",
+        "drops": "6",
+        "aroma": "清新甜潤的柑橘香中帶微苦，輕盈如晨曦。",
+        "body": "促進淋巴循環與排毒，幫助消水腫、提升代謝。它還能改善膚色暗沉與疲勞感，是美容與減壓的經典之選。",
+        "emotion": "葡萄柚香氣如陽光穿過窗簾，瞬間點亮心房。它帶來希望與清新感，能掃除沮喪、提振信心，讓人重新愛上生活的節奏。",
+        "warning": "",
+        "notes": "象徵「樂觀與自我肯定」。是早晨香氣與心靈喚醒儀式的代表精油。"
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "愛情",
+      "放鬆",
+      "淨化"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "rose-absolute",
+    "name": "大馬士革玫瑰",
+    "en": "Rose absolute",
+    "scientificName": "",
+    "part": "花",
+    "tone": "M/B",
+    "volatility": "M/B",
+    "drops": "2",
+    "aroma": "濃郁花香中夾帶甜潤粉感，奢華且深情。",
+    "body": "滋潤肌膚、調節荷爾蒙、舒緩經痛與更年期不適。對心臟與循環系統也有穩定作用。",
+    "emotion": "玫瑰是「無條件之愛」的頻率，能治癒心碎、打開胸口的防備，讓人重新相信愛的流動。當你覺得孤單或渴望溫柔，玫瑰會提醒你：「你本身就是愛的源頭。」",
+    "warning": "",
+    "notes": "心輪核心能量，象徵「慈悲與自我接納」。是靈性與情感整合中最重要的女神之香。",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Rose absolute",
+        "part": "花",
+        "tone": "M/B",
+        "drops": "2",
+        "aroma": "濃郁花香中夾帶甜潤粉感，奢華且深情。",
+        "body": "滋潤肌膚、調節荷爾蒙、舒緩經痛與更年期不適。對心臟與循環系統也有穩定作用。",
+        "emotion": "玫瑰是「無條件之愛」的頻率，能治癒心碎、打開胸口的防備，讓人重新相信愛的流動。當你覺得孤單或渴望溫柔，玫瑰會提醒你：「你本身就是愛的源頭。」",
+        "warning": "",
+        "notes": "心輪核心能量，象徵「慈悲與自我接納」。是靈性與情感整合中最重要的女神之香。"
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "愛情",
+      "放鬆"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "grapefruit",
+    "name": "柚子",
+    "en": "Grapefruit",
+    "scientificName": "",
+    "part": "果皮",
+    "tone": "T",
+    "volatility": "T",
+    "drops": "6",
+    "aroma": "比粉紅葡萄柚更明亮、更乾淨，帶微酸與果皮清香。",
+    "body": "促進代謝、緊緻肌膚、改善疲勞與倦怠感。它也是提振能量與淨化肝臟的理想精油",
+    "emotion": "「輕盈的信心」。當你陷入懷疑、自我批評或缺乏方向時，它能幫助恢復明亮心境，提醒你擁有選擇快樂的權力。",
+    "warning": "",
+    "notes": "象徵「快樂的勇氣」。適合早晨使用，為心靈注入新鮮動力。",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Grapefruit",
+        "part": "果皮",
+        "tone": "T",
+        "drops": "6",
+        "aroma": "比粉紅葡萄柚更明亮、更乾淨，帶微酸與果皮清香。",
+        "body": "促進代謝、緊緻肌膚、改善疲勞與倦怠感。它也是提振能量與淨化肝臟的理想精油",
+        "emotion": "「輕盈的信心」。當你陷入懷疑、自我批評或缺乏方向時，它能幫助恢復明亮心境，提醒你擁有選擇快樂的權力。",
+        "warning": "",
+        "notes": "象徵「快樂的勇氣」。適合早晨使用，為心靈注入新鮮動力。"
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "財富",
+      "淨化"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "howood",
+    "name": "芳樟",
+    "en": "Howood",
+    "scientificName": "",
+    "part": "木材",
+    "tone": "M/B",
+    "volatility": "M/B",
+    "drops": "3",
+    "aroma": "柔和木質花香，帶粉感與微甜氣。",
+    "body": "強化免疫系統、促進細胞再生、舒緩焦慮與失眠。是修護性按摩與安撫配方的經典成分。",
+    "emotion": "芳樟的氣息有一種「被擁抱」的感覺，能讓心靈慢慢鬆弛、回到信任與安定。",
+    "warning": "",
+    "notes": "在靜心與睡前擴香中能穩定能場，讓靈魂安住。",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Howood",
+        "part": "木材",
+        "tone": "M/B",
+        "drops": "3",
+        "aroma": "柔和木質花香，帶粉感與微甜氣。",
+        "body": "強化免疫系統、促進細胞再生、舒緩焦慮與失眠。是修護性按摩與安撫配方的經典成分。",
+        "emotion": "芳樟的氣息有一種「被擁抱」的感覺，能讓心靈慢慢鬆弛、回到信任與安定。",
+        "warning": "",
+        "notes": "在靜心與睡前擴香中能穩定能場，讓靈魂安住。"
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "保護",
+      "放鬆",
+      "睡眠"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "resewood",
+    "name": "花梨木",
+    "en": "Resewood",
+    "scientificName": "",
+    "part": "木材",
+    "tone": "M",
+    "volatility": "M",
+    "drops": "3",
+    "aroma": "甜木香中帶花氣與粉感，溫暖圓潤。",
+    "body": "抗菌、抗老化、幫助肌膚修復與提亮氣色。對於壓力型頭痛與焦慮也有舒緩作用。",
+    "emotion": "被稱為「心靈修護師」，能安撫創傷與孤單感。它讓人感覺被理解、被接納，是愛的低語。",
+    "warning": "",
+    "notes": "心輪能量油，象徵「同理與柔韌」。適合用於人際療癒與靜坐修心。",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Resewood",
+        "part": "木材",
+        "tone": "M",
+        "drops": "3",
+        "aroma": "甜木香中帶花氣與粉感，溫暖圓潤。",
+        "body": "抗菌、抗老化、幫助肌膚修復與提亮氣色。對於壓力型頭痛與焦慮也有舒緩作用。",
+        "emotion": "被稱為「心靈修護師」，能安撫創傷與孤單感。它讓人感覺被理解、被接納，是愛的低語。",
+        "warning": "",
+        "notes": "心輪能量油，象徵「同理與柔韌」。適合用於人際療癒與靜坐修心。"
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "愛情",
+      "保護",
+      "放鬆",
+      "淨化"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "peru-balsam",
+    "name": "祕魯香脂",
+    "en": "Peru balsam",
+    "scientificName": "",
+    "part": "樹脂",
+    "tone": "B",
+    "volatility": "B",
+    "drops": "2",
+    "aroma": "甜潤濃厚、帶焦糖與香草氣息，溫暖安心。",
+    "body": "潤膚、抗炎、鎮痛，對咳嗽與氣管不適有舒緩作用。",
+    "emotion": "像一條安全的毯子，包覆著人心的角落，讓悲傷化為柔軟。適合療癒情緒創傷與重建安全感。",
+    "warning": "",
+    "notes": "象徵「溫暖的安全」。非常適合冬季與內在孩童療癒時使用。",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Peru balsam",
+        "part": "樹脂",
+        "tone": "B",
+        "drops": "2",
+        "aroma": "甜潤濃厚、帶焦糖與香草氣息，溫暖安心。",
+        "body": "潤膚、抗炎、鎮痛，對咳嗽與氣管不適有舒緩作用。",
+        "emotion": "像一條安全的毯子，包覆著人心的角落，讓悲傷化為柔軟。適合療癒情緒創傷與重建安全感。",
+        "warning": "",
+        "notes": "象徵「溫暖的安全」。非常適合冬季與內在孩童療癒時使用。"
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "放鬆"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "mandarin-green",
+    "name": "綠橘",
+    "en": "Mandarin green",
+    "scientificName": "",
+    "part": "果皮",
+    "tone": "T",
+    "volatility": "T",
+    "drops": "6",
+    "aroma": "清新果香中帶淡花氣，比紅橘更輕盈明亮。",
+    "body": "溫和調理腸胃、安撫消化系統、改善睡眠品質。適合兒童或敏感體質者。亦可促進血液循環與皮膚亮澤。",
+    "emotion": "像晨光裡的微笑，能撫慰焦慮、恢復單純喜悅，帶回「沒事的心」。適合身心疲憊、容易擔心的時候使用。",
+    "warning": "",
+    "notes": "象徵「純真與溫柔力量」。是內在孩童與安心感的代表香氣。",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Mandarin green",
+        "part": "果皮",
+        "tone": "T",
+        "drops": "6",
+        "aroma": "清新果香中帶淡花氣，比紅橘更輕盈明亮。",
+        "body": "溫和調理腸胃、安撫消化系統、改善睡眠品質。適合兒童或敏感體質者。亦可促進血液循環與皮膚亮澤。",
+        "emotion": "像晨光裡的微笑，能撫慰焦慮、恢復單純喜悅，帶回「沒事的心」。適合身心疲憊、容易擔心的時候使用。",
+        "warning": "",
+        "notes": "象徵「純真與溫柔力量」。是內在孩童與安心感的代表香氣。"
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "放鬆",
+      "睡眠"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "lemon-lil-italian",
+    "name": "義大利檸檬",
+    "en": "Lemon lil italian",
+    "scientificName": "",
+    "part": "果皮",
+    "tone": "T",
+    "volatility": "T",
+    "drops": "5",
+    "aroma": "明亮酸香中帶甜潤，乾淨、清脆、陽光十足。",
+    "body": "淨化血液、促進循環、強化免疫系統；幫助集中注意力與提神醒腦。對油性肌膚與暗沉亦有改善作用。",
+    "emotion": "是「光之整理師」，能清理混亂思緒與情緒雜訊。當你需要決策、整理、重啟時，檸檬香氣會讓頭腦變明亮、心變簡單。",
+    "warning": "",
+    "notes": "象徵「清晰與決心」。它的頻率像一道光，讓人記得：一切可以重新開始。",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Lemon lil italian",
+        "part": "果皮",
+        "tone": "T",
+        "drops": "5",
+        "aroma": "明亮酸香中帶甜潤，乾淨、清脆、陽光十足。",
+        "body": "淨化血液、促進循環、強化免疫系統；幫助集中注意力與提神醒腦。對油性肌膚與暗沉亦有改善作用。",
+        "emotion": "是「光之整理師」，能清理混亂思緒與情緒雜訊。當你需要決策、整理、重啟時，檸檬香氣會讓頭腦變明亮、心變簡單。",
+        "warning": "",
+        "notes": "象徵「清晰與決心」。它的頻率像一道光，讓人記得：一切可以重新開始。"
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "保護",
+      "淨化"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "juniper-berry",
+    "name": "杜松子",
+    "en": "Juniper berry",
+    "scientificName": "",
+    "part": "漿果",
+    "tone": "M",
+    "volatility": "M",
+    "drops": "4",
+    "aroma": "木質清爽中帶針葉與樹脂氣息，乾淨透亮。",
+    "body": "促進排毒、利尿、淨化腎臟與淋巴系統，常用於身體排濕與循環改善。",
+    "emotion": "被稱為「靈魂淨化者」。能清除負面能量與自我懷疑，恢復清明與信任。",
+    "warning": "",
+    "notes": "象徵「洞察與清淨」。適合儀式前、能量清理或冥想準備使用。",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Juniper berry",
+        "part": "漿果",
+        "tone": "M",
+        "drops": "4",
+        "aroma": "木質清爽中帶針葉與樹脂氣息，乾淨透亮。",
+        "body": "促進排毒、利尿、淨化腎臟與淋巴系統，常用於身體排濕與循環改善。",
+        "emotion": "被稱為「靈魂淨化者」。能清除負面能量與自我懷疑，恢復清明與信任。",
+        "warning": "",
+        "notes": "象徵「洞察與清淨」。適合儀式前、能量清理或冥想準備使用。"
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "淨化"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "wormwood",
+    "name": "艾草",
+    "en": "Wormwood",
+    "scientificName": "",
+    "part": "葉與花",
+    "tone": "M/B",
+    "volatility": "M/B",
+    "drops": "2",
+    "aroma": "草本苦香帶樟氣，略煙燻，神秘深邃。",
+    "body": "促進血液循環、驅寒除濕、調理女性經痛與經期不順，亦能驅蟲與淨化空氣。",
+    "emotion": "「保護與驅除負能量」，能清除陰性情緒與疲憊磁場。用於能量療癒與淨屋時特別有力量。",
+    "warning": "",
+    "notes": "象徵「淨化與保護」。適合夜間冥想或能量防護儀式。",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Wormwood",
+        "part": "葉與花",
+        "tone": "M/B",
+        "drops": "2",
+        "aroma": "草本苦香帶樟氣，略煙燻，神秘深邃。",
+        "body": "促進血液循環、驅寒除濕、調理女性經痛與經期不順，亦能驅蟲與淨化空氣。",
+        "emotion": "「保護與驅除負能量」，能清除陰性情緒與疲憊磁場。用於能量療癒與淨屋時特別有力量。",
+        "warning": "",
+        "notes": "象徵「淨化與保護」。適合夜間冥想或能量防護儀式。"
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "保護",
+      "淨化"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "amyris",
+    "name": "西印度檀香",
+    "en": "Amyris",
+    "scientificName": "",
+    "part": "木材",
+    "tone": "B",
+    "volatility": "B",
+    "drops": "2",
+    "aroma": "柔和木質香，微甜且安靜，帶乳香氣息。",
+    "body": "滋養肌膚、放鬆肌肉、調理睡眠與焦慮。它也有溫和的抗炎與抗菌作用。",
+    "emotion": "像一位靜默智者，幫助人放下煩亂思緒、回到心的中心。適合冥想、祈禱與深層療癒時使用。",
+    "warning": "",
+    "notes": "象徵「靜心與覺知」。在靈性修煉中，它協助穩定能場與開啟直覺。",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Amyris",
+        "part": "木材",
+        "tone": "B",
+        "drops": "2",
+        "aroma": "柔和木質香，微甜且安靜，帶乳香氣息。",
+        "body": "滋養肌膚、放鬆肌肉、調理睡眠與焦慮。它也有溫和的抗炎與抗菌作用。",
+        "emotion": "像一位靜默智者，幫助人放下煩亂思緒、回到心的中心。適合冥想、祈禱與深層療癒時使用。",
+        "warning": "",
+        "notes": "象徵「靜心與覺知」。在靈性修煉中，它協助穩定能場與開啟直覺。"
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "保護",
+      "放鬆",
+      "睡眠",
+      "淨化"
+    ],
+    "element": "Word 未提供"
+  },
+  {
+    "id": "verbena-reco",
+    "name": "馬鞭草",
+    "en": "Verbena reco",
+    "scientificName": "",
+    "part": "葉與花頂",
+    "tone": "T/M",
+    "volatility": "T/M",
+    "drops": "3",
+    "aroma": "清新柑橘花香混草本氣，明亮細緻。",
+    "body": "強化神經、緩解焦慮與失眠、改善腸胃消化與頭痛症狀。",
+    "emotion": "「心靈平衡」的香氣，能減少過度的控制慾與完美主義，讓人學會溫柔放手。",
+    "warning": "",
+    "notes": "象徵「信任與臣服」。當靈魂緊繃時，它會帶你回到流動的狀態。",
+    "source": "精油D數資料 Word",
+    "sourceRecords": [
+      {
+        "en": "Verbena reco",
+        "part": "葉與花頂",
+        "tone": "T/M",
+        "drops": "3",
+        "aroma": "清新柑橘花香混草本氣，明亮細緻。",
+        "body": "強化神經、緩解焦慮與失眠、改善腸胃消化與頭痛症狀。",
+        "emotion": "「心靈平衡」的香氣，能減少過度的控制慾與完美主義，讓人學會溫柔放手。",
+        "warning": "",
+        "notes": "象徵「信任與臣服」。當靈魂緊繃時，它會帶你回到流動的狀態。"
+      }
+    ],
+    "aliases": [],
+    "tags": [
+      "放鬆",
+      "睡眠"
+    ],
+    "element": "Word 未提供"
+  }
 ];
+
+let oils = MASTER_OIL_DATABASE.map(o=>({...o, aliases:[...(o.aliases||[])], tags:[...(o.tags||[])], sourceRecords:[...(o.sourceRecords||[])]}));
 
 const numerology = {
   1:["甜橙","乳香","葡萄柚","茉莉"],
@@ -1451,6 +5170,7 @@ const elements = [
 {name:"土｜脾・胃",icon:"🟤",effects:["幫助消化吸收","穩定精神基礎","溫暖腸胃","健脾養胃","促進排便","祛除濕氣"],people:["體力不足者","體質需調整者"],examples:["羅勒＋佛手柑＋薰衣草＋甜馬鬱蘭","甜橙＋肉桂＋胡蘿蔔籽"]}
 ];
 
+const MASTER_DATABASE_VERSION="V18-2026-07-24";
 let state = JSON.parse(localStorage.getItem("zhixinAromaState") || "null") || {
   inventory: initialInventory,
   recipes: [],
@@ -1463,12 +5183,13 @@ let state = JSON.parse(localStorage.getItem("zhixinAromaState") || "null") || {
   labDraft: null
 };
 if(!state.customOils) state.customOils=[];
+state.masterDatabaseVersion=MASTER_DATABASE_VERSION;
 if(!state.diffuserLogs) state.diffuserLogs=[];
 if(!state.diffuserFavorites) state.diffuserFavorites=[];
 if(!state.labFormulas) state.labFormulas=[];
 if(!state.usageRecords) state.usageRecords=[];
 if(state.labDraft===undefined) state.labDraft=null;
-if(state.customOils.length) oils = oils.concat(state.customOils);
+if(state.customOils.length) oils = oils.concat(state.customOils.filter(c=>!oils.some(o=>o.name===c.name)));
 state.inventory.forEach(x=>{
   if(!x.unit){
     if(x.category==="蠟材") x.unit="g";
@@ -1491,7 +5212,18 @@ if(!state.inventory.some(x=>x.name==="生命之水（伏特加）")){
   state.inventory.push({name:"生命之水（伏特加）", category:"噴霧基底", ml:500, unit:"ml", spec:"", reorder:100});
 }
 function save(){ state.customOils=oils.filter(o=>o.custom===true); localStorage.setItem("zhixinAromaState", JSON.stringify(state)); updateKPIs(); }
-function invByName(name){ return state.inventory.find(x=>x.name===name); }
+function masterOilByName(name){
+  return oils.find(o=>o.name===name || (o.aliases||[]).includes(name));
+}
+function invByName(name){
+  const oil=masterOilByName(name);
+  const names=new Set([name,oil?.name,...(oil?.aliases||[])].filter(Boolean));
+  return state.inventory.find(x=>names.has(x.name));
+}
+function oilHasStock(oil){
+  const inv=invByName(typeof oil==="string" ? oil : oil?.name);
+  return Boolean(inv && inv.category==="精油" && Number(inv.ml||0)>0);
+}
 
 const mobileNavToggle=document.getElementById("mobileNavToggle");
 const mainNav=document.getElementById("mainNav");
@@ -1537,7 +5269,7 @@ function toneMatches(selectedTone, oilTone){
 }
 
 function formulaOilOptions(tone, selected=""){
-  const available=oils.filter(o=>toneMatches(tone,o.tone));
+  const available=oils.filter(o=>toneMatches(tone,o.tone) && oilHasStock(o));
   return '<option value="">請選擇精油</option>'+available.map(o=>
     `<option value="${o.name}" ${o.name===selected?"selected":""}>${o.name}</option>`
   ).join("");
@@ -2084,7 +5816,7 @@ function getOilAromaCategories(o){
   return categories;
 }
 function oilSearchText(o){
-  return [o.name,o.en,o.aroma,o.body,o.emotion,(o.tags||[]).join(" "),o.element,getOilAromaCategories(o).join(" ")].join(" ");
+  return [o.name,o.en,o.scientificName,o.part,o.tone,o.drops,o.aroma,o.body,o.emotion,o.warning,o.notes,(o.aliases||[]).join(" "),(o.tags||[]).join(" "),o.element,getOilAromaCategories(o).join(" ")].join(" ");
 }
 function matchesSmartWords(o,words=[]){
   const text=oilSearchText(o);
@@ -2169,7 +5901,7 @@ function renderCandleRecommendations(){
   const series=(document.getElementById("candleCoreSeries")||{}).value || "愛情";
   const box=document.getElementById("candleRecommendations");
   if(!box)return;
-  const matched=oils.filter(o=>(o.tags||[]).includes(series)).sort((a,b)=>candleScore(b.name)-candleScore(a.name));
+  const matched=oils.filter(o=>(o.tags||[]).includes(series) && oilHasStock(o)).sort((a,b)=>candleScore(b.name)-candleScore(a.name));
   box.innerHTML=matched.length?matched.map(o=>`
     <div class="card" style="padding:12px">
       <div class="row" style="justify-content:space-between;align-items:center">
@@ -2204,7 +5936,7 @@ function renderOils(){
   const q=(searchInput?.value||"").trim().toLowerCase();
   const tone=toneFilter?.value||"";
   const filtered=oils.filter(o=>{
-    const hay=[o.name,o.en,o.aroma,o.body,o.emotion,o.tags.join(" "),o.element].join(" ").toLowerCase();
+    const hay=oilSearchText(o).toLowerCase();
     return hay.includes(q) && (!tone || String(o.tone||"").split("/").includes(tone));
   });
   oilGrid.innerHTML=filtered.map((o,i)=>`
@@ -2221,18 +5953,21 @@ function openOil(name){
   const o=oils.find(x=>x.name===name); if(!o)return;
   const inv=invByName(name);
   oilModalContent.innerHTML=`
-    <h2>${o.name} <span class="muted small">${o.en}</span></h2>
+    <h2>${o.name} <span class="muted small">${o.en||""}</span></h2>
     <div class="grid grid-2">
-      <div><b>萃取部位</b><p>${o.part}</p></div>
-      <div><b>香調／建議滴數</b><p>${o.tone}／${o.drops}</p></div>
-      <div><b>五行</b><p>${o.element||"待確認"}</p></div>
-      <div><b>目前庫存</b><p>${inv?inv.ml+" ml":"未建立"}</p></div>
+      <div><b>學名</b><p>${o.scientificName||"Word 未提供"}</p></div>
+      <div><b>萃取部位</b><p>${o.part||"Word 未提供"}</p></div>
+      <div><b>香調／揮發速度</b><p>${o.tone||"Word 未提供"}</p></div>
+      <div><b>建議滴數</b><p>${o.drops||"Word 未提供"}</p></div>
+      <div><b>目前庫存</b><p>${inv?inv.ml+" "+(inv.unit||"ml"):"未建立"}</p></div>
+      <div><b>資料來源</b><p>${o.source||"自訂資料"}</p></div>
     </div>
-    <b>香氣</b><p>${o.aroma}</p>
-    <b>身體支持</b><p>${o.body}</p>
-    <b>情緒支持</b><p>${o.emotion}</p>
-    <b>適合系列</b><p>${o.tags.map(t=>`<span class="tag">${t}</span>`).join("")}</p>
-    ${o.warning?`<div class="note">${o.warning}</div>`:""}
+    <b>香氣類型</b><p>${o.aroma||"Word 未提供"}</p>
+    <b>身體功效</b><p>${o.body||"Word 未提供"}</p>
+    <b>情緒功效</b><p>${o.emotion||"Word 未提供"}</p>
+    ${o.notes?`<b>其他欄位／小註</b><p>${o.notes}</p>`:""}
+    <b>適合系列</b><p>${(o.tags||[]).length?o.tags.map(t=>`<span class="tag">${t}</span>`).join(""):"未分類"}</p>
+    ${o.warning?`<div class="note"><b>注意事項／禁忌</b><br>${o.warning}</div>`:""}
   `;
   oilModal.classList.add("show");
 }
@@ -2244,7 +5979,7 @@ let candleBlendRowId=0;
 
 function getCandleFragranceOptions(){
   return state.inventory
-    .filter(x=>x.category==="香氛原料" || x.category==="精油")
+    .filter(x=>(x.category==="香氛原料" || x.category==="精油") && Number(x.ml||0)>0)
     .map(x=>x.name);
 }
 
@@ -2532,7 +6267,7 @@ function openAIWorkspace(type, el){
 let aiLastFormulaSuggestion=null;
 let aiLastCandleSuggestion=null;
 
-function aiMatchedOils(theme, inStockOnly=false){
+function aiMatchedOils(theme, inStockOnly=true){
   return oils.filter(o=>{
     const tagged=(o.tags||[]).includes(theme);
     if(!tagged) return false;
@@ -2782,7 +6517,7 @@ function aiFreePurposeReason(theme){
 }
 
 function buildAIFreeOilSelection(theme, excluded=[]){
-  const all=aiMatchedOils(theme,false).filter(o=>!excluded.includes(o.name));
+  const all=aiMatchedOils(theme,true).filter(o=>!excluded.includes(o.name));
   if(!all.length) return [];
   const inStock=all.filter(o=>Number(invByName(o.name)?.ml||0)>0);
   const outStock=all.filter(o=>Number(invByName(o.name)?.ml||0)<=0);
@@ -3511,7 +7246,7 @@ function importData(e){
 }
 function resetAll(){
   if(!confirm("確定恢復初始資料？"))return;
-  state={inventory:JSON.parse(JSON.stringify(initialInventory)),recipes:[],records:[],customOils:[],diffuserLogs:[],diffuserFavorites:[],labFormulas:[],usageRecords:[],labDraft:null}; oils=oils.filter(o=>!o.custom);
+  state={inventory:JSON.parse(JSON.stringify(initialInventory)),recipes:[],records:[],customOils:[],diffuserLogs:[],diffuserFavorites:[],labFormulas:[],usageRecords:[],labDraft:null}; oils=MASTER_OIL_DATABASE.map(o=>({...o, aliases:[...(o.aliases||[])], tags:[...(o.tags||[])], sourceRecords:[...(o.sourceRecords||[])]}));
   save();renderAll();
 }
 function renderAll(){
@@ -3547,27 +7282,8 @@ window.AIWorkspaceActions=["加入配方","儲存為我的配方","檢查庫存"
   const intents=[{id:'fresh',name:'清新',desc:'乾淨、通透、輕盈'},{id:'relax',name:'放鬆',desc:'柔和、舒緩、安定'},{id:'sleep',name:'助眠',desc:'沉靜、溫柔、慢下來'},{id:'woody',name:'木質',desc:'森林、穩重、有深度'},{id:'citrus',name:'柑橘',desc:'明亮、果香、有朝氣'},{id:'floral',name:'花香',desc:'柔美、細緻、有層次'},{id:'focus',name:'專注',desc:'清楚、醒腦、有精神'},{id:'warm',name:'溫暖',desc:'包覆、溫潤、安心'}];
   const comboMap={'fresh+relax':{stars:5,text:'清新與放鬆很協調。',name:'森林微光',description:'前段清新明亮，中段逐漸柔和，尾韻帶出安定感。'},'focus+fresh':{stars:5,text:'方向一致，適合早晨與工作。',name:'清晨透光',description:'乾淨清爽的前調搭配醒腦草本。'},'relax+sleep':{stars:5,text:'高度相容，適合晚間與睡前。',name:'月光慢眠',description:'柔和花草與沉靜尾韻交疊。'},'warm+woody':{stars:5,text:'溫暖木質很協調。',name:'暖木歸心',description:'木質基底包覆溫暖辛香。'},'citrus+fresh':{stars:5,text:'明亮又清爽，適合白天。',name:'柑橘晨曦',description:'多汁柑橘與乾淨空氣感交織。'},'floral+relax':{stars:5,text:'柔和花香與放鬆感協調。',name:'柔花午後',description:'細緻花草香層層展開。'},'focus+sleep':{stars:2,text:'提神與助眠方向相反，建議改選「專注＋清新」或「助眠＋放鬆」。',name:'矛盾時刻',description:'兩種方向差異較大，建議重新選擇。'},'citrus+sleep':{stars:3,text:'可以搭配，但柑橘比例不宜過高。',name:'晚橙微光',description:'柔和柑橘作為前調，後段轉向沉靜。'},'fresh+warm':{stars:3,text:'冷暖方向有落差，可用木質或柑橘橋接。',name:'晨霧暖陽',description:'清爽前段與溫潤尾韻形成對比。'}};
   let selectedIntents=[],selectedOils=[],currentCandidates=[],lastResult=null,rating=0;
-  // V3 專用精油資料快照：避免舊版全域資料或 localStorage 狀態造成推薦清單中斷
-  const v3OilSource = [
-{name:"葡萄柚",en:"Grapefruit",part:"果皮",tone:"T",drops:"8",aroma:"果香、清甜",body:"促進循環、排水、支持代謝",emotion:"提振快樂與動能，釋放沉重情緒",tags:["財富","淨化","放鬆"],element:"木"},
-{name:"檀香",en:"Sandalwood",part:"木材",tone:"B",drops:"6",aroma:"溫潤木質、奶香柔和",body:"鎮靜、滋潤、助眠",emotion:"寧靜、慈悲、內在智慧",tags:["睡眠","保護","放鬆"],element:"水"},
-{name:"甜橙",en:"Orange",part:"果皮",tone:"T",drops:"7",aroma:"甜美果香、明亮柔和",body:"促進消化、緩解緊繃、幫助入眠",emotion:"喜悅、放鬆、喚醒童心",tags:["愛情","放鬆","睡眠"],element:"土"},
-{name:"高山薰衣草",en:"Lavender",part:"花",tone:"M",drops:"7",aroma:"花香、草本清新",body:"鎮靜安神、助眠、放鬆肌肉",emotion:"平衡心緒、安撫焦慮不安",tags:["放鬆","睡眠","保護"],element:"火"},
-{name:"檜木",en:"Benihi / Hinoki",part:"木質部",tone:"M/B",drops:"2",aroma:"溫潤木質、森林氣息",body:"支援呼吸、營造清新空氣",emotion:"沉穩、安定、內在回歸",tags:["保護","放鬆","淨化"],element:"金"},
-{name:"廣藿香",en:"Patchouli",part:"葉片",tone:"B",drops:"4",aroma:"濕潤土氣、木質厚重",body:"促進循環、皮膚保養",emotion:"接地、穩定、安全感與現實行動力",tags:["財富","保護","放鬆"],element:"木"},
-{name:"雪松",en:"Cedarwood",part:"木材",tone:"B",drops:"7-8",aroma:"木質、溫潤",body:"支持呼吸、頭皮與肌膚保養",emotion:"深沉、穩定、根基感與自信",tags:["財富","保護","睡眠"],element:"金"},
-{name:"山雞椒",en:"Litsea cubeba",part:"果實",tone:"T/M",drops:"4",aroma:"明亮柑橘、草本辛甜",body:"淨化空氣、促進循環、提振代謝",emotion:"喚起希望與快樂、掃除雜訊",tags:["財富","淨化","放鬆"],element:"木"},
-{name:"乳香",en:"Frankincense",part:"樹脂",tone:"B",drops:"4-5",aroma:"樹脂、木質、微甜暖香",body:"支持免疫、肌膚再生、深層放鬆",emotion:"內在平靜、靜心與靈性連結",tags:["保護","淨化","睡眠"],element:"金"},
-{name:"岩蘭草",en:"Vetiver",part:"根部",tone:"B",drops:"1",aroma:"濕潤木根、濃郁厚實",body:"穩定神經、緩解焦慮、支持循環",emotion:"扎根、專注、回到身體",tags:["保護","睡眠","放鬆"],element:"水"},
-{name:"依蘭依蘭",en:"Ylang Ylang",part:"花",tone:"M/B",drops:"4",aroma:"濃郁甜花香、性感柔美",body:"調節荷爾蒙、舒緩焦慮",emotion:"愛、自我接納、感官流動",tags:["愛情","放鬆","睡眠"],element:"火"},
-{name:"歐薄荷",en:"Peppermint",part:"葉",tone:"T",drops:"1-2",aroma:"清涼、辛薄荷",body:"提神、清頭腦、舒緩頭痛",emotion:"清醒、專注、理智",tags:["淨化","保護"],element:"木"},
-{name:"佛手柑",en:"Bergamot",part:"果皮",tone:"T",drops:"7-8",aroma:"柑橘、微花香、明亮",body:"皮膚調理、壓力後放鬆",emotion:"愉悅、輕盈、轉換情緒",tags:["愛情","財富","放鬆"],element:"土",warning:"具光敏性，外用後避免日曬。"},
-{name:"沒藥",en:"Myrrh",part:"樹脂",tone:"B",drops:"5-6",aroma:"樹脂木質、厚重煙燻",body:"抗炎、抗菌、支持呼吸與免疫",emotion:"靜心、放下悲傷與焦慮",tags:["保護","淨化","睡眠"],element:"金"},
-{name:"茉莉",en:"Jasmine",part:"花",tone:"M/B",drops:"1",aroma:"濃郁甜美花香",body:"荷爾蒙支持、放鬆",emotion:"愛、自信、心輪",tags:["愛情"],element:"火"},
-{name:"橙花",en:"Neroli",part:"花",tone:"M",drops:"2-3",aroma:"清甜高貴花香",body:"鎮靜神經、幫助睡眠",emotion:"幸福、被愛感、重生",tags:["愛情","睡眠"],element:"火"},
-{name:"絲柏",en:"Cypress",part:"針葉",tone:"M",drops:"5",aroma:"清新木質、草本",body:"促進循環、支持呼吸",emotion:"內在靜定、清醒思考",tags:["保護","淨化"],element:"金"},
-{name:"苦橙",en:"Bitter Orange",part:"果皮",tone:"T",drops:"7",aroma:"清甜柑橘略帶苦韻",body:"舒緩、支持消化",emotion:"釋放壓力、重新振作",tags:["放鬆","睡眠"],element:"土"}
-];
+  // V18：擴香日誌直接共用 Master Database，不再維護獨立精油清單。
+  const v3OilSource = oils;
 
   function profilesFor(o){
     const text=[o.name,o.aroma,o.body,o.emotion,(o.tags||[]).join(' ')].join(' ');
@@ -3582,12 +7298,12 @@ window.AIWorkspaceActions=["加入配方","儲存為我的配方","檢查庫存"
     if(/溫潤|溫暖|甜美|奶香|樹脂|檀香|甜橙|乳香|依蘭/.test(text))p.push('warm');
     return [...new Set(p.length?p:['relax'])];
   }
-  function roleFor(o){const tone=o.tone||'M';return tone.startsWith('T')?'主香':tone==='M'||tone.startsWith('M/')?'中香':'尾韻'}
+  function roleFor(o){const tones=String(o.tone||'M').split('/');return tones.includes('T')?'主香':tones.includes('M')?'中香':'尾韻'}
   function strengthFor(o){const strong=/歐薄荷|岩蘭草|依蘭依蘭/.test(o.name);return strong ? 0.68 : (roleFor(o)==='主香' ? 1.15 : (roleFor(o)==='中香' ? 0.95 : 0.8));}
   function descFor(o){return o.aroma||o.emotion||'依目前資料庫推薦'}
   function availableOils(){
-    // 推薦清單固定由 V3 自己的精油資料產生；庫存只在儲存時檢查，不再阻止畫面顯示。
-    return v3OilSource.map(o=>({
+    // 擴香屬於實際使用功能，只顯示目前庫存大於 0 的精油。
+    return v3OilSource.filter(o=>oilHasStock(o)).map(o=>({
       id:o.name,
       name:o.name,
       profiles:profilesFor(o),
