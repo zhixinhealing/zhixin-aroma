@@ -647,6 +647,37 @@ button,input,select,textarea{max-width:100%}
   .hero h1{font-size:22px!important}
   #home>.grid.grid-4 .kpi{font-size:27px!important}
 }
+
+
+/* 手機版漢堡導覽｜桌機版維持原樣 */
+.mobile-nav-toggle{display:none}
+@media (max-width:700px){
+  .mobile-nav-toggle{
+    display:flex;
+    width:100%;
+    min-height:46px;
+    margin:12px 0 0;
+    padding:10px 14px;
+    align-items:center;
+    justify-content:space-between;
+    border:1px solid var(--line);
+    border-radius:14px;
+    background:var(--paper);
+    color:var(--ink);
+    font-weight:800;
+    cursor:pointer;
+    box-shadow:0 2px 8px rgba(85,73,60,.04);
+  }
+  .mobile-nav-toggle .hamburger-icon{font-size:22px;line-height:1}
+  .nav{
+    display:none!important;
+    grid-template-columns:1fr!important;
+    margin:8px 0 14px!important;
+  }
+  .nav.mobile-open{display:grid!important}
+  .nav button{text-align:left;padding:12px 14px!important;min-height:44px}
+}
+
 </style>
 </head>
 <body>
@@ -675,7 +706,12 @@ button,input,select,textarea{max-width:100%}
     <div class="badge">芝心聊癒專屬 V16 Mobile</div>
   </header>
 
-  <nav class="nav">
+  <button class="mobile-nav-toggle" id="mobileNavToggle" type="button" aria-controls="mainNav" aria-expanded="false">
+    <span><span class="hamburger-icon">☰</span> 功能選單</span>
+    <span id="mobileNavCurrent">首頁</span>
+  </button>
+
+  <nav class="nav" id="mainNav">
     <button class="active" data-tab="home">首頁</button>
     <button data-tab="ai">AI調香師</button>
     <button data-tab="calc">產品配方</button>
@@ -1440,12 +1476,26 @@ if(!state.inventory.some(x=>x.name==="生命之水（伏特加）")){
 function save(){ state.customOils=oils.filter(o=>o.custom===true); localStorage.setItem("zhixinAromaState", JSON.stringify(state)); updateKPIs(); }
 function invByName(name){ return state.inventory.find(x=>x.name===name); }
 
+const mobileNavToggle=document.getElementById("mobileNavToggle");
+const mainNav=document.getElementById("mainNav");
+const mobileNavCurrent=document.getElementById("mobileNavCurrent");
+
+if(mobileNavToggle && mainNav){
+  mobileNavToggle.addEventListener("click",()=>{
+    const isOpen=mainNav.classList.toggle("mobile-open");
+    mobileNavToggle.setAttribute("aria-expanded",String(isOpen));
+  });
+}
+
 document.querySelectorAll(".nav button").forEach(btn=>{
   btn.addEventListener("click",()=>{
     document.querySelectorAll(".nav button").forEach(x=>x.classList.remove("active"));
     document.querySelectorAll(".panel").forEach(x=>x.classList.remove("active"));
     btn.classList.add("active");
     document.getElementById(btn.dataset.tab).classList.add("active");
+    if(mobileNavCurrent) mobileNavCurrent.textContent=btn.textContent.trim();
+    if(mainNav) mainNav.classList.remove("mobile-open");
+    if(mobileNavToggle) mobileNavToggle.setAttribute("aria-expanded","false");
     window.scrollTo({top:0,behavior:"smooth"});
   });
 });
