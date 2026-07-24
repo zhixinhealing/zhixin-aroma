@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>芝心調香室 V15 Stable｜流程修正版</title>
+<title>芝心調香室 V16 Mobile</title>
 <style>
 :root{
   --bg:#f5f1e9;
@@ -534,119 +534,119 @@ button,input,select,textarea{max-width:100%}
 }
 
 
+
 /* =========================================================
-   V16｜手機版介面優化
-   只重排手機版 UI；桌機版與既有功能不變
+   芝心調香室 V16 Mobile｜真正手機介面
+   只重排手機版 UI；桌機版與既有功能維持不變
    ========================================================= */
 @media (max-width: 700px){
+  body{
+    background:linear-gradient(180deg,#f7f3eb 0%,#f3eee5 100%);
+    padding-bottom:calc(24px + env(safe-area-inset-bottom));
+  }
+  .app{padding:10px 10px 20px}
 
-  /* 頂部品牌區：縮短高度，保留原本風格 */
+  /* 精簡品牌區 */
   .hero{
-    padding:14px;
+    padding:14px 14px 12px;
+    border-radius:18px;
     gap:10px;
+    box-shadow:0 5px 18px rgba(85,73,60,.07);
   }
-  .brand-lockup{
-    align-items:center;
-  }
-  .hero h1{
-    font-size:22px;
-    line-height:1.2;
-  }
-  .hero p{
-    font-size:12px;
-    line-height:1.45;
-  }
-  .hero>.badge{
-    margin-top:2px;
-    padding:8px 10px;
-    font-size:13px;
+  .brand-lockup{align-items:center;gap:10px}
+  .brand-fox{width:48px!important;height:48px!important;flex:0 0 48px}
+  .hero h1{font-size:24px!important;line-height:1.15;margin:0 0 4px}
+  .brand-lockup p{font-size:13px!important;line-height:1.4;margin:0;color:#867c70}
+  .badge{
+    margin-top:0!important;
+    padding:9px 12px!important;
+    border-radius:14px!important;
+    font-size:14px!important;
   }
 
-  /* 手機導覽列：不再橫向擠成一排，改為三欄整齊排列 */
+  /* 功能選單：不再橫向擠成一排 */
   .nav{
-    display:grid;
+    display:grid!important;
     grid-template-columns:repeat(3,minmax(0,1fr));
-    gap:8px;
-    overflow:visible;
-    padding:0;
-    margin:12px 0 16px;
+    gap:8px!important;
+    overflow:visible!important;
+    padding:0!important;
+    margin:12px 0 14px!important;
   }
   .nav button{
-    width:100%;
-    min-width:0;
-    min-height:44px;
-    padding:9px 5px;
-    border-radius:13px;
-    font-size:13px;
-    line-height:1.2;
-    white-space:normal;
-    text-align:center;
+    width:100%!important;
+    min-width:0!important;
+    min-height:46px;
+    padding:8px 4px!important;
+    border-radius:14px!important;
+    font-size:14px!important;
+    line-height:1.15;
+    white-space:normal!important;
+    box-shadow:0 2px 8px rgba(85,73,60,.04);
   }
+  .nav button.active{box-shadow:0 4px 12px rgba(93,113,91,.20)}
 
-  /* 首頁數據卡：由四張直排改為 2×2 */
-  #home > .grid.grid-4{
-    grid-template-columns:repeat(2,minmax(0,1fr))!important;
-    gap:10px;
+  /* 主內容更緊湊 */
+  .panel{padding:0!important}
+  .card{
+    padding:16px!important;
+    border-radius:18px!important;
+    box-shadow:0 5px 16px rgba(85,73,60,.055)!important;
   }
-  #home > .grid.grid-4 .card{
-    min-height:112px;
-    padding:14px;
+  h2{font-size:21px!important;margin-bottom:14px!important}
+  h3{font-size:17px!important}
+
+  /* 首頁數據改為 2×2，而不是四張巨大直排卡 */
+  #home>.grid.grid-4{
+    display:grid!important;
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:10px!important;
+  }
+  #home>.grid.grid-4>.card{
+    min-height:112px!important;
+    padding:15px!important;
     display:flex;
     flex-direction:column;
     justify-content:space-between;
   }
-  #home > .grid.grid-4 .muted{
-    font-size:14px;
-    line-height:1.35;
-  }
-  #home > .grid.grid-4 .kpi{
-    font-size:27px;
-    line-height:1.15;
-  }
+  #home>.grid.grid-4 .muted{font-size:14px!important;line-height:1.35}
+  #home>.grid.grid-4 .kpi{font-size:30px!important;line-height:1.05;margin-top:12px!important}
 
-  /* 快速開始：維持兩欄，不在小手機退回單欄 */
+  /* 快速開始改為手機按鈕矩陣 */
   .quick-start-grid{
+    display:grid!important;
     grid-template-columns:repeat(2,minmax(0,1fr))!important;
-    gap:9px;
+    gap:10px!important;
   }
   .quick-start-grid .btn{
-    min-height:50px;
-    padding:10px 7px;
-    font-size:14px;
-    white-space:normal;
+    min-height:52px!important;
+    padding:10px 8px!important;
+    border-radius:14px!important;
+    font-size:15px!important;
+    white-space:normal!important;
   }
 
-  /* 內容卡片稍微緊湊，避免手機畫面過度拉長 */
-  .card{
-    padding:14px;
-  }
-  .card h2{
-    margin-bottom:12px;
-  }
+  /* 其餘雙欄區塊手機改單欄，但縮短空白 */
+  .grid.grid-2,.grid.grid-3{gap:10px!important}
+  input,select,textarea{font-size:16px!important}
+  .btn{min-height:44px}
+
+  /* 表格與頁籤保持可用 */
+  .table-wrap{border-radius:14px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .record-tabs{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px!important}
+  .record-tab-btn{padding:9px 5px!important;font-size:13px!important;white-space:normal}
+
+  /* 避免 Safari 底部工具列遮住最後內容 */
+  footer{padding-bottom:calc(84px + env(safe-area-inset-bottom))!important}
 }
 
-@media (max-width: 420px){
-  .app{padding:7px}
-  .nav{gap:6px}
-  .nav button{
-    font-size:12px;
-    padding:8px 3px;
-  }
-  #home > .grid.grid-4{
-    gap:8px;
-  }
-  #home > .grid.grid-4 .card{
-    min-height:104px;
-    padding:12px;
-  }
-  #home > .grid.grid-4 .kpi{
-    font-size:24px;
-  }
-  .quick-start-grid{
-    grid-template-columns:repeat(2,minmax(0,1fr))!important;
-  }
+@media (max-width: 390px){
+  .app{padding-left:8px;padding-right:8px}
+  .nav{gap:6px!important}
+  .nav button{font-size:13px!important;min-height:44px}
+  .hero h1{font-size:22px!important}
+  #home>.grid.grid-4 .kpi{font-size:27px!important}
 }
-
 </style>
 </head>
 <body>
@@ -672,7 +672,7 @@ button,input,select,textarea{max-width:100%}
         <p>精油百科・原料管理・產品配方・蠟燭計算・庫存管理</p>
       </div>
     </div>
-    <div class="badge">芝心聊癒專屬 V14.6.1</div>
+    <div class="badge">芝心聊癒專屬 V16 Mobile</div>
   </header>
 
   <nav class="nav">
