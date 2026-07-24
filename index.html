@@ -139,7 +139,7 @@ th{font-size:13px;color:var(--muted)}
 .section-divider{display:flex;justify-content:space-between;align-items:center;margin:20px 0 12px;padding-top:17px;border-top:1px solid var(--line);font-weight:800}
 .compact-form{background:#fbfaf7}
 .icon-btn{width:34px;height:34px;border:0;border-radius:50%;background:#eee9df;font-size:22px;cursor:pointer}
-.ai-tools{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+.ai-tools{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
 .ai-tool{min-height:126px;text-align:left;background:#fff;color:var(--ink);border:1px solid var(--line);border-radius:18px;padding:16px;cursor:pointer;transition:.18s}
 .ai-tool:hover{transform:translateY(-2px);border-color:var(--accent2);box-shadow:0 8px 20px rgba(70,60,50,.08)}
 .ai-tool.active{background:#f2f6f0;border-color:var(--accent)}
@@ -779,7 +779,6 @@ button,input,select,textarea{max-width:100%}
         </div>
       </div>
       <div class="ai-tools" style="margin-top:18px">
-        <button class="ai-tool" type="button" data-ai-tool="finder" onclick="openAIWorkspace('finder',this)"><span class="ai-icon">🌿</span><strong>找精油</strong><span class="muted small">依身體、情緒與情境需求篩選</span></button>
         <button class="ai-tool" type="button" data-ai-tool="formula" onclick="openAIWorkspace('formula',this)"><span class="ai-icon">🧪</span><strong>設計配方</strong><span class="muted small">選擇主題並建立調香方向</span></button>
         <button class="ai-tool" type="button" data-ai-tool="candle" onclick="openAIWorkspace('candle',this)"><span class="ai-icon">🕯</span><strong>蠟燭建議</strong><span class="muted small">依主題推薦蠟燭用精油</span></button>
         <button class="ai-tool" type="button" data-ai-tool="stock" onclick="openAIWorkspace('stock',this)"><span class="ai-icon">📦</span><strong>依庫存推薦</strong><span class="muted small">只用目前有庫存的精油推薦</span></button>
@@ -2514,14 +2513,12 @@ function openAIWorkspace(type, el){
   const content=document.getElementById("aiWorkspaceContent");
   box.classList.add("active");
 
-  if(type==="finder"){
-    content.innerHTML=`<div class="card"><h3>🌿 找精油</h3><p class="muted">依照需求快速尋找適合的精油。</p><button class="btn" type="button" onclick="openTab('oils');setTimeout(()=>document.querySelector('#oils .tool-fold')?.setAttribute('open',''),50)">前往智慧找精油</button></div>`;
-  }else if(type==="formula"){
-    content.innerHTML=`<div class="card"><h3>🧪 設計配方</h3><div class="field"><label>想設計的核心主題</label><select id="aiFormulaTheme"><option>財富</option><option>愛情</option><option>保護</option><option>放鬆</option><option>睡眠</option><option>淨化</option></select></div><div class="row" style="margin-top:12px"><button class="btn" type="button" onclick="generateAIFormulaSuggestion()">產生建議</button><button class="btn ghost" type="button" onclick="transferAIFormulaToProduct()">前往產品配方</button></div><div id="aiFormulaResult" class="note" style="margin-top:14px">請先選擇主題。</div></div>`;
+  if(type==="formula"){
+    content.innerHTML=`<div class="card"><h3>🧪 設計配方</h3><div class="field"><label>想設計的核心主題</label><select id="aiFormulaTheme"><option value="" selected disabled>請選擇主題</option><option>財富</option><option>愛情</option><option>保護</option><option>放鬆</option><option>睡眠</option><option>淨化</option></select></div><div class="row" style="margin-top:12px"><button class="btn" type="button" onclick="generateAIFormulaSuggestion()">產生建議</button><button class="btn ghost" type="button" onclick="transferAIFormulaToProduct()">前往產品配方</button></div><div id="aiFormulaResult" class="note" style="margin-top:14px">請先選擇主題。</div></div>`;
   }else if(type==="candle"){
-    content.innerHTML=`<div class="card"><h3>🕯 蠟燭建議</h3><div class="field"><label>蠟燭核心主題</label><select id="aiCandleTheme"><option>愛情</option><option>財富</option><option>保護</option><option>放鬆</option><option>睡眠</option><option>淨化</option></select></div><div class="row" style="margin-top:12px"><button class="btn" type="button" onclick="generateAICandleSuggestion()">查看建議</button><button class="btn ghost" type="button" onclick="transferAICandleToCalculator()">前往蠟燭計算</button></div><div id="aiCandleResult" class="note" style="margin-top:14px">請先選擇主題。</div></div>`;
+    content.innerHTML=`<div class="card"><h3>🕯 蠟燭建議</h3><div class="field"><label>蠟燭核心主題</label><select id="aiCandleTheme"><option value="" selected disabled>請選擇主題</option><option>愛情</option><option>財富</option><option>保護</option><option>放鬆</option><option>睡眠</option><option>淨化</option></select></div><div class="row" style="margin-top:12px"><button class="btn" type="button" onclick="generateAICandleSuggestion()">查看建議</button><button class="btn ghost" type="button" onclick="transferAICandleToCalculator()">前往蠟燭計算</button></div><div id="aiCandleResult" class="note" style="margin-top:14px">請先選擇主題。</div></div>`;
   }else if(type==="stock"){
-    content.innerHTML=`<div class="card"><h3>📦 依庫存推薦</h3><p class="muted">從目前庫存大於 0 ml 的精油中，依核心主題推薦。</p><div class="field"><label>核心主題</label><select id="aiStockTheme"><option>財富</option><option>愛情</option><option>保護</option><option>放鬆</option><option>睡眠</option><option>淨化</option></select></div><button class="btn" type="button" style="margin-top:12px" onclick="generateAIStockSuggestion()">依庫存推薦</button><div id="aiStockResult" class="note" style="margin-top:14px">請先選擇主題。</div></div>`;
+    content.innerHTML=`<div class="card"><h3>📦 依庫存推薦</h3><p class="muted">從目前庫存大於 0 ml 的精油中，依核心主題推薦。</p><div class="field"><label>核心主題</label><select id="aiStockTheme"><option value="" selected disabled>請選擇主題</option><option>財富</option><option>愛情</option><option>保護</option><option>放鬆</option><option>睡眠</option><option>淨化</option></select></div><button class="btn" type="button" style="margin-top:12px" onclick="generateAIStockSuggestion()">依庫存推薦</button><div id="aiStockResult" class="note" style="margin-top:14px">請先選擇主題。</div></div>`;
   }else{
     content.innerHTML=`<div class="card"><h3>自由詢問 AI</h3><p class="muted">可以直接描述你想做的產品、香氣目的，或目前遇到的調香問題。</p><div class="field"><label>調香問題</label><textarea id="aiFreeQuestion" placeholder="例如：我想做提升財富能量的噴霧／我最近睡不好／幫我把目前配方調得更清爽"></textarea></div><div class="row" style="margin-top:12px"><button class="btn" type="button" onclick="answerAIFreeQuestion()">送出問題</button><button class="btn ghost" type="button" onclick="clearAIFreeTask()">重新開始</button></div><div id="aiFreeAnswer" class="note" style="margin-top:14px">輸入問題後，AI 會先判斷產品類型、需求方向與適合精油，再由你確認是否導入。</div></div>`;
   }
@@ -2574,6 +2571,7 @@ function buildAITMBPlan(selectedOils){
 
 function generateAIFormulaSuggestion(){
   const theme=document.getElementById("aiFormulaTheme").value;
+  if(!theme){ document.getElementById("aiFormulaResult").textContent="請先選擇主題。"; return; }
   const matched=aiMatchedOils(theme).slice(0,3);
   aiLastFormulaSuggestion={theme,oils:matched};
   document.getElementById("aiFormulaResult").innerHTML=matched.length
@@ -2606,6 +2604,7 @@ function transferAIFormulaToProduct(){
 
 function generateAICandleSuggestion(){
   const theme=document.getElementById("aiCandleTheme").value;
+  if(!theme){ document.getElementById("aiCandleResult").textContent="請先選擇主題。"; return; }
   const matched=aiMatchedOils(theme).slice(0,4);
   aiLastCandleSuggestion={theme,oils:matched};
   document.getElementById("aiCandleResult").innerHTML=matched.length
@@ -2640,6 +2639,7 @@ function transferAICandleToCalculator(){
 
 function generateAIStockSuggestion(){
   const theme=document.getElementById("aiStockTheme").value;
+  if(!theme){ document.getElementById("aiStockResult").textContent="請先選擇主題。"; return; }
   const matched=aiMatchedOils(theme,true);
   document.getElementById("aiStockResult").innerHTML=matched.length?`<b>${theme}｜目前有庫存</b><br>${matched.map(o=>{const inv=invByName(o.name);return `${o.name}（${Number(inv.ml).toFixed(1).replace('.0','')} ml）`;}).join("<br>")}`:"目前庫存中沒有符合此主題的精油。";
 }
