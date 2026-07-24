@@ -139,7 +139,7 @@ th{font-size:13px;color:var(--muted)}
 .section-divider{display:flex;justify-content:space-between;align-items:center;margin:20px 0 12px;padding-top:17px;border-top:1px solid var(--line);font-weight:800}
 .compact-form{background:#fbfaf7}
 .icon-btn{width:34px;height:34px;border:0;border-radius:50%;background:#eee9df;font-size:22px;cursor:pointer}
-.ai-tools{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.ai-tools{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
 .ai-tool{min-height:126px;text-align:left;background:#fff;color:var(--ink);border:1px solid var(--line);border-radius:18px;padding:16px;cursor:pointer;transition:.18s}
 .ai-tool:hover{transform:translateY(-2px);border-color:var(--accent2);box-shadow:0 8px 20px rgba(70,60,50,.08)}
 .ai-tool.active{background:#f2f6f0;border-color:var(--accent)}
@@ -782,6 +782,7 @@ button,input,select,textarea{max-width:100%}
         <button class="ai-tool" type="button" data-ai-tool="formula" onclick="openAIWorkspace('formula',this)"><span class="ai-icon">🧪</span><strong>設計配方</strong><span class="muted small">選擇主題並建立調香方向</span></button>
         <button class="ai-tool" type="button" data-ai-tool="candle" onclick="openAIWorkspace('candle',this)"><span class="ai-icon">🕯</span><strong>蠟燭建議</strong><span class="muted small">依主題推薦蠟燭用精油</span></button>
         <button class="ai-tool" type="button" data-ai-tool="stock" onclick="openAIWorkspace('stock',this)"><span class="ai-icon">📦</span><strong>依庫存推薦</strong><span class="muted small">只用目前有庫存的精油推薦</span></button>
+        <button class="ai-tool" type="button" data-ai-tool="restock" onclick="openAIWorkspace('restock',this)"><span class="ai-icon">🛒</span><strong>補貨建議</strong><span class="muted small">分析收藏並推薦值得補充的精油</span></button>
         <button class="ai-tool" type="button" data-ai-tool="ask" onclick="openAIWorkspace('ask',this)"><span class="ai-icon">💬</span><strong>自由詢問 AI</strong><span class="muted small">輸入其他調香相關問題</span></button>
       </div>
 
@@ -2519,6 +2520,8 @@ function openAIWorkspace(type, el){
     content.innerHTML=`<div class="card"><h3>🕯 蠟燭建議</h3><div class="field"><label>蠟燭核心主題</label><select id="aiCandleTheme"><option value="" selected disabled>請選擇主題</option><option>愛情</option><option>財富</option><option>保護</option><option>放鬆</option><option>睡眠</option><option>淨化</option></select></div><div class="row" style="margin-top:12px"><button class="btn" type="button" onclick="generateAICandleSuggestion()">查看建議</button><button class="btn ghost" type="button" onclick="transferAICandleToCalculator()">前往蠟燭計算</button></div><div id="aiCandleResult" class="note" style="margin-top:14px">請先選擇主題。</div></div>`;
   }else if(type==="stock"){
     content.innerHTML=`<div class="card"><h3>📦 依庫存推薦</h3><p class="muted">從目前庫存大於 0 ml 的精油中，依核心主題推薦。</p><div class="field"><label>核心主題</label><select id="aiStockTheme"><option value="" selected disabled>請選擇主題</option><option>財富</option><option>愛情</option><option>保護</option><option>放鬆</option><option>睡眠</option><option>淨化</option></select></div><button class="btn" type="button" style="margin-top:12px" onclick="generateAIStockSuggestion()">依庫存推薦</button><div id="aiStockResult" class="note" style="margin-top:14px">請先選擇主題。</div></div>`;
+  }else if(type==="restock"){
+    content.innerHTML=`<div class="card"><h3>🛒 AI 補貨建議</h3><p class="muted">分析目前有庫存的精油、香味分類與前中後調分布，推薦下一批值得補充的精油。</p><button class="btn" type="button" onclick="generateAIRestockSuggestion()">開始分析</button><div id="aiRestockResult" class="note" style="margin-top:14px">按下「開始分析」查看建議。</div></div>`;
   }else{
     content.innerHTML=`<div class="card"><h3>自由詢問 AI</h3><p class="muted">可以直接描述你想做的產品、香氣目的，或目前遇到的調香問題。</p><div class="field"><label>調香問題</label><textarea id="aiFreeQuestion" placeholder="例如：我想做提升財富能量的噴霧／我最近睡不好／幫我把目前配方調得更清爽"></textarea></div><div class="row" style="margin-top:12px"><button class="btn" type="button" onclick="answerAIFreeQuestion()">送出問題</button><button class="btn ghost" type="button" onclick="clearAIFreeTask()">重新開始</button></div><div id="aiFreeAnswer" class="note" style="margin-top:14px">輸入問題後，AI 會先判斷產品類型、需求方向與適合精油，再由你確認是否導入。</div></div>`;
   }
@@ -2642,6 +2645,92 @@ function generateAIStockSuggestion(){
   if(!theme){ document.getElementById("aiStockResult").textContent="請先選擇主題。"; return; }
   const matched=aiMatchedOils(theme,true);
   document.getElementById("aiStockResult").innerHTML=matched.length?`<b>${theme}｜目前有庫存</b><br>${matched.map(o=>{const inv=invByName(o.name);return `${o.name}（${Number(inv.ml).toFixed(1).replace('.0','')} ml）`;}).join("<br>")}`:"目前庫存中沒有符合此主題的精油。";
+}
+
+
+const aiRestockCategories=["柑橘","花香","草本","木質","樹脂","香料"];
+
+function getAIRestockCategory(oil){
+  const text=[oil?.name,oil?.part,oil?.aroma].filter(Boolean).join(" ");
+  if(/果皮|柑橘|橙|柚|檸檬|佛手柑|山雞椒/.test(text)) return "柑橘";
+  if(/花|花香|茉莉|橙花|依蘭|天竺葵|薰衣草/.test(text)) return "花香";
+  if(/樹脂|乳香|沒藥/.test(text)) return "樹脂";
+  if(/木|根|森林|雪松|檀香|檜木|岩蘭草|絲柏/.test(text)) return "木質";
+  if(/辛|香料|肉桂|丁香|薑|胡椒|豆蔻/.test(text)) return "香料";
+  return "草本";
+}
+
+function getAIRestockOwnedNames(){
+  return new Set(state.inventory
+    .filter(x=>x.category==="精油" && Number(x.ml||0)>0)
+    .map(x=>x.name));
+}
+
+function getAIRestockStars(value,max){
+  if(max<=0) return "☆☆☆☆☆";
+  const filled=Math.max(1,Math.min(5,Math.round(value/max*5)));
+  return "★".repeat(filled)+"☆".repeat(5-filled);
+}
+
+function generateAIRestockSuggestion(){
+  const result=document.getElementById("aiRestockResult");
+  if(!result) return;
+  const ownedNames=getAIRestockOwnedNames();
+  const ownedOils=oils.filter(o=>ownedNames.has(o.name));
+  const candidates=oils.filter(o=>!ownedNames.has(o.name));
+  const categoryCounts=Object.fromEntries(aiRestockCategories.map(c=>[c,0]));
+  const toneCounts={T:0,M:0,B:0};
+
+  ownedOils.forEach(o=>{
+    categoryCounts[getAIRestockCategory(o)]++;
+    String(o.tone||"M").split("/").forEach(t=>{if(toneCounts[t]!==undefined) toneCounts[t]++;});
+  });
+
+  const maxCategory=Math.max(1,...Object.values(categoryCounts));
+  const weakestCategories=aiRestockCategories.slice().sort((a,b)=>categoryCounts[a]-categoryCounts[b]);
+  const weakestTones=Object.keys(toneCounts).sort((a,b)=>toneCounts[a]-toneCounts[b]);
+  const toneLabelShort={T:"前調",M:"中調",B:"後調"};
+
+  const ranked=candidates.map(o=>{
+    const category=getAIRestockCategory(o);
+    const oilTones=String(o.tone||"M").split("/");
+    const categoryGap=maxCategory-categoryCounts[category];
+    const toneGap=oilTones.reduce((sum,t)=>sum+(toneCounts[t]===Math.min(...Object.values(toneCounts))?2:0),0);
+    const versatility=Math.min(3,(o.tags||[]).length);
+    return {oil:o,category,score:categoryGap*3+toneGap+versatility};
+  }).sort((a,b)=>b.score-a.score || a.oil.name.localeCompare(b.oil.name,"zh-Hant")).slice(0,3);
+
+  if(!oils.length){
+    result.textContent="目前精油資料庫沒有可分析的資料。";
+    return;
+  }
+
+  const categoryRows=aiRestockCategories.map(c=>
+    `<div style="display:flex;justify-content:space-between;gap:12px;padding:5px 0"><span>${c}</span><span>${getAIRestockStars(categoryCounts[c],maxCategory)} <span class="muted small">${categoryCounts[c]} 支</span></span></div>`
+  ).join("");
+
+  const recommendationRows=ranked.length?ranked.map((x,i)=>{
+    const reasons=[];
+    if(weakestCategories.slice(0,2).includes(x.category)) reasons.push(`目前收藏中的${x.category}類較少`);
+    const matchedWeakTone=String(x.oil.tone||"M").split("/").find(t=>weakestTones.slice(0,1).includes(t));
+    if(matchedWeakTone) reasons.push(`可補足${toneLabelShort[matchedWeakTone]}層次`);
+    if((x.oil.tags||[]).length) reasons.push(`可運用於${x.oil.tags.slice(0,3).join("、")}`);
+    if(!reasons.length) reasons.push("能增加目前配方的香氣變化");
+    return `<div class="card" style="margin-top:10px;padding:14px"><b>${["🥇","🥈","🥉"][i]} ${x.oil.name}</b><div class="small muted" style="margin-top:5px">${x.category}類｜${toneLabel(x.oil.tone)}</div><div class="small" style="margin-top:8px">${reasons.map(r=>`✓ ${r}`).join("<br>")}</div></div>`;
+  }).join(""):"<p>資料庫中的精油目前都有庫存，暫時沒有新增購買建議。</p>";
+
+  const ownedSummary=ownedOils.length
+    ? `目前有庫存的精油共 <b>${ownedOils.length} 支</b>。`
+    : `目前尚未建立有庫存的精油，以下建議會優先補齊基礎香味分類。`;
+  const weakCategoryText=weakestCategories.filter(c=>categoryCounts[c]===categoryCounts[weakestCategories[0]]).slice(0,2).join("、");
+  const weakToneText=weakestTones.filter(t=>toneCounts[t]===toneCounts[weakestTones[0]]).map(t=>toneLabelShort[t]).join("、");
+
+  result.innerHTML=`
+    <div><b>收藏分析</b><br>${ownedSummary}</div>
+    <div style="margin-top:14px"><b>香味分類分布</b>${categoryRows}</div>
+    <div class="card" style="margin-top:12px;padding:14px"><b>AI 小提醒</b><div class="small" style="margin-top:7px">目前較需要補足：${weakCategoryText||"尚無明顯缺口"}；香調上可優先考慮${weakToneText||"不同層次"}。</div></div>
+    <div style="margin-top:14px"><b>推薦補充 TOP 3</b>${recommendationRows}</div>
+    <div class="small muted" style="margin-top:12px">建議依目前庫存分布產生，仍可依個人喜好、用途與預算調整。</div>`;
 }
 let aiFreeTask=null;
 let aiFreeRotation=0;
