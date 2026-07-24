@@ -1138,6 +1138,7 @@ button,input,select,textarea{max-width:100%}
         </table>
       </div>
     </div>
+
   </section>
 
   <section id="recipes" class="panel">
@@ -6258,7 +6259,8 @@ function openAIWorkspace(type, el){
   }else if(type==="stock"){
     content.innerHTML=`<div class="card"><h3>📦 依庫存推薦</h3><p class="muted">從目前庫存大於 0 ml 的精油中，依核心主題推薦。</p><div class="field"><label>核心主題</label><select id="aiStockTheme"><option value="" selected disabled>請選擇主題</option><option>財富</option><option>愛情</option><option>保護</option><option>放鬆</option><option>睡眠</option><option>淨化</option></select></div><button class="btn" type="button" style="margin-top:12px" onclick="generateAIStockSuggestion()">依庫存推薦</button><div id="aiStockResult" class="note" style="margin-top:14px">請先選擇主題。</div></div>`;
   }else if(type==="restock"){
-    content.innerHTML=`<div class="card"><h3>🛒 AI 補貨建議</h3><p class="muted">分析目前有庫存的精油、香味分類與前中後調分布，推薦下一批值得補充的精油。</p><button class="btn" type="button" onclick="generateAIRestockSuggestion()">開始分析</button><div id="aiRestockResult" class="note" style="margin-top:14px">按下「開始分析」查看建議。</div></div>`;
+    content.innerHTML=`<div class="card"><h3>🛒 AI 補貨建議</h3><p class="muted">分析目前有庫存的精油、香味分類與前中後調分布，推薦下一批值得補充的精油。</p><button class="btn" type="button" onclick="generateAIRestockSuggestion()">開始分析</button><div id="aiRestockResult" class="note" style="margin-top:14px">按下「開始分析」查看建議。</div></div><div class="card" style="margin-top:16px"><div class="row" style="justify-content:space-between;align-items:center"><div><h3 style="margin:0">🛍️ 採購清單</h3><p class="muted small" style="margin:5px 0 0">由自由詢問 AI 推薦、目前無庫存的精油加入。</p></div><button class="btn ghost" type="button" onclick="clearShoppingList()">清空清單</button></div><div id="shoppingList" style="margin-top:14px"></div></div>`;
+    renderShoppingList();
   }else{
     content.innerHTML=`<div class="card"><h3>自由詢問 AI</h3><p class="muted">可以直接描述你想做的產品、香氣目的，或目前遇到的調香問題。</p><div class="field"><label>調香問題</label><textarea id="aiFreeQuestion" placeholder="例如：我想做提升財富能量的噴霧／我最近睡不好／幫我把目前配方調得更清爽"></textarea></div><div class="row" style="margin-top:12px"><button class="btn" type="button" onclick="answerAIFreeQuestion()">送出問題</button><button class="btn ghost" type="button" onclick="clearAIFreeTask()">重新開始</button></div><div id="aiFreeAnswer" class="note" style="margin-top:14px">輸入問題後，AI 會先判斷產品類型、需求方向與適合精油，再由你確認是否導入。</div></div>`;
   }
@@ -6532,9 +6534,18 @@ function buildAIFreeOilSelection(theme, excluded=[], seen=[]){
 
 function detectAIFreeExcludedOils(q){
   if(!/不喜歡|不要|避開|排除|拿掉|移除|討厭|不愛/.test(q)) return [];
+  const normalized=String(q||"").replace(/[，。！？、；;,.!?]/g," ");
+  const negativeParts=normalized
+    .split(/不喜歡|不要|避開|排除|拿掉|移除|討厭|不愛/)
+    .slice(1)
+    .join(" ");
+  const tokens=negativeParts.split(/\s+/).map(x=>x.trim()).filter(x=>x.length>=2);
   return oils.filter(o=>{
-    const names=[o.name,...(o.aliases||[])].filter(Boolean);
-    return names.some(name=>q.includes(name));
+    const names=[o.name,...(o.aliases||[])].filter(Boolean).map(String);
+    return names.some(name=>
+      tokens.some(token=>name.includes(token)||token.includes(name)) ||
+      (normalized.includes("檀香") && name.includes("檀香"))
+    );
   }).map(o=>o.name);
 }
 
@@ -6574,7 +6585,8 @@ function renderAIFreeTask(){
   const oilRows=aiFreeTask.oils.map((o,i)=>{
     const inv=invByName(o.name);
     const stock=Number(inv?.ml||0)>0?`庫存 ${Number(inv.ml).toFixed(1).replace('.0','')} ml`:`目前無庫存`;
-    return `<div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid var(--line)"><div><b>${escapeAIText(o.name)}</b><div class="small muted">${escapeAIText(o.aroma||o.emotion||"")}｜${stock}</div></div><button class="btn ghost" style="padding:7px 10px" onclick="removeAIFreeOil(${i})">移除</button></div>`;
+    const shoppingBtn=Number(inv?.ml||0)<=0?`<button class="btn ghost" style="padding:7px 10px" onclick="addOilToShoppingList('${String(o.name).replaceAll("'","\\'")}')">＋ 加入採購</button>`:"";
+    return `<div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid var(--line)"><div><b>${escapeAIText(o.name)}</b><div class="small muted">${escapeAIText(o.aroma||o.emotion||"")}｜${stock}</div></div><div class="row" style="gap:6px">${shoppingBtn}<button class="btn ghost" style="padding:7px 10px" onclick="removeAIFreeOil(${i})">移除</button></div></div>`;
   }).join("") || `<div class="muted">目前沒有符合條件的精油。</div>`;
   const importBtn=aiFreeTask.type==="product"?`<button class="btn" onclick="transferAIFreeToProduct()">導入產品配方</button>`:
     aiFreeTask.type==="candle"?`<button class="btn" onclick="transferAIFreeToCandle()">導入蠟燭計算</button>`:
@@ -6584,8 +6596,9 @@ function renderAIFreeTask(){
   result.innerHTML=`<div class="card" style="box-shadow:none">
     <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px"><div><div class="small muted">AI 任務卡</div><h3 style="margin:4px 0 0">${escapeAIText(aiFreeTypeLabel(aiFreeTask.type))}</h3></div><span class="source-pill">已分析</span></div>
     <div class="grid2" style="margin-top:14px"><div class="note"><b>產品類型</b><br>${escapeAIText(aiFreeTypeLabel(aiFreeTask.type))}</div><div class="note"><b>目的</b><br>${escapeAIText(aiFreeTask.theme)}</div></div>
+    ${(aiFreeTask.excluded||[]).length?`<div class="note" style="margin-top:12px"><b>已排除</b><br>${(aiFreeTask.excluded||[]).map(escapeAIText).join("、")}</div>`:""}
     <div style="margin-top:14px"><b>推薦精油</b>${oilRows}</div>
-    <div class="note" style="margin-top:14px"><b>推薦原因</b><br>${escapeAIText(aiFreePurposeReason(aiFreeTask.theme))}</div>
+    <div class="note" style="margin-top:14px"><b>推薦原因</b><br>${escapeAIText(aiFreePurposeReason(aiFreeTask.theme))}${(aiFreeTask.excluded||[]).length?` 並已依照你的偏好排除 ${(aiFreeTask.excluded||[]).map(escapeAIText).join("、")}。`:""}</div>
     ${missing.length?`<div class="note" style="margin-top:12px"><b>缺少庫存</b><br>${missing.map(o=>escapeAIText(o.name)).join("、")}<div style="margin-top:10px"><button class="btn ghost" onclick="addAIFreeMissingToShoppingList()">加入採購清單</button></div></div>`:""}
     <div class="row" style="margin-top:14px">${importBtn}<button class="btn ghost" onclick="rerollAIFreeTask()">重新推薦</button><button class="btn ghost" onclick="focusAIFreeModify()">修改需求</button></div>
     <div id="aiFreeTaskStatus" class="small muted" style="margin-top:10px">系統不會自動導入，請確認後再按按鈕。</div>
@@ -6691,11 +6704,60 @@ function saveAIFreeOilList(){
   const s=document.getElementById("aiFreeTaskStatus");if(s)s.textContent="已保留這組精油，可繼續修改或再選擇導入位置。";
 }
 
+function getShoppingList(){
+  try{return JSON.parse(localStorage.getItem("zhixinShoppingList")||"[]").filter(Boolean);}catch(e){return [];}
+}
+function saveShoppingList(list){
+  localStorage.setItem("zhixinShoppingList",JSON.stringify([...new Set(list)]));
+  renderShoppingList();
+}
+function addOilToShoppingList(name){
+  const current=getShoppingList();
+  if(!current.includes(name)) current.push(name);
+  saveShoppingList(current);
+  const s=document.getElementById("aiFreeTaskStatus");if(s)s.textContent=`已加入採購清單：${name}`;
+}
 function addAIFreeMissingToShoppingList(){
   const missing=(aiFreeTask?.oils||[]).filter(o=>Number(invByName(o.name)?.ml||0)<=0).map(o=>o.name);
-  const current=JSON.parse(localStorage.getItem("zhixinShoppingList")||"[]");
-  localStorage.setItem("zhixinShoppingList",JSON.stringify([...new Set([...current,...missing])]));
+  saveShoppingList([...getShoppingList(),...missing]);
   const s=document.getElementById("aiFreeTaskStatus");if(s)s.textContent=`已加入採購清單：${missing.join("、")}`;
+}
+function removeShoppingItem(name){
+  saveShoppingList(getShoppingList().filter(x=>x!==name));
+}
+function clearShoppingList(){
+  const list=getShoppingList();
+  if(!list.length){
+    renderShoppingList();
+    alert("採購清單目前是空的。");
+    return;
+  }
+  if(confirm("確定要清空採購清單嗎？")){
+    saveShoppingList([]);
+    const result=document.getElementById("aiRestockResult");
+    if(result) result.textContent="採購清單已清空。";
+  }
+}
+function markShoppingItemPurchased(name){
+  const inv=invByName(name);
+  const value=prompt(`請輸入「${name}」購入後的庫存量（ml）：`,inv&&Number(inv.ml)>0?inv.ml:10);
+  if(value===null) return;
+  const amount=Number(value);
+  if(!Number.isFinite(amount)||amount<0){alert("請輸入正確的庫存量。");return;}
+  if(inv){inv.ml=amount;inv.unit=inv.unit||"ml";}
+  else state.inventory.push({name,category:"精油",ml:amount,unit:"ml",spec:"10ml／瓶",reorder:3});
+  save();
+  removeShoppingItem(name);
+  renderInventory();
+  refreshFormulaOilOptions();
+  populateCandleSelects();
+}
+function renderShoppingList(){
+  const box=document.getElementById("shoppingList");
+  if(!box) return;
+  const list=getShoppingList();
+  if(!list.length){box.innerHTML='<div class="note muted">目前沒有待採購的精油。</div>';return;}
+  box.innerHTML=list.map(name=>`<div style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)"><div><b>${escapeAIText(name)}</b><div class="small muted">目前無庫存</div></div><div class="row" style="gap:6px"><button class="btn" type="button" onclick="markShoppingItemPurchased('${String(name).replaceAll("'","\\'")}')">已購入</button><button class="btn ghost" type="button" onclick="removeShoppingItem('${String(name).replaceAll("'","\\'")}')">移除</button></div></div>`).join("");
 }
 
 
@@ -7265,7 +7327,7 @@ function resetAll(){
   save();renderAll();
 }
 function renderAll(){
-  updateKPIs();renderInventory();renderRecipes();renderNumerology();renderElements();renderOils();renderSmartOilFinder();renderRecords();renderUsageRecords();populateCandleSelects();refreshFormulaOilOptions();initializeDiffuserLab();renderDiffuserHistory();renderDiffuserFavorites();renderLabFormulaList();
+  updateKPIs();renderInventory();renderShoppingList();renderRecipes();renderNumerology();renderElements();renderOils();renderSmartOilFinder();renderRecords();renderUsageRecords();populateCandleSelects();refreshFormulaOilOptions();initializeDiffuserLab();renderDiffuserHistory();renderDiffuserFavorites();renderLabFormulaList();
 }
 initializeFormulaRows();
 populateCandleSelects();
