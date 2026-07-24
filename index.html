@@ -6591,7 +6591,7 @@ function renderAIFreeTask(){
   const importBtn=aiFreeTask.type==="product"?`<button class="btn" onclick="transferAIFreeToProduct()">導入產品配方</button>`:
     aiFreeTask.type==="candle"?`<button class="btn" onclick="transferAIFreeToCandle()">導入蠟燭計算</button>`:
     aiFreeTask.type==="diffuser"?`<button class="btn" onclick="transferAIFreeToDiffuser()">導入擴香日誌</button>`:
-    aiFreeTask.type==="oils"?`<button class="btn" onclick="saveAIFreeOilList()">保留這組精油</button>`:
+    aiFreeTask.type==="oils"?"":
     `<button class="btn" onclick="renderAIFreeClarification('type')">選擇導入位置</button>`;
   result.innerHTML=`<div class="card" style="box-shadow:none">
     <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px"><div><div class="small muted">AI 任務卡</div><h3 style="margin:4px 0 0">${escapeAIText(aiFreeTypeLabel(aiFreeTask.type))}</h3></div><span class="source-pill">已分析</span></div>
