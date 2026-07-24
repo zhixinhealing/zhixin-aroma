@@ -6516,14 +6516,26 @@ function aiFreePurposeReason(theme){
   })[theme]||"依目前需求整理香氣方向。";
 }
 
-function buildAIFreeOilSelection(theme, excluded=[]){
-  const all=aiMatchedOils(theme,true).filter(o=>!excluded.includes(o.name));
+function buildAIFreeOilSelection(theme, excluded=[], seen=[]){
+  // 自由詢問 AI 使用完整精油百科，不以庫存作為推薦限制。
+  const excludedSet=new Set(excluded||[]);
+  const seenSet=new Set(seen||[]);
+  const all=aiMatchedOils(theme,false).filter(o=>!excludedSet.has(o.name));
   if(!all.length) return [];
-  const inStock=all.filter(o=>Number(invByName(o.name)?.ml||0)>0);
-  const outStock=all.filter(o=>Number(invByName(o.name)?.ml||0)<=0);
-  const ordered=[...inStock,...outStock];
-  const start=aiFreeRotation%ordered.length;
-  return Array.from({length:Math.min(4,ordered.length)},(_,i)=>ordered[(start+i)%ordered.length]);
+
+  // 重新推薦時優先顯示尚未出現過的精油，避免只換掉一支、其餘原地跳動。
+  const fresh=all.filter(o=>!seenSet.has(o.name));
+  const pool=fresh.length?fresh:all;
+  const start=aiFreeRotation%pool.length;
+  return Array.from({length:Math.min(4,pool.length)},(_,i)=>pool[(start+i)%pool.length]);
+}
+
+function detectAIFreeExcludedOils(q){
+  if(!/不喜歡|不要|避開|排除|拿掉|移除|討厭|不愛/.test(q)) return [];
+  return oils.filter(o=>{
+    const names=[o.name,...(o.aliases||[])].filter(Boolean);
+    return names.some(name=>q.includes(name));
+  }).map(o=>o.name);
 }
 
 function renderAIFreeClarification(kind="type"){
@@ -6543,14 +6555,15 @@ function setAIFreeClarification(answer){
 }
 
 function setAIFreeType(type){
-  if(!aiFreeTask) aiFreeTask={question:document.getElementById("aiFreeQuestion")?.value||"",theme:"放鬆",excluded:[]};
+  if(!aiFreeTask) aiFreeTask={question:document.getElementById("aiFreeQuestion")?.value||"",theme:"放鬆",excluded:[],seen:[]};
   aiFreeTask.type=type;
-  aiFreeTask.oils=buildAIFreeOilSelection(aiFreeTask.theme,aiFreeTask.excluded||[]);
+  aiFreeTask.oils=buildAIFreeOilSelection(aiFreeTask.theme,aiFreeTask.excluded||[],aiFreeTask.seen||[]);
   renderAIFreeTask();
 }
 
 function createAIFreeTask(q,type,theme){
-  aiFreeTask={question:q,type,theme,excluded:[],oils:buildAIFreeOilSelection(theme,[])};
+  const excluded=detectAIFreeExcludedOils(q);
+  aiFreeTask={question:q,type,theme,excluded,seen:[],oils:buildAIFreeOilSelection(theme,excluded,[])};
   renderAIFreeTask();
 }
 
@@ -6586,12 +6599,13 @@ function answerAIFreeQuestion(){
   if(!q){if(result) result.textContent="請先輸入問題。";return;}
 
   if(aiFreeTask){
-    const disliked=aiFreeTask.oils.find(o=>q.includes(o.name)&&/不喜歡|不要|拿掉|移除|換掉/.test(q));
-    if(disliked){
-      aiFreeTask.excluded=[...(aiFreeTask.excluded||[]),disliked.name];
-      aiFreeTask.oils=buildAIFreeOilSelection(aiFreeTask.theme,aiFreeTask.excluded);
+    const dislikedNames=detectAIFreeExcludedOils(q);
+    if(dislikedNames.length){
+      aiFreeTask.excluded=[...new Set([...(aiFreeTask.excluded||[]),...dislikedNames])];
+      aiFreeTask.seen=[...new Set([...(aiFreeTask.seen||[]),...(aiFreeTask.oils||[]).map(o=>o.name)])];
+      aiFreeTask.oils=buildAIFreeOilSelection(aiFreeTask.theme,aiFreeTask.excluded,aiFreeTask.seen);
       renderAIFreeTask();
-      const s=document.getElementById("aiFreeTaskStatus");if(s)s.textContent=`已移除 ${disliked.name}，並重新整理建議。`;
+      const s=document.getElementById("aiFreeTaskStatus");if(s)s.textContent=`已排除 ${dislikedNames.join("、")}，並重新整理建議。`;
       return;
     }
   }
@@ -6599,10 +6613,10 @@ function answerAIFreeQuestion(){
   const type=detectAIFreeType(q);
   const theme=detectAIFreeTheme(q);
   const isGeneralSleep=/睡不好|失眠/.test(q) && !/難入睡|淺眠|半夜|容易醒|睡醒很累/.test(q);
-  aiFreeTask={question:q,type,theme,excluded:[],oils:[]};
+  aiFreeTask={question:q,type,theme,excluded:detectAIFreeExcludedOils(q),seen:[],oils:[]};
   if(isGeneralSleep){renderAIFreeClarification("sleep");return;}
   if(type==="unknown"){
-    aiFreeTask.oils=buildAIFreeOilSelection(theme,[]);
+    aiFreeTask.oils=buildAIFreeOilSelection(theme,aiFreeTask.excluded||[],aiFreeTask.seen||[]);
     renderAIFreeClarification("type");return;
   }
   createAIFreeTask(q,type,theme);
@@ -6610,17 +6624,18 @@ function answerAIFreeQuestion(){
 
 function removeAIFreeOil(index){
   if(!aiFreeTask?.oils?.[index]) return;
-  aiFreeTask.excluded=[...(aiFreeTask.excluded||[]),aiFreeTask.oils[index].name];
+  aiFreeTask.excluded=[...new Set([...(aiFreeTask.excluded||[]),aiFreeTask.oils[index].name])];
   aiFreeTask.oils.splice(index,1);
   renderAIFreeTask();
 }
 
 function rerollAIFreeTask(){
   if(!aiFreeTask) return;
-  aiFreeRotation++;
-  aiFreeTask.oils=buildAIFreeOilSelection(aiFreeTask.theme,aiFreeTask.excluded||[]);
+  aiFreeTask.seen=[...new Set([...(aiFreeTask.seen||[]),...(aiFreeTask.oils||[]).map(o=>o.name)])];
+  aiFreeRotation+=Math.max(1,aiFreeTask.oils?.length||1);
+  aiFreeTask.oils=buildAIFreeOilSelection(aiFreeTask.theme,aiFreeTask.excluded||[],aiFreeTask.seen||[]);
   renderAIFreeTask();
-  const s=document.getElementById("aiFreeTaskStatus");if(s)s.textContent="已重新推薦一組精油。";
+  const s=document.getElementById("aiFreeTaskStatus");if(s)s.textContent="已改用尚未推薦過的精油重新整理。";
 }
 
 function focusAIFreeModify(){
