@@ -533,6 +533,120 @@ button,input,select,textarea{max-width:100%}
   .modal-box{padding:15px}
 }
 
+
+/* =========================================================
+   V16｜手機版介面優化
+   只重排手機版 UI；桌機版與既有功能不變
+   ========================================================= */
+@media (max-width: 700px){
+
+  /* 頂部品牌區：縮短高度，保留原本風格 */
+  .hero{
+    padding:14px;
+    gap:10px;
+  }
+  .brand-lockup{
+    align-items:center;
+  }
+  .hero h1{
+    font-size:22px;
+    line-height:1.2;
+  }
+  .hero p{
+    font-size:12px;
+    line-height:1.45;
+  }
+  .hero>.badge{
+    margin-top:2px;
+    padding:8px 10px;
+    font-size:13px;
+  }
+
+  /* 手機導覽列：不再橫向擠成一排，改為三欄整齊排列 */
+  .nav{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:8px;
+    overflow:visible;
+    padding:0;
+    margin:12px 0 16px;
+  }
+  .nav button{
+    width:100%;
+    min-width:0;
+    min-height:44px;
+    padding:9px 5px;
+    border-radius:13px;
+    font-size:13px;
+    line-height:1.2;
+    white-space:normal;
+    text-align:center;
+  }
+
+  /* 首頁數據卡：由四張直排改為 2×2 */
+  #home > .grid.grid-4{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:10px;
+  }
+  #home > .grid.grid-4 .card{
+    min-height:112px;
+    padding:14px;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+  }
+  #home > .grid.grid-4 .muted{
+    font-size:14px;
+    line-height:1.35;
+  }
+  #home > .grid.grid-4 .kpi{
+    font-size:27px;
+    line-height:1.15;
+  }
+
+  /* 快速開始：維持兩欄，不在小手機退回單欄 */
+  .quick-start-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:9px;
+  }
+  .quick-start-grid .btn{
+    min-height:50px;
+    padding:10px 7px;
+    font-size:14px;
+    white-space:normal;
+  }
+
+  /* 內容卡片稍微緊湊，避免手機畫面過度拉長 */
+  .card{
+    padding:14px;
+  }
+  .card h2{
+    margin-bottom:12px;
+  }
+}
+
+@media (max-width: 420px){
+  .app{padding:7px}
+  .nav{gap:6px}
+  .nav button{
+    font-size:12px;
+    padding:8px 3px;
+  }
+  #home > .grid.grid-4{
+    gap:8px;
+  }
+  #home > .grid.grid-4 .card{
+    min-height:104px;
+    padding:12px;
+  }
+  #home > .grid.grid-4 .kpi{
+    font-size:24px;
+  }
+  .quick-start-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  }
+}
+
 </style>
 </head>
 <body>
