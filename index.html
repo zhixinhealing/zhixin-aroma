@@ -678,6 +678,13 @@ button,input,select,textarea{max-width:100%}
   .nav button{text-align:left;padding:12px 14px!important;min-height:44px}
 }
 
+
+@media(max-width:900px){
+  #oils .tool-content > .grid[style*="repeat(4"]{grid-template-columns:repeat(2,minmax(0,1fr)) !important;}
+}
+@media(max-width:600px){
+  #oils .tool-content > .grid[style*="repeat(4"]{grid-template-columns:1fr !important;}
+}
 </style>
 </head>
 <body>
@@ -1199,9 +1206,9 @@ button,input,select,textarea{max-width:100%}
 
       <div class="encyclopedia-tools">
         <details class="tool-fold">
-          <summary><span>🎯 智慧找精油</span><small>依身體、情緒、情境篩選</small></summary>
+          <summary><span>🎯 智慧找精油</span><small>依身體、情緒、情境、香味篩選</small></summary>
           <div class="tool-content">
-            <div class="grid grid-3">
+            <div class="grid" style="grid-template-columns:repeat(4,minmax(0,1fr))">
               <div class="field">
                 <label>身體功效</label>
                 <select id="bodyNeedFilter" onchange="renderSmartOilFinder()">
@@ -1225,6 +1232,14 @@ button,input,select,textarea{max-width:100%}
                   <option>睡前放鬆</option><option>工作專注</option><option>讀書考試</option><option>約會魅力</option>
                   <option>招財開店</option><option>空間淨化</option><option>冥想瑜珈</option><option>開車提神</option>
                   <option>情緒低落</option><option>建立界線</option>
+                </select>
+              </div>
+              <div class="field">
+                <label>香味分類</label>
+                <select id="aromaCategoryFilter" onchange="renderSmartOilFinder()">
+                  <option value="">全部香味分類</option>
+                  <option>柑橘系</option><option>花香系</option><option>草本系</option><option>木質系</option>
+                  <option>森林系</option><option>辛香系</option><option>樟腦系</option><option>樹脂系</option>
                 </select>
               </div>
             </div>
@@ -2052,8 +2067,22 @@ const smartNeedRules={
     "建立界線":{tags:["保護"],words:["界線","安全感","穩定","扎根"]}
   }
 };
+function getOilAromaCategories(o){
+  const text=[o.name,o.en,o.aroma,o.part].join(" ");
+  const categories=[];
+  const add=x=>{ if(!categories.includes(x)) categories.push(x); };
+  if(/柑橘|果香|甜橙|苦橙|葡萄柚|佛手柑|山雞椒|Bergamot|Orange|Grapefruit|Litsea/i.test(text)) add("柑橘系");
+  if(/花香|花$|薰衣草|依蘭|茉莉|橙花|Lavender|Ylang|Jasmine|Neroli/i.test(text)) add("花香系");
+  if(/草本|薄荷|迷迭香|鼠尾草|Peppermint|Rosemary|Sage/i.test(text)) add("草本系");
+  if(/木質|木材|木質部|檀香|雪松|檜木|岩蘭草|Sandalwood|Cedarwood|Hinoki|Vetiver/i.test(text)) add("木質系");
+  if(/森林|針葉|絲柏|檜木|Cypress|Hinoki/i.test(text)) add("森林系");
+  if(/辛香|辛甜|胡椒|肉桂|丁香|薑|Pepper|Cinnamon|Clove|Ginger/i.test(text)) add("辛香系");
+  if(/清涼|樟腦|尤加利|茶樹|薄荷|Eucalyptus|Tea Tree|Peppermint/i.test(text)) add("樟腦系");
+  if(/樹脂|乳香|沒藥|Frankincense|Myrrh/i.test(text)) add("樹脂系");
+  return categories;
+}
 function oilSearchText(o){
-  return [o.name,o.en,o.aroma,o.body,o.emotion,(o.tags||[]).join(" "),o.element].join(" ");
+  return [o.name,o.en,o.aroma,o.body,o.emotion,(o.tags||[]).join(" "),o.element,getOilAromaCategories(o).join(" ")].join(" ");
 }
 function matchesSmartWords(o,words=[]){
   const text=oilSearchText(o);
@@ -2072,9 +2101,24 @@ function renderSmartOilFinder(){
   const body=document.getElementById("bodyNeedFilter").value;
   const emotion=document.getElementById("emotionNeedFilter").value;
   const scene=document.getElementById("sceneNeedFilter").value;
-  const matched=oils.filter(o=>matchesSmartNeed(o,"body",body)&&matchesSmartNeed(o,"emotion",emotion)&&matchesSmartNeed(o,"scene",scene));
-  const labels=[body,emotion,scene].filter(Boolean);
-  document.getElementById("smartFinderSummary").textContent=labels.length?`${labels.join(" ＋ ")}｜找到 ${matched.length} 支精油`:`顯示全部 ${matched.length} 支精油`;
+  const aromaCategory=document.getElementById("aromaCategoryFilter")?.value||"";
+  const tone=document.getElementById("oilToneFilter")?.value||"";
+  const searchInput=document.getElementById("oilSearch");
+  const q=(searchInput?.value||"").trim().toLowerCase();
+  const matched=oils.filter(o=>{
+    const matchesSearch=!q || oilSearchText(o).toLowerCase().includes(q);
+    const matchesTone=!tone || String(o.tone||"").split("/").includes(tone);
+    const matchesAroma=!aromaCategory || getOilAromaCategories(o).includes(aromaCategory);
+    return matchesSearch && matchesTone && matchesAroma && matchesSmartNeed(o,"body",body) && matchesSmartNeed(o,"emotion",emotion) && matchesSmartNeed(o,"scene",scene);
+  });
+  const toneLabel=tone?({T:"前調 T",M:"中調 M",B:"後調 B"}[tone]||tone):"";
+  const labels=[toneLabel,body,emotion,scene,aromaCategory].filter(Boolean);
+  const summary=document.getElementById("smartFinderSummary");
+  if(q){
+    summary.textContent=`搜尋「${searchInput.value.trim()}」｜找到 ${matched.length} 支精油`;
+  }else{
+    summary.textContent=labels.length?`${labels.join(" ＋ ")}｜找到 ${matched.length} 支精油`:`顯示全部 ${matched.length} 支精油`;
+  }
   grid.innerHTML=matched.length?matched.map(o=>`
     <div class="card oil-card" onclick="openOil('${o.name.replaceAll("'","\\'")}')">
       <div class="row" style="justify-content:space-between;align-items:center"><h3 style="margin:0">${o.name}</h3><span class="badge">${o.tone}</span></div>
@@ -2085,7 +2129,7 @@ function renderSmartOilFinder(){
     </div>`).join(""):`<div class="note">目前沒有同時符合這些條件的精油，建議減少一個篩選條件。</div>`;
 }
 function resetSmartOilFinder(){
-  ["bodyNeedFilter","emotionNeedFilter","sceneNeedFilter"].forEach(id=>document.getElementById(id).value="");
+  ["bodyNeedFilter","emotionNeedFilter","sceneNeedFilter","aromaCategoryFilter"].forEach(id=>document.getElementById(id).value="");
   renderSmartOilFinder();
 }
 
@@ -2153,11 +2197,13 @@ function showCoreSeries(seriesName, el){
 
 function renderOils(){
   const countLabel=document.getElementById("oilCountLabel");
-  const q=(oilSearch.value||"").toLowerCase();
-  const tone=oilToneFilter.value;
+  const searchInput=document.getElementById("oilSearch");
+  const toneFilter=document.getElementById("oilToneFilter");
+  const q=(searchInput?.value||"").trim().toLowerCase();
+  const tone=toneFilter?.value||"";
   const filtered=oils.filter(o=>{
     const hay=[o.name,o.en,o.aroma,o.body,o.emotion,o.tags.join(" "),o.element].join(" ").toLowerCase();
-    return hay.includes(q) && (!tone || o.tone.includes(tone));
+    return hay.includes(q) && (!tone || String(o.tone||"").split("/").includes(tone));
   });
   oilGrid.innerHTML=filtered.map((o,i)=>`
     <div class="card oil-card" onclick="openOil('${o.name.replaceAll("'","\\'")}')">
@@ -2167,6 +2213,7 @@ function renderOils(){
       ${o.tags.map(t=>`<span class="tag">${t}</span>`).join("")}
     </div>`).join("");
   if(countLabel) countLabel.textContent=`${oilGrid.children.length} 支`;
+  renderSmartOilFinder();
 }
 function openOil(name){
   const o=oils.find(x=>x.name===name); if(!o)return;
@@ -2468,7 +2515,7 @@ function openAIWorkspace(type, el){
   box.classList.add("active");
 
   if(type==="finder"){
-    content.innerHTML=`<div class="card"><h3>🌿 找精油</h3><p class="muted">使用精油百科中的智慧找精油，保留三個下拉選單。</p><button class="btn" type="button" onclick="openTab('oils');setTimeout(()=>document.querySelector('#oils .tool-fold')?.setAttribute('open',''),50)">前往智慧找精油</button></div>`;
+    content.innerHTML=`<div class="card"><h3>🌿 找精油</h3><p class="muted">依照需求快速尋找適合的精油。</p><button class="btn" type="button" onclick="openTab('oils');setTimeout(()=>document.querySelector('#oils .tool-fold')?.setAttribute('open',''),50)">前往智慧找精油</button></div>`;
   }else if(type==="formula"){
     content.innerHTML=`<div class="card"><h3>🧪 設計配方</h3><div class="field"><label>想設計的核心主題</label><select id="aiFormulaTheme"><option>財富</option><option>愛情</option><option>保護</option><option>放鬆</option><option>睡眠</option><option>淨化</option></select></div><div class="row" style="margin-top:12px"><button class="btn" type="button" onclick="generateAIFormulaSuggestion()">產生建議</button><button class="btn ghost" type="button" onclick="transferAIFormulaToProduct()">前往產品配方</button></div><div id="aiFormulaResult" class="note" style="margin-top:14px">請先選擇主題。</div></div>`;
   }else if(type==="candle"){
