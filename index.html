@@ -708,7 +708,7 @@ button,input,select,textarea{max-width:100%}
 
   <button class="mobile-nav-toggle" id="mobileNavToggle" type="button" aria-controls="mainNav" aria-expanded="false">
     <span><span class="hamburger-icon">☰</span> 功能選單</span>
-    <span id="mobileNavCurrent">首頁</span>
+    <span id="mobileNavArrow" aria-hidden="true">▾</span>
   </button>
 
   <nav class="nav" id="mainNav">
@@ -1478,12 +1478,13 @@ function invByName(name){ return state.inventory.find(x=>x.name===name); }
 
 const mobileNavToggle=document.getElementById("mobileNavToggle");
 const mainNav=document.getElementById("mainNav");
-const mobileNavCurrent=document.getElementById("mobileNavCurrent");
+const mobileNavArrow=document.getElementById("mobileNavArrow");
 
 if(mobileNavToggle && mainNav){
   mobileNavToggle.addEventListener("click",()=>{
     const isOpen=mainNav.classList.toggle("mobile-open");
     mobileNavToggle.setAttribute("aria-expanded",String(isOpen));
+    if(mobileNavArrow) mobileNavArrow.textContent=isOpen?"▴":"▾";
   });
 }
 
@@ -1493,9 +1494,9 @@ document.querySelectorAll(".nav button").forEach(btn=>{
     document.querySelectorAll(".panel").forEach(x=>x.classList.remove("active"));
     btn.classList.add("active");
     document.getElementById(btn.dataset.tab).classList.add("active");
-    if(mobileNavCurrent) mobileNavCurrent.textContent=btn.textContent.trim();
     if(mainNav) mainNav.classList.remove("mobile-open");
     if(mobileNavToggle) mobileNavToggle.setAttribute("aria-expanded","false");
+    if(mobileNavArrow) mobileNavArrow.textContent="▾";
     window.scrollTo({top:0,behavior:"smooth"});
   });
 });
