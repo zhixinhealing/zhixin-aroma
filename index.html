@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>芝心調香室 V21.2 Stable｜文字優化版</title>
+<title>芝心調香室 V21.2.1 Stable｜AI 配方串聯版</title>
 <style>
 :root{
   --bg:#f5f1e9;
@@ -865,7 +865,7 @@ button,input,select,textarea{max-width:100%}
         <p>精油資料・原料庫存・產品配方・蠟燭製作・調香紀錄</p>
       </div>
     </div>
-    <div class="badge">芝心聊癒專屬 V21.2 Stable｜文字優化版</div>
+    <div class="badge">芝心聊癒專屬 V21.2.1 Stable｜AI 配方串聯版</div>
   </header>
 
   <button class="mobile-nav-toggle" id="mobileNavToggle" type="button" aria-controls="mainNav" aria-expanded="false">
@@ -7278,7 +7278,7 @@ function renderAIFreeTask(){
     <div style="margin-top:14px"><b>推薦精油</b><div class="ai-candidate-note">AI 已依照你的需求篩選出適合的精油，以下為候選精油。香氣具有個人喜好，不需要全部使用，可加入配方實驗室自由搭配。</div>${oilRows}</div>
     <div class="note" style="margin-top:14px"><b>推薦原因</b><br>${escapeAIText(aiFreePurposeReason(aiFreeTask.theme))}${(aiFreeTask.excluded||[]).length?` 並已依照你的偏好排除 ${(aiFreeTask.excluded||[]).map(escapeAIText).join("、")}。`:""}</div>
     ${missing.length?`<div class="note" style="margin-top:12px"><b>缺少庫存</b><br>${missing.map(o=>escapeAIText(o.name)).join("、")}<div style="margin-top:10px"><button class="btn ghost" onclick="addAIFreeMissingToShoppingList()">加入採購清單</button></div></div>`:""}
-    <div class="row" style="margin-top:14px">${importBtn}<button class="btn ghost" onclick="rerollAIFreeTask()">重新推薦</button><button class="btn ghost" onclick="focusAIFreeModify()">修改需求</button></div>
+    <div class="row" style="margin-top:14px"><button class="btn" onclick="transferAIFreeToLabAndAnalyze()">一鍵加入配方實驗室並分析</button>${importBtn}<button class="btn ghost" onclick="rerollAIFreeTask()">重新推薦</button><button class="btn ghost" onclick="focusAIFreeModify()">修改需求</button></div>
     <div id="aiFreeTaskStatus" class="small muted" style="margin-top:10px">系統不會自動導入，請確認後再按按鈕。</div>
   </div>`;
 }
@@ -7969,6 +7969,40 @@ function addAIFreeOilToLab(name){
   if(mobileNav)mobileNav.classList.remove("mobile-open");
   window.scrollTo({top:0,behavior:"smooth"});
 }
+function transferAIFreeToLabAndAnalyze(){
+  if(!aiFreeTask?.oils?.length){alert("目前沒有可導入的精油。");return;}
+
+  const currentBlend=getLabBlend();
+  if(currentBlend.length){
+    const overwrite=confirm("配方實驗室目前已有精油，是否以這組 AI 推薦精油取代？");
+    if(!overwrite)return;
+  }
+
+  const plan=buildAITMBPlan(aiFreeTask.oils);
+  const rows=document.getElementById("labOilRows");
+  if(!rows)return;
+  rows.innerHTML="";
+  plan.forEach(item=>addLabOilRow(item.oil.name,item.ratio,"",item.tone));
+
+  const theme=aiFreeTask.theme||"AI 建議";
+  const name=document.getElementById("labName");
+  const purpose=document.getElementById("labPurpose");
+  const source=document.getElementById("labSource");
+  const status=document.getElementById("labStatus");
+  if(name)name.value=`${theme} AI 實驗配方`;
+  if(purpose)purpose.value=aiFreeTask.question||theme;
+  if(source)source.value="AI 推薦";
+  if(status)status.value="草稿";
+
+  captureLabDraft();
+  analyzeLabFormula();
+  showLabAiMessage(`已將 ${plan.map(item=>item.oil.name).join("、")} 全部加入，並依 T／M／B 結構完成初始比例與香氣分析。`);
+  openTab("lab");
+  const mobileNav=document.getElementById("mainNav");
+  if(mobileNav)mobileNav.classList.remove("mobile-open");
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
 function nextLabVersion(name){
   const versions=state.labFormulas.filter(x=>x.name===name).map(x=>x.version||1);
   return versions.length?Math.max(...versions)+1:1;
