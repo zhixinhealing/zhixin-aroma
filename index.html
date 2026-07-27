@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>芝心調香室 V18</title>
+<title>芝心調香室 V21.2 Stable｜文字優化版</title>
 <style>
 :root{
   --bg:#f5f1e9;
@@ -167,7 +167,13 @@ th{font-size:13px;color:var(--muted)}
 .diffuser-mode-panel.active{display:block}
 .blend-editor{display:grid;gap:10px}
 .blend-row{display:grid;grid-template-columns:minmax(0,1.5fr) 140px 90px;gap:10px;align-items:end}
-.lab-oil-row{display:grid;grid-template-columns:minmax(0,1.4fr) 110px 110px 80px;gap:10px;align-items:end}
+.lab-oil-row{display:grid;grid-template-columns:150px minmax(0,1.4fr) 105px 105px 100px 70px;gap:10px;align-items:end}
+.lab-buy-btn{min-height:42px;padding:9px 10px;white-space:nowrap}
+.lab-buy-btn:disabled{opacity:.42;cursor:not-allowed}
+.lab-stock-note{font-size:12px;margin-top:4px;color:var(--muted)}
+.lab-stock-note.missing{color:var(--danger);font-weight:700}
+.shopping-source-list{margin-top:7px;display:flex;gap:5px;flex-wrap:wrap}
+.shopping-source-list .tag{margin:0;font-size:11px}
 .source-pill{display:inline-block;padding:5px 9px;border-radius:999px;background:#edf1ea;color:#52644f;font-size:12px;font-weight:700;margin:2px}
 .version-pill{display:inline-block;padding:5px 9px;border-radius:999px;background:#f1eadf;color:#7f694d;font-size:12px;font-weight:700}
 .timeline-item{padding:14px 0;border-bottom:1px solid var(--line)}
@@ -687,6 +693,153 @@ button,input,select,textarea{max-width:100%}
 @media(max-width:600px){
   #oils .tool-content > .grid[style*="repeat(4"]{grid-template-columns:1fr !important;}
 }
+
+/* V19｜精油百科管理：編輯、刪除、恢復原始資料 */
+.oil-card-actions{display:flex;gap:8px;margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
+.oil-card-actions .btn{flex:1;min-height:38px;padding:8px 10px;font-size:13px}
+.oil-card-actions .btn.danger{flex:0 0 auto}
+@media(max-width:520px){.oil-card-actions{flex-wrap:wrap}.oil-card-actions .btn{flex:1 1 120px}}
+
+/* V20｜AI 候選精油說明與配方實驗室快捷比例 */
+.ai-candidate-note{margin:10px 0 12px;padding:12px 14px;border-radius:12px;background:#f2eee7;border-left:4px solid var(--accent2);font-size:13px;line-height:1.65;color:#5f574f}
+.lab-ratio-tools{margin-top:10px;padding:13px 14px;border:1px solid var(--line);border-radius:14px;background:#fbfaf7}
+.lab-ratio-title{font-weight:800;margin-bottom:9px}
+.lab-ratio-buttons{display:flex;gap:8px;flex-wrap:wrap}
+.lab-ratio-btn.active-choice{background:var(--accent)!important;color:#fff!important;border-color:var(--accent)!important;box-shadow:0 0 0 2px rgba(111,127,104,.10)}
+.lab-ratio-btn.active-choice::after{content:" ✓"}
+.candle-ratio-btn.active-choice{background:var(--accent)!important;color:#fff!important;border-color:var(--accent)!important;box-shadow:0 0 0 2px rgba(111,127,104,.10)}
+.candle-ratio-btn.active-choice::after{content:" ✓"}
+.lab-ai-message{display:none;margin-top:12px;padding:12px 14px;border-radius:12px;background:#edf1ea;border-left:4px solid var(--accent);font-size:13px;line-height:1.65}
+.lab-ai-message.show{display:block}
+@media(max-width:700px){.lab-ratio-buttons .btn{flex:1 1 140px}.ai-oil-actions{width:100%}}
+
+/* V20.3｜產品配方與配方實驗室香氣分析（不更動既有版面） */
+.aroma-analysis-card{margin-top:16px;padding:14px;border:1px solid var(--line);border-radius:14px;background:#fbfaf7}
+.aroma-analysis-card h3{margin:0 0 10px;font-size:17px}
+.aroma-analysis-line{padding:8px 0;border-bottom:1px dashed var(--line);line-height:1.65}
+.aroma-analysis-line:last-child{border-bottom:0}
+.aroma-analysis-label{display:block;font-weight:800;margin-bottom:2px}
+
+
+/* V21｜共用採購清單、AI 補貨判斷與百科自動標籤 */
+.shopping-board{margin-top:16px}
+.shopping-item{padding:14px 0;border-bottom:1px solid var(--line)}
+.shopping-item:last-child{border-bottom:0}
+.shopping-item-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+.shopping-meta{display:grid;gap:6px;margin-top:8px;font-size:13px}
+.shopping-reason{padding:8px 10px;border-radius:10px;background:#f7f3ec}
+.ai-auto-tags{display:flex;gap:6px;flex-wrap:wrap;margin:9px 0 2px}
+.ai-auto-tag{display:inline-flex;align-items:center;padding:5px 8px;border-radius:999px;background:#edf1ea;color:#52644f;font-size:12px;font-weight:800}
+.shopping-added{background:#edf1ea!important;color:#52644f!important;border-color:#b8c5b5!important}
+@media(max-width:700px){.shopping-item-head>.row{width:100%}.shopping-item-head>.row .btn{flex:1 1 130px}}
+
+
+/* V21.0.1｜配方實驗室版面與智慧採購顯示 */
+#lab > .grid.grid-2{grid-template-columns:minmax(0,1.85fr) minmax(300px,1fr);gap:16px;align-items:start}
+#lab > .grid.grid-2 > .card{min-width:0}
+#lab .analysis-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+#lab .analysis-box{padding:11px}
+#lab .lab-oil-row{grid-template-columns:112px minmax(230px,1fr) 88px 88px 64px;gap:8px;align-items:start}
+#lab .lab-oil-row .field{min-width:0}
+#lab .lab-oil-row select,#lab .lab-oil-row input{min-width:0}
+#lab .lab-oil-row > .lab-delete-btn-row{margin-top:28px;min-height:48px;padding:9px 10px;white-space:nowrap}
+#lab .lab-stock-actions{display:flex;align-items:center;gap:8px;min-height:22px;margin-top:4px;flex-wrap:wrap}
+#lab .lab-stock-note{margin-top:0}
+#lab .lab-buy-btn{display:none;min-height:28px;padding:4px 9px;border-radius:9px;font-size:12px;line-height:1.2}
+#lab .lab-buy-btn.is-needed{display:inline-flex;align-items:center}
+.purchase-size-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:14px}
+.purchase-size-btn{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:14px;padding:14px;cursor:pointer;font-weight:800}
+.purchase-size-btn:hover{border-color:var(--accent);background:#f4f7f2}
+.purchase-size-btn.custom{grid-column:1/-1}
+@media(max-width:1050px){
+  #lab > .grid.grid-2{grid-template-columns:minmax(0,1.6fr) minmax(280px,.9fr)}
+  #lab .lab-oil-row{grid-template-columns:100px minmax(200px,1fr) 82px 82px 58px}
+}
+@media(max-width:860px){
+  #lab > .grid.grid-2{grid-template-columns:1fr}
+  #lab .lab-oil-row{grid-template-columns:1fr!important}
+  #lab .lab-oil-row > .lab-delete-btn-row{margin-top:0}
+  #lab .lab-stock-actions{align-items:flex-start}
+  #lab .lab-buy-btn.is-needed{display:inline-flex}
+  #lab .analysis-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:520px){#lab .analysis-grid{grid-template-columns:1fr}.purchase-size-grid{grid-template-columns:1fr}.purchase-size-btn.custom{grid-column:auto}}
+
+
+/* V21.1 Stable｜精油資料庫分類、收藏與配方快捷百科 */
+.oil-view-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
+.oil-view-tab{border:1px solid var(--line);background:#fff;color:var(--ink);padding:10px 14px;border-radius:999px;cursor:pointer;font-weight:800}
+.oil-view-tab.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.oil-favorite-btn{border:0;background:transparent;font-size:24px;line-height:1;cursor:pointer;padding:2px 4px;opacity:.55}
+.oil-favorite-btn.active{opacity:1}
+.oil-card-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.oil-card-meta{display:flex;align-items:center;gap:6px;flex:0 0 auto}
+.oil-empty-state{grid-column:1/-1;padding:30px 18px;text-align:center;border:1px dashed var(--line);border-radius:16px;background:#fbfaf7;color:var(--muted)}
+.oil-detail-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px;padding-top:14px;border-top:1px solid var(--line)}
+#oilModal .modal-box{position:relative}
+#oilModal .oil-card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding-right:0}
+#oilModal .oil-modal-actions{display:flex;align-items:center;gap:10px;flex:0 0 auto;margin-left:auto}
+#oilModal .oil-modal-actions .oil-favorite-btn{position:static;display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;padding:0}
+#oilModal .oil-modal-actions .close{position:static;float:none;display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;padding:0;line-height:1}
+#lab .lab-book-btn{min-height:28px;padding:4px 8px;border-radius:9px;font-size:15px;line-height:1}
+#lab .lab-stock-note.ok{color:var(--ok);font-weight:700}
+#lab .lab-stock-note.low{color:var(--warn);font-weight:700}
+#lab .lab-stock-note.missing{color:var(--danger);font-weight:700}
+@media(max-width:700px){.oil-view-tabs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.oil-view-tab{padding:10px 8px}.oil-detail-actions .btn{flex:1 1 130px}}
+
+/* V21.1.9｜蠟燭工作台：左側操作、右側 AI 分析中心 */
+#candles > .candle-workbench{
+  display:grid;
+  grid-template-columns:minmax(0,1.45fr) minmax(340px,.85fr);
+  gap:16px;
+  align-items:start;
+}
+#candles .candle-operation-card,
+#candles .candle-info-card{min-width:0}
+#candles .candle-info-card{position:sticky;top:18px}
+#candles .candle-info-section + .candle-info-section{
+  margin-top:18px;
+  padding-top:18px;
+  border-top:1px solid var(--line);
+}
+#candles .candle-analysis-placeholder{
+  padding:24px 16px;
+  border:1px dashed var(--line);
+  border-radius:15px;
+  background:#fbfaf7;
+  text-align:center;
+  color:var(--muted);
+  line-height:1.7;
+}
+#candles .candle-analysis-placeholder .icon{
+  display:block;
+  font-size:30px;
+  margin-bottom:7px;
+}
+#candles .candle-theme-placeholder{
+  grid-column:1/-1;
+  padding:24px 16px;
+  border:1px dashed var(--line);
+  border-radius:15px;
+  background:#fbfaf7;
+  text-align:center;
+  color:var(--muted);
+  line-height:1.7;
+}
+#candles .candle-theme-placeholder .icon{
+  display:block;
+  font-size:28px;
+  margin-bottom:6px;
+}
+#candles #candleAromaAnalysis{
+  margin-top:0;
+  display:block;
+}
+@media(max-width:900px){
+  #candles > .candle-workbench{grid-template-columns:1fr}
+  #candles .candle-info-card{position:static}
+}
+
 </style>
 </head>
 <body>
@@ -709,10 +862,10 @@ button,input,select,textarea{max-width:100%}
       </svg>
       <div>
         <h1>芝心調香室</h1>
-        <p>精油百科・原料管理・產品配方・蠟燭計算・庫存管理</p>
+        <p>精油資料・原料庫存・產品配方・蠟燭製作・調香紀錄</p>
       </div>
     </div>
-    <div class="badge">芝心聊癒專屬 V18</div>
+    <div class="badge">芝心聊癒專屬 V21.2 Stable｜文字優化版</div>
   </header>
 
   <button class="mobile-nav-toggle" id="mobileNavToggle" type="button" aria-controls="mainNav" aria-expanded="false">
@@ -722,51 +875,51 @@ button,input,select,textarea{max-width:100%}
 
   <nav class="nav" id="mainNav">
     <button class="active" data-tab="home">首頁</button>
-    <button data-tab="ai">AI調香師</button>
+    <button data-tab="ai">AI 調香師</button>
     <button data-tab="calc">產品配方</button>
-    <button data-tab="candles">蠟燭計算</button>
+    <button data-tab="candles">蠟燭工作台</button>
     <button data-tab="diffuser">擴香日誌</button>
     <button data-tab="lab">配方實驗室</button>
     <button data-tab="inventory">原料庫存</button>
     <button data-tab="recipes">我的配方</button>
-    <button data-tab="oils">精油百科</button>
+    <button data-tab="oils">精油資料庫</button>
     <button data-tab="records">記錄管理</button>
     <button data-tab="settings">資料備份</button>
   </nav>
 
   <section id="home" class="panel active">
     <div class="grid grid-4">
-      <div class="card"><div class="muted">精油品項</div><div class="kpi" id="kpiOilTypes">12</div></div>
-      <div class="card"><div class="muted">精油總量</div><div class="kpi"><span id="kpiOilMl">180</span> ml</div></div>
+      <div class="card"><div class="muted">精油種類</div><div class="kpi" id="kpiOilTypes">12</div></div>
+      <div class="card"><div class="muted">精油庫存總量</div><div class="kpi"><span id="kpiOilMl">180</span> ml</div></div>
       <div class="card"><div class="muted">荷荷芭基底油</div><div class="kpi"><span id="kpiCarrier">200</span> ml</div></div>
-      <div class="card"><div class="muted">已存配方</div><div class="kpi" id="kpiRecipes">0</div></div>
+      <div class="card"><div class="muted">已儲存配方</div><div class="kpi" id="kpiRecipes">0</div></div>
     </div>
 
 
     <div class="card" style="margin-top:16px">
       <h2>快速開始</h2>
       <div class="quick-start-grid">
-        <button class="btn ghost" type="button" onclick="openTab('oils')">🌿 找精油</button>
-        <button class="btn ghost" type="button" onclick="openTab('calc')">🧮 建立配方</button>
-        <button class="btn ghost" type="button" onclick="openTab('recipes')">🧪 我的配方</button>
-        <button class="btn ghost" type="button" onclick="openTab('inventory')">📦 查看庫存</button>
+        <button class="btn ghost" type="button" onclick="openTab('oils')">🌿 查找精油</button>
+        <button class="btn ghost" type="button" onclick="openTab('calc')">🧮 建立產品配方</button>
+        <button class="btn ghost" type="button" onclick="openTab('recipes')">🧪 查看我的配方</button>
+        <button class="btn ghost" type="button" onclick="openTab('inventory')">📦 管理原料庫存</button>
         <button class="btn ghost" type="button" onclick="openTab('diffuser')">擴香日誌</button>
         <button class="btn ghost" type="button" onclick="openTab('lab')">配方實驗室</button>
       </div>
     </div>
     <div class="grid grid-2" style="margin-top:16px">
       <div class="card">
-        <h3>目前預設規則</h3>
+        <h3>預設計算規則</h3>
         <div class="recipe-line">每瓶容量：<b>30 ml</b></div>
         <div class="recipe-line">精油濃度：<b>3%</b></div>
         <div class="recipe-line">T : M : B：<b>3 : 2 : 1</b></div>
         <div class="recipe-line">滴數公式：<b>容量 × 濃度 × 20</b></div>
       </div>
       <div class="card">
-        <h3>資料來源層級</h3>
-        <div class="recipe-line"><b>芝心調香室</b>：你的定案配方與實測紀錄</div>
+        <h3>資料來源說明</h3>
+        <div class="recipe-line"><b>芝心調香室</b>：已確認的配方與實測紀錄</div>
         <div class="recipe-line"><b>學院教材</b>：精油資料、TMB、五行系統</div>
-        <div class="recipe-line"><b>參考配方</b>：其他老師的生命靈數精油</div>
+        <div class="recipe-line"><b>參考配方</b>：其他老師提供的生命靈數精油資料</div>
       </div>
     </div>
   </section>
@@ -776,16 +929,16 @@ button,input,select,textarea{max-width:100%}
     <div class="card">
       <div class="encyclopedia-head">
         <div>
-          <h2 style="margin:0 0 5px">AI調香師</h2>
-          <p class="muted" style="margin:0">先選擇要處理的工作，再進入對應工具。</p>
+          <h2 style="margin:0 0 5px">AI 調香師</h2>
+          <p class="muted" style="margin:0">請先選擇工作項目，再進入對應的調香工具。</p>
         </div>
       </div>
       <div class="ai-tools" style="margin-top:18px">
-        <button class="ai-tool" type="button" data-ai-tool="formula" onclick="openAIWorkspace('formula',this)"><span class="ai-icon">🧪</span><strong>設計配方</strong><span class="muted small">選擇主題並建立調香方向</span></button>
-        <button class="ai-tool" type="button" data-ai-tool="candle" onclick="openAIWorkspace('candle',this)"><span class="ai-icon">🕯</span><strong>蠟燭建議</strong><span class="muted small">依主題推薦蠟燭用精油</span></button>
-        <button class="ai-tool" type="button" data-ai-tool="stock" onclick="openAIWorkspace('stock',this)"><span class="ai-icon">📦</span><strong>依庫存推薦</strong><span class="muted small">只用目前有庫存的精油推薦</span></button>
-        <button class="ai-tool" type="button" data-ai-tool="restock" onclick="openAIWorkspace('restock',this)"><span class="ai-icon">🛒</span><strong>補貨建議</strong><span class="muted small">分析收藏並推薦值得補充的精油</span></button>
-        <button class="ai-tool" type="button" data-ai-tool="ask" onclick="openAIWorkspace('ask',this)"><span class="ai-icon">💬</span><strong>自由詢問 AI</strong><span class="muted small">輸入其他調香相關問題</span></button>
+        <button class="ai-tool" type="button" data-ai-tool="formula" onclick="openAIWorkspace('formula',this)"><span class="ai-icon">🧪</span><strong>設計配方</strong><span class="muted small">依主題建立配方方向</span></button>
+        <button class="ai-tool" type="button" data-ai-tool="candle" onclick="openAIWorkspace('candle',this)"><span class="ai-icon">🕯</span><strong>蠟燭建議</strong><span class="muted small">依主題推薦適合蠟燭的精油</span></button>
+        <button class="ai-tool" type="button" data-ai-tool="stock" onclick="openAIWorkspace('stock',this)"><span class="ai-icon">📦</span><strong>依庫存推薦</strong><span class="muted small">僅使用目前有庫存的精油</span></button>
+        <button class="ai-tool" type="button" data-ai-tool="restock" onclick="openAIWorkspace('restock',this)"><span class="ai-icon">🛒</span><strong>補貨建議</strong><span class="muted small">分析庫存並提供補貨優先建議</span></button>
+        <button class="ai-tool" type="button" data-ai-tool="ask" onclick="openAIWorkspace('ask',this)"><span class="ai-icon">💬</span><strong>自由提問</strong><span class="muted small">輸入其他調香或精油相關問題</span></button>
       </div>
 
       <div id="aiWorkspace" class="ai-workspace">
@@ -797,17 +950,17 @@ button,input,select,textarea{max-width:100%}
   <section id="calc" class="panel">
     <div class="grid grid-2">
       <div class="card">
-        <h2>🧮 配方計算</h2>
+        <h2>🧮 產品配方計算</h2>
         <div class="grid grid-2">
-          <div class="field"><label>配方名稱</label><input id="calcName" value="新配方"></div>
+          <div class="field"><label>配方名稱</label><input id="calcName" value="未命名配方"></div>
           <div class="field">
             <label>產品類型</label>
             <select id="productType" onchange="updateProductFields(true)">
-              <option value="spray">能量噴霧（預設3%）</option>
-              <option value="rollon">滾珠油（預設3%）</option>
-              <option value="massage">按摩油（預設2%）</option>
-              <option value="face">臉部油（預設1%）</option>
-              <option value="perfume">油性香氛（預設5%）</option>
+              <option value="spray">能量噴霧（預設 3%）</option>
+              <option value="rollon">滾珠油（預設 3%）</option>
+              <option value="massage">按摩油（預設 2%）</option>
+              <option value="face">臉部油（預設 1%）</option>
+              <option value="perfume">油性香氛（預設 5%）</option>
               <option value="custom">自訂</option>
             </select>
           </div>
@@ -828,9 +981,9 @@ button,input,select,textarea{max-width:100%}
             </select>
           </div>
         </div>
-        <h3 style="margin-top:18px">精油配方設計</h3>
+        <h3 style="margin-top:18px">精油比例設計</h3>
         <div class="note small" style="margin-bottom:12px">
-          建議香調比例：<b>前調 T：中調 M：後調 B＝3：2：1</b>。先選香調，右側精油選單會自動篩選符合該香調的精油；仍可依需求自行微調。
+          建議香調結構：<b>前調 T：中調 M：後調 B＝3：2：1</b>。先選擇香調，旁邊的精油選單會自動篩選符合該香調的精油；完成搭配後，按下「計算滴數」，即可在右側查看計算結果與香氣分析。
         </div>
         <div class="formula-table-wrap">
           <table class="formula-table">
@@ -844,7 +997,7 @@ button,input,select,textarea{max-width:100%}
         <div class="row" style="margin-top:12px">
           <button class="btn secondary" type="button" onclick="addFormulaRow()">＋ 新增精油</button>
           <button class="btn ghost" type="button" onclick="applyTMB321Ratio()">T：M：B＝3：2：1</button>
-          <button class="btn ghost" type="button" onclick="normalizeFormulaRatios()">平均分配比例</button>
+          <button class="btn ghost" type="button" onclick="normalizeFormulaRatios()">平均分配</button>
         </div>
         <div class="row" style="margin-top:16px">
           <button class="btn" onclick="calculateFormula()">計算滴數</button>
@@ -862,93 +1015,133 @@ button,input,select,textarea{max-width:100%}
         <div class="big-result" id="totalDrops">—</div>
         <div id="calcResults" style="margin-top:18px"></div>
         <div id="baseResults" style="margin-top:14px"></div>
-        <div class="note" id="stockCheck" style="margin-top:16px">尚未檢查庫存。</div>
+        <div class="note" id="stockCheck" style="margin-top:16px">尚未進行庫存檢查。</div>
+        <div id="calcAromaAnalysis" class="aroma-analysis-card" style="display:none"></div>
       </div>
     </div>
   </section>
 
   
   <section id="candles" class="panel">
-    <div class="grid grid-2">
-      <div class="card">
-        <h2>🕯 蠟燭配方編輯器</h2>
+    <div class="candle-workbench">
+      <div class="card candle-operation-card">
+        <h2>🕯 蠟燭配方工作台</h2>
         <div class="grid grid-2">
-          <div class="field"><label>配方名稱</label><input id="candleName" value="新蠟燭"></div>
+          <div class="field"><label>配方名稱</label><input id="candleName" value="未命名蠟燭配方"></div>
           <div class="field"><label>製作數量</label><input id="candleQty" type="number" min="1" value="1"></div>
           <div class="field"><label>單顆成品重量（g）</label><input id="candleWeight" type="number" min="1" value="180"></div>
-          <div class="field"><label>天然精油添加比例（%）</label><input id="candleFragrancePct" type="number" min="5" max="10" step="0.1" value="7"></div>
+          <div class="field"><label>天然精油添加比例（％）</label><input id="candleFragrancePct" type="number" min="5" max="10" step="0.1" value="7"></div>
           <div class="field"><label>蠟材</label><select id="waxType"></select></div>
         </div>
 
         <div class="card" style="margin-top:14px;background:#fffaf2">
-          <h3 style="margin-top:0">快速選擇濃度</h3>
+          <h3 style="margin-top:0">快速選擇添加比例</h3>
           <div class="row" id="candlePctButtons">
-            <button class="btn ghost candle-pct-btn" type="button" data-pct="5" onclick="setCandlePct(5,this)">日常療癒 5%</button>
-            <button class="btn ghost candle-pct-btn" type="button" data-pct="6" onclick="setCandlePct(6,this)">標準 6%</button>
-            <button class="btn ghost candle-pct-btn active-choice" type="button" data-pct="7" onclick="setCandlePct(7,this)">芝心推薦 7%</button>
-            <button class="btn ghost candle-pct-btn" type="button" data-pct="8" onclick="setCandlePct(8,this)">濃郁 8%</button>
-            <button class="btn ghost candle-pct-btn" type="button" data-pct="10" onclick="setCandlePct(10,this)">上限 10%</button>
+            <button class="btn ghost candle-pct-btn" type="button" data-pct="5" onclick="setCandlePct(5,this)">日常柔和 5%</button>
+            <button class="btn ghost candle-pct-btn" type="button" data-pct="6" onclick="setCandlePct(6,this)">標準濃度 6%</button>
+            <button class="btn ghost candle-pct-btn active-choice" type="button" data-pct="7" onclick="setCandlePct(7,this)">芝心建議 7%</button>
+            <button class="btn ghost candle-pct-btn" type="button" data-pct="8" onclick="setCandlePct(8,this)">濃郁香氣 8%</button>
+            <button class="btn ghost candle-pct-btn" type="button" data-pct="10" onclick="setCandlePct(10,this)">建議上限 10%</button>
           </div>
           <p class="muted small" style="margin-bottom:0">建議範圍 5%～8%，最高不超過 10%。實際承載量仍須依蠟材供應商規格與試燒結果調整。</p>
         </div>
 
         <div class="card" style="margin-top:14px">
-          <h3 style="margin-top:0">依核心主題推薦蠟燭精油</h3>
+          <h3 style="margin-top:0">依主題推薦蠟燭精油</h3>
           <div class="row">
             <select id="candleCoreSeries" onchange="renderCandleRecommendations()">
+              <option value="">請選擇主題</option>
               <option value="愛情">❤️ 愛情</option><option value="財富">💰 財富</option><option value="保護">🛡 保護</option>
               <option value="放鬆">🌿 放鬆</option><option value="睡眠">😴 睡眠</option><option value="淨化">✨ 淨化</option>
             </select>
           </div>
           <div id="candleRecommendations" class="grid grid-2" style="margin-top:12px"></div>
-          <div class="row" style="margin-top:12px"><button class="btn secondary" type="button" onclick="showCandleFormulaDetails(true)">＋ 自行加入蠟燭配方</button></div>
+          <div class="row" style="margin-top:12px"><button class="btn secondary" type="button" onclick="showCandleFormulaDetails(true)">＋ 自行建立蠟燭配方</button></div>
         </div>
 
         <div id="candleFormulaDetails" style="display:none">
-        <h3 style="margin-top:18px">配方明細</h3>
-        <div class="note small">
-          可加入多支精油，配方比例總和必須等於 100%。計算以公克（g）為主，滴數僅作少量試作參考。
-        </div>
+          <h3 style="margin-top:18px">精油配方明細</h3>
+          <div class="note small">
+            請先選擇香調，再選擇符合該香調的精油。配方比例總和須為 100%；正式計算以公克（g）為主，滴數僅供少量試作參考。
+          </div>
 
-        <div id="candleBlendRows" style="margin-top:14px"></div>
+          <div id="candleBlendRows" style="margin-top:14px"></div>
 
-        <div class="row" style="margin-top:12px">
-          <button class="btn secondary" onclick="addCandleBlendRow()">＋ 新增香味</button>
-          <button class="btn ghost" onclick="normalizeCandleRatios()">平均分配比例</button>
-        </div>
+          <div class="row" style="margin-top:12px">
+            <button class="btn secondary" type="button" onclick="addCandleBlendRow()">＋ 新增精油</button>
+          </div>
 
-        <div class="row" style="margin-top:16px">
-          <button class="btn" onclick="calculateCandle()">計算</button>
-          <button class="btn secondary" onclick="saveCandleRecipe()">儲存配方</button>
-          <button class="btn ghost" onclick="recordCandleProduction()">完成製作</button>
-        </div>
+          <div class="lab-ratio-tools">
+            <div class="lab-ratio-title">📐 常用香調比例</div>
+            <div class="lab-ratio-buttons">
+              <button class="btn ghost candle-ratio-btn" type="button" data-candle-ratio="fresh" onclick="applyCandleToneProfile(50,33,17,this,'清新型')">🌿 清新型 50／33／17</button>
+              <button class="btn ghost candle-ratio-btn" type="button" data-candle-ratio="balanced" onclick="applyCandleToneProfile(40,40,20,this,'平衡型')">🌸 平衡型 40／40／20</button>
+              <button class="btn ghost candle-ratio-btn" type="button" data-candle-ratio="rich" onclick="applyCandleToneProfile(30,40,30,this,'濃郁型')">🪵 濃郁型 30／40／30</button>
+              <button class="btn ghost candle-ratio-btn" type="button" data-candle-ratio="equal" onclick="normalizeCandleRatios(this)">⚖️ 平均分配</button>
+            </div>
+            <p class="muted small" style="margin:9px 0 0">系統會依各香調目前的精油數量自動分配比例，套用後仍可手動調整。</p>
+          </div>
+
+          <div class="row" style="margin-top:12px">
+            <button class="btn secondary" type="button" onclick="suggestCandleRatios()">🤖 AI 比例建議</button>
+            <button class="btn ghost" type="button" onclick="analyzeCandleFormula()">🌿 分析香氣</button>
+          </div>
+          <div id="candleAiMessage" class="note small" style="margin-top:12px">請先選擇精油，再套用常用比例、使用 AI 比例建議，或進行香氣分析。</div>
+
+          <div class="row" style="margin-top:16px">
+            <button class="btn" onclick="calculateCandle()">計算</button>
+            <button class="btn secondary" onclick="saveCandleRecipe()">儲存配方</button>
+            <button class="btn ghost" onclick="recordCandleProduction()">完成製作</button>
+          </div>
         </div>
       </div>
 
-      <div class="card">
-        <h2>計算結果</h2>
-        <div id="candleRatioSummary" class="note">目前比例總和：0%</div>
-        <div id="candleTmbSummary" style="display:none"></div>
-        <div id="candleResults" style="margin-top:14px"><p class="muted">尚未計算。</p></div>
-        <div class="note" id="candleStockCheck" style="margin-top:16px">尚未檢查庫存。</div>
-        <div class="card" style="margin-top:16px;background:#fffaf2">
-          <h3 style="margin-top:0">天然精油大豆蠟燭製作提醒</h3>
-          <div class="recipe-line"><b>① 融蠟</b><span style="float:right">依蠟材建議溫度</span></div>
-          <div class="recipe-line"><b>② 降溫後加入精油</b><span style="float:right">約 50°C～60°C</span></div>
-          <div class="recipe-line"><b>③ 充分攪拌</b><span style="float:right">輕柔攪拌 1～2 分鐘</span></div>
-          <div class="recipe-line"><b>④ 倒蠟並靜置</b></div>
-          <div class="recipe-line"><b>⑤ 養蠟熟成</b><span style="float:right">至少 48 小時～7 天</span></div>
-          <p class="muted small">天然精油蠟燭的擴香通常較柔和。高比例不一定等於更香，仍需測試容器、燭芯、蠟材及精油組合。</p>
+      <aside class="card candle-info-card">
+        <div class="candle-info-section">
+          <h2>🧠 AI 香氣分析</h2>
+          <div id="candleAromaAnalysis" class="aroma-analysis-card">
+            <div class="candle-analysis-placeholder">
+              <span class="icon">🤖</span>
+              <b>尚未進行香氣分析</b><br>
+              請先建立蠟燭配方，再點擊「分析香氣」。<br>
+              AI 將整理香調結構、前中後調比例、整體香氣印象與平衡建議。
+            </div>
+          </div>
         </div>
-      </div>
+
+        <div class="candle-info-section">
+          <h2>計算結果</h2>
+          <div id="candleRatioSummary" class="note">目前比例總和：0%</div>
+          <div id="candleTmbSummary" style="display:none"></div>
+          <div id="candleResults" style="margin-top:14px"><p class="muted">尚未進行計算。</p></div>
+          <div class="note" id="candleStockCheck" style="margin-top:16px">尚未進行庫存檢查。</div>
+        </div>
+
+        <div class="candle-info-section">
+          <h2>🕯 建議製作流程</h2>
+          <div class="card" style="background:#fffaf2">
+            <div class="recipe-line"><b>① 融蠟</b><span style="float:right">依蠟材建議溫度</span></div>
+            <div class="recipe-line"><b>② 降溫後加入精油</b><span style="float:right">約 50°C～60°C</span></div>
+            <div class="recipe-line"><b>③ 充分攪拌</b><span style="float:right">輕柔攪拌 1～2 分鐘</span></div>
+            <div class="recipe-line"><b>④ 倒蠟並靜置</b></div>
+            <div class="recipe-line"><b>⑤ 養蠟熟成</b><span style="float:right">至少 48 小時～7 天</span></div>
+          </div>
+        </div>
+
+        <div class="candle-info-section">
+          <h2>📖 製作注意事項</h2>
+          <div class="note small">
+            天然精油蠟燭的香氣通常較柔和。提高添加比例不一定能提升香氣表現，實際效果仍會受到蠟材、燭芯、容器、加香溫度與養蠟時間影響，請以小量試作與試燒結果為準。
+          </div>
+        </div>
+      </aside>
     </div>
   </section>
 
 
-
   <section id="diffuser" class="panel v3-diffuser">
     <div class="v3-wrap">
-      <div class="v3-header"><div><h1>擴香日誌</h1><p>選擇想要的空間氣味，系統會自動帶你前往符合的精油。</p></div><span class="v3-badge">V18 共用資料庫</span></div>
+      <div class="v3-header"><div><h1>擴香日誌</h1><p>選擇想營造的空間氣味，系統會引導你挑選合適的精油。</p></div><span class="v3-badge">V18 共用資料庫</span></div>
       <div class="v3-layout">
         <main class="v3-card">
           <section class="v3-section" id="v3EnvSection">
@@ -961,31 +1154,31 @@ button,input,select,textarea{max-width:100%}
           </section>
           <div class="v3-divider"></div>
           <section class="v3-section" id="v3IntentSection">
-            <div class="v3-section-title"><h2><span class="v3-step">2</span>今天想讓空間聞起來像什麼？</h2><span class="v3-badge">最多選 2 種</span></div>
+            <div class="v3-section-title"><h2><span class="v3-step">2</span>今天想營造什麼樣的空間氣味？</h2><span class="v3-badge">最多選 2 種</span></div>
             <div id="v3IntentGrid" class="v3-intent-grid"></div>
             <div id="v3IntentSummary" class="v3-selection-note">尚未選擇氣味方向</div>
-            <div class="v3-ai-row"><div><strong>不知道今天適合什麼？</strong><span>AI 會幫你選氣味、精油並直接計算滴數。</span></div><button class="v3-btn secondary" id="v3AiBtn">✨ AI 幫我決定</button></div>
+            <div class="v3-ai-row"><div><strong>還不確定今天適合什麼？</strong><span>AI 會協助選擇氣味方向與精油，並計算建議用量。</span></div><button class="v3-btn secondary" id="v3AiBtn">✨ AI 幫我決定</button></div>
             <div id="v3Compatibility" class="v3-compatibility"></div>
           </section>
           <section id="v3RecommendSection" class="v3-section v3-recommend-section">
             <div class="v3-divider"></div>
-            <div class="v3-section-title"><h2><span class="v3-step">3</span>符合這個味道的精油</h2><span class="v3-badge">點選後再計算</span></div>
+            <div class="v3-section-title"><h2><span class="v3-step">3</span>符合目前氣味方向的精油</h2><span class="v3-badge">選擇後即可計算</span></div>
             <div id="v3Tier5" class="v3-tier"></div><div id="v3Tier4" class="v3-tier"></div><div id="v3Tier3" class="v3-tier"></div>
             <div id="v3SelectedSummary" class="v3-selected-summary">尚未選擇精油</div>
             <div id="v3SelectionWarning" class="v3-selection-warning">建議擴香配方以 2～5 支精油為佳，目前香氣可能較複雜，但仍可繼續。</div>
-            <button id="v3CalculateBtn" class="v3-btn full" disabled style="margin-top:14px">計算建議滴數</button>
+            <button id="v3CalculateBtn" class="v3-btn full" disabled style="margin-top:14px">計算建議用量</button>
           </section>
         </main>
         <aside class="v3-card v3-result-card">
-          <div class="v3-section-title"><h2>今日擴香預覽</h2></div>
+          <div class="v3-section-title"><h2>今日擴香設定</h2></div>
           <div class="v3-preview">
             <div class="v3-preview-row"><span>設備</span><strong id="v3PvDevice">水氧機</strong></div>
             <div class="v3-preview-row"><span>空間</span><strong id="v3PvArea">5 坪</strong></div>
             <div class="v3-preview-row"><span>時間</span><strong id="v3PvMinutes">30 分鐘</strong></div>
             <div class="v3-preview-row"><span>氣味</span><strong id="v3PvIntent">尚未選擇</strong></div>
-            <div class="v3-preview-row"><span>精油</span><strong id="v3PvOils">等待選擇</strong></div>
+            <div class="v3-preview-row"><span>精油</span><strong id="v3PvOils">尚未選擇</strong></div>
           </div>
-          <div id="v3EmptyState" class="v3-empty-state"><div class="icon">🌿</div><strong>先選擇今天想要的味道</strong><br>完成選擇後，畫面會直接帶你前往推薦精油。</div>
+          <div id="v3EmptyState" class="v3-empty-state"><div class="icon">🌿</div><strong>請先選擇今天想營造的氣味</strong><br>完成選擇後，系統會顯示適合的精油建議。</div>
           <div id="v3Result" class="v3-result">
             <div class="v3-result-head"><small id="v3ResultContext"></small><div id="v3FormulaName" class="v3-formula-name"></div><div class="v3-total"><span id="v3TotalDrops">0</span> 滴</div></div>
             <div id="v3DropList" class="v3-drop-list"></div>
@@ -993,8 +1186,8 @@ button,input,select,textarea{max-width:100%}
             <div id="v3LogArea" class="v3-log-area">
               <div class="v3-field"><label>配方名稱</label><input id="v3Name"></div>
               <div class="v3-field" style="margin-top:10px"><label>日期</label><input id="v3Date" type="date"></div>
-              <div class="v3-field" style="margin-top:10px"><label>喜愛程度</label><div id="v3Rating" class="v3-rating"></div></div>
-              <div class="v3-field" style="margin-top:10px"><label>備註</label><textarea id="v3Note" placeholder="例如：今天覺得很清爽、下次想減少薄荷"></textarea></div>
+              <div class="v3-field" style="margin-top:10px"><label>喜好程度</label><div id="v3Rating" class="v3-rating"></div></div>
+              <div class="v3-field" style="margin-top:10px"><label>備註</label><textarea id="v3Note" placeholder="例如：今天感覺清爽，下次可減少薄荷比例"></textarea></div>
               <button id="v3SaveBtn" class="v3-btn full" style="margin-top:14px">儲存擴香日誌</button>
             </div>
           </div>
@@ -1008,14 +1201,14 @@ button,input,select,textarea{max-width:100%}
     <div class="grid grid-2">
       <div class="card">
         <h2>配方實驗室</h2>
-        <p class="muted">草稿不扣庫存；只有按下「開始實測」才會依滴數扣除精油。</p>
+        <p class="muted">研發配方可使用所有精油，包括目前無庫存的品項。儲存草稿不會扣除庫存，只有按下「開始實測並扣除庫存」時，系統才會檢查並扣除庫存。</p>
         <div class="grid grid-2">
-          <div class="field"><label>配方名稱</label><input id="labName" value="新實驗配方"></div>
+          <div class="field"><label>配方名稱</label><input id="labName" value="未命名實驗配方"></div>
           <div class="field"><label>用途</label><input id="labPurpose" placeholder="例如：睡前擴香、空間淨化"></div>
           <div class="field">
             <label>來源</label>
             <select id="labSource">
-              <option>手動</option><option>AI推薦</option><option>擴香日誌</option><option>正式配方</option>
+              <option>手動</option><option>AI 推薦</option><option>擴香日誌</option><option>正式配方</option>
             </select>
           </div>
           <div class="field">
@@ -1028,31 +1221,46 @@ button,input,select,textarea{max-width:100%}
         <div id="labOilRows" class="blend-editor" style="margin-top:14px"></div>
         <div class="row" style="margin-top:10px">
           <button class="btn secondary" type="button" onclick="addLabOilRow()">＋ 新增精油</button>
-          <button class="btn ghost" type="button" onclick="normalizeLabRatios()">平均比例</button>
         </div>
-        <div class="field" style="margin-top:14px"><label>實驗筆記</label><textarea id="labNotes" placeholder="香氣感受、調整方向、使用結果…"></textarea></div>
+        <div class="lab-ratio-tools">
+          <div class="lab-ratio-title">📐 常用香調比例</div>
+          <div class="lab-ratio-buttons">
+            <button class="btn ghost lab-ratio-btn active-choice" type="button" data-lab-ratio="3-2-1" onclick="applyLabTmbRatio(3,2,1,this)">T3・M2・B1</button>
+            <button class="btn ghost lab-ratio-btn" type="button" data-lab-ratio="2-3-1" onclick="applyLabTmbRatio(2,3,1,this)">T2・M3・B1</button>
+            <button class="btn ghost lab-ratio-btn" type="button" data-lab-ratio="2-2-2" onclick="applyLabTmbRatio(2,2,2,this)">T2・M2・B2</button>
+            <button class="btn ghost lab-ratio-btn" type="button" data-lab-ratio="equal" onclick="normalizeLabRatios(this)">平均分配</button>
+          </div>
+          <div class="small muted" style="margin-top:8px">比例僅作為初始方向，套用後仍可手動調整。</div>
+        </div>
+        <div class="row" style="margin-top:12px">
+          <button class="btn ghost" type="button" onclick="buildLabInitialFormula()">🪄 AI 建立初始比例</button>
+          <button class="btn ghost" type="button" onclick="showLabFineTuneAdvice()">💡 AI 平衡建議</button>
+        </div>
+        <div id="labAiMessage" class="lab-ai-message"></div>
+        <div class="field" style="margin-top:14px"><label>實驗筆記</label><textarea id="labNotes" placeholder="記錄香氣感受、調整方向與使用結果"></textarea></div>
         <div class="row" style="margin-top:14px">
           <button class="btn" type="button" onclick="saveLabFormula()">儲存草稿</button>
-          <button class="btn warn" type="button" onclick="startLabTest()">開始實測並扣庫存</button>
-          <button class="btn ghost" type="button" onclick="analyzeLabFormula()">AI 分析</button>
+          <button class="btn warn" type="button" onclick="startLabTest()">開始實測並扣除庫存</button>
+          <button class="btn ghost" type="button" onclick="analyzeLabFormula()">🌿 分析香氣</button>
+          <button class="btn ghost" type="button" onclick="addLabMissingToShoppingList()">🛒 加入採購清單</button>
           <button class="btn danger" type="button" onclick="deleteCurrentLabDraft()">刪除草稿</button>
         </div>
       </div>
 
       <div class="card">
-        <h2>AI 配方分析</h2>
-        <div id="labAnalysis" class="note">加入精油後按「AI 分析」。</div>
+        <h2>🌿 香氣分析</h2>
+        <div id="labAnalysis" class="note">加入精油後，請按「分析香氣」。</div>
         <div class="analysis-grid" style="margin-top:14px">
           <div class="analysis-box"><b>香氣</b><div id="labAromaAnalysis" class="small muted" style="margin-top:6px">尚未分析</div></div>
           <div class="analysis-box"><b>T / M / B</b><div id="labTmbAnalysis" class="small muted" style="margin-top:6px">尚未分析</div></div>
           <div class="analysis-box"><b>持香度</b><div id="labLongevityAnalysis" class="small muted" style="margin-top:6px">尚未分析</div></div>
-          <div class="analysis-box"><b>調整建議</b><div id="labSuggestionAnalysis" class="small muted" style="margin-top:6px">尚未分析</div></div>
+          <div class="analysis-box"><b>平衡建議</b><div id="labSuggestionAnalysis" class="small muted" style="margin-top:6px">尚未分析</div></div>
         </div>
         <div class="note small" style="margin-top:14px">
           資料來源：
           <span class="source-pill">芝心資料</span>
-          <span class="source-pill">公開知識</span>
-          <span class="source-pill">AI分析</span>
+          <span class="source-pill">公開資料</span>
+          <span class="source-pill">AI 分析</span>
         </div>
       </div>
     </div>
@@ -1060,7 +1268,7 @@ button,input,select,textarea{max-width:100%}
     <div class="card" style="margin-top:16px">
       <div class="row" style="justify-content:space-between">
         <h2 style="margin:0">實驗配方紀錄</h2>
-        <span class="muted small">同名配方再次儲存時，會建立 V2、V3…</span>
+        <span class="muted small">同名配方再次儲存時，系統會自動建立 V2、V3 等新版本。</span>
       </div>
       <div id="labFormulaList" class="grid grid-2" style="margin-top:14px"></div>
     </div>
@@ -1070,8 +1278,8 @@ button,input,select,textarea{max-width:100%}
   <section id="inventory" class="panel">
     <div class="card">
       <div class="row" style="justify-content:space-between">
-        <h2 style="margin:0">📦 原料與包材庫存</h2>
-        <button class="btn" onclick="toggleInventoryForm(true)">＋ 新增品項</button>
+        <h2 style="margin:0">📦 原料與包材管理</h2>
+        <button class="btn" onclick="toggleInventoryForm(true)">＋ 新增庫存品項</button>
       </div>
 
       <div id="inventoryAddForm" class="card" style="display:none;margin-top:14px">
@@ -1104,9 +1312,9 @@ button,input,select,textarea{max-width:100%}
               <option value="包">包</option>
             </select>
           </div>
-          <div class="field"><label id="invAmountLabel">目前庫存數量</label><input id="invNewAmount" type="number" min="0" value="10"></div>
+          <div class="field"><label id="invAmountLabel">目前庫存</label><input id="invNewAmount" type="number" min="0" value="10"></div>
           <div class="field"><label>規格／容量（選填）</label><input id="invNewSpec" placeholder="例如：10ml／個"></div>
-          <div class="field"><label>低庫存提醒值</label><input id="invNewReorder" type="number" min="0" value="3"></div>
+          <div class="field"><label>低庫存警示值</label><input id="invNewReorder" type="number" min="0" value="3"></div>
         </div>
         <div class="row" style="margin-top:12px">
           <button class="btn" onclick="saveInventoryItem()">儲存品項</button>
@@ -1115,7 +1323,7 @@ button,input,select,textarea{max-width:100%}
       </div>
 
       <div class="note small" style="margin-top:12px">
-        液體可用 ml、蠟材可用 g；噴霧瓶、燭芯、容器等包材請用「個」或「支」。規格可另外填寫，例如「10ml／個」。
+        液體建議使用 ml，蠟材使用 g；噴霧瓶、燭芯與容器等包材請使用「個」或「支」。規格可另行填寫，例如「10 ml／個」。
       </div>
 
       <div class="inventory-filter-bar">
@@ -1128,7 +1336,7 @@ button,input,select,textarea{max-width:100%}
         <button class="inventory-filter-btn" type="button" data-inv-filter="包材工具" onclick="setInventoryCategoryFilter('包材工具',this)">包材工具</button>
         <button class="inventory-filter-btn" type="button" data-inv-filter="其他" onclick="setInventoryCategoryFilter('其他',this)">其他</button>
         <input id="inventorySearch" class="inventory-search" placeholder="搜尋品項名稱或分類" oninput="renderInventory()">
-        <label class="row small" style="gap:6px"><input id="inventoryLowOnly" type="checkbox" style="width:auto" onchange="renderInventory()">只顯示低庫存</label>
+        <label class="row small" style="gap:6px"><input id="inventoryLowOnly" type="checkbox" style="width:auto" onchange="renderInventory()">僅顯示低庫存</label>
       </div>
 
       <div style="overflow:auto;margin-top:12px">
@@ -1144,8 +1352,8 @@ button,input,select,textarea{max-width:100%}
   <section id="recipes" class="panel">
     <div class="card">
       <div class="row" style="justify-content:space-between">
-        <div><h2 style="margin:0">🧪 我的配方</h2><p class="muted small">依產品類型整理，可加入自訂標籤；修改時另存新版本。</p></div>
-        <button class="btn" onclick="addRecipeManual()">手動新增</button>
+        <div><h2 style="margin:0">🧪 查看我的配方</h2><p class="muted small">依產品類型整理，可加入自訂標籤；修改後請另存為新版本。</p></div>
+        <button class="btn" onclick="addRecipeManual()">＋ 手動新增配方</button>
       </div>
       <div class="row" style="margin-top:14px">
         <select id="recipeTypeFilter" onchange="renderRecipes()"><option value="">全部產品類型</option><option>香氛噴霧</option><option>滾珠</option><option>按摩油</option><option>香氛蠟燭</option><option>擴香</option><option>其他</option></select>
@@ -1160,14 +1368,21 @@ button,input,select,textarea{max-width:100%}
     <div class="card encyclopedia-shell">
       <div class="encyclopedia-head">
         <div>
-          <h2 style="margin:0 0 5px">🌿 精油百科</h2>
-          <p class="muted" style="margin:0">搜尋、篩選、查看與新增精油，都集中在這裡。</p>
+          <h2 style="margin:0 0 5px">📚 精油資料庫</h2>
+          <p class="muted" style="margin:0">精油知識、自有庫存、常用收藏與最近使用紀錄，都集中在這裡管理。</p>
         </div>
         <button class="btn" onclick="openAddOilForm()">＋ 新增精油</button>
       </div>
 
+
+      <div class="oil-view-tabs" id="oilViewTabs">
+        <button class="oil-view-tab active" type="button" data-oil-view="all" onclick="setOilView('all',this)">📖 精油百科</button>
+        <button class="oil-view-tab" type="button" data-oil-view="mine" onclick="setOilView('mine',this)">🌿 我的精油</button>
+        <button class="oil-view-tab" type="button" data-oil-view="common" onclick="setOilView('common',this)">⭐ 常用精油</button>
+        <button class="oil-view-tab" type="button" data-oil-view="recent" onclick="setOilView('recent',this)">🆕 最近使用</button>
+      </div>
       <div class="encyclopedia-search">
-        <input id="oilSearch" placeholder="搜尋精油名稱、香氣、功效…" oninput="renderOils()" />
+        <input id="oilSearch" placeholder="搜尋精油名稱、香氣或用途" oninput="renderOils()" />
         <select id="oilToneFilter" onchange="renderOils()">
           <option value="">全部香調</option>
           <option value="T">前調 T</option>
@@ -1178,7 +1393,8 @@ button,input,select,textarea{max-width:100%}
 
       <div id="addOilForm" class="card compact-form" style="display:none;margin-top:14px">
         <div class="row" style="justify-content:space-between;align-items:center">
-          <h3 style="margin:0">新增精油</h3>
+          <h3 id="oilFormTitle" style="margin:0">新增精油</h3>
+          <input id="editingOilId" type="hidden">
           <button class="icon-btn" onclick="closeAddOilForm()" aria-label="關閉">×</button>
         </div>
         <div class="grid grid-3" style="margin-top:14px">
@@ -1197,33 +1413,41 @@ button,input,select,textarea{max-width:100%}
           <div class="field"><label>適合系列（逗號分隔）</label><input id="newOilTags" placeholder="放鬆,睡眠"></div>
         </div>
         <div class="grid grid-2" style="margin-top:12px">
-          <div class="field"><label>身體支持</label><textarea id="newOilBody"></textarea></div>
-          <div class="field"><label>情緒支持</label><textarea id="newOilEmotion"></textarea></div>
+          <div class="field"><label>身體應用參考</label><textarea id="newOilBody"></textarea></div>
+          <div class="field"><label>情緒應用參考</label><textarea id="newOilEmotion"></textarea></div>
         </div>
-        <div class="field" style="margin-top:12px"><label>禁忌與提醒</label><textarea id="newOilWarning"></textarea></div>
+        <div class="field" style="margin-top:12px"><label>安全提醒</label><textarea id="newOilWarning"></textarea></div>
         <div class="row" style="margin-top:12px">
-          <button class="btn" onclick="saveNewOil()">儲存精油</button>
+          <button class="btn" id="saveOilBtn" onclick="saveNewOil()">儲存精油資料</button>
           <button class="btn secondary" onclick="closeAddOilForm()">取消</button>
         </div>
       </div>
 
+      <details class="tool-fold">
+        <summary><span id="oilListTitle">📖 精油百科</span><small id="oilCountLabel"></small></summary>
+        <div class="tool-content">
+          <div id="oilGrid" class="grid grid-3"></div>
+        </div>
+      </details>
+
+
       <div class="encyclopedia-tools">
         <details class="tool-fold">
-          <summary><span>🎯 智慧找精油</span><small>依身體、情緒、情境、香味篩選</small></summary>
+          <summary><span>🎯 智慧找精油</span><small>依身體、情緒、情境與香氣分類篩選</small></summary>
           <div class="tool-content">
             <div class="grid" style="grid-template-columns:repeat(4,minmax(0,1fr))">
               <div class="field">
-                <label>身體功效</label>
+                <label>身體需求</label>
                 <select id="bodyNeedFilter" onchange="renderSmartOilFinder()">
-                  <option value="">全部身體功效</option>
+                  <option value="">全部身體需求</option>
                   <option>呼吸支持</option><option>肌肉舒緩</option><option>循環支持</option><option>消化支持</option>
                   <option>頭部舒緩</option><option>皮膚保養</option><option>女性支持</option><option>免疫支持</option><option>睡眠支持</option>
                 </select>
               </div>
               <div class="field">
-                <label>情緒功效</label>
+                <label>情緒需求</label>
                 <select id="emotionNeedFilter" onchange="renderSmartOilFinder()">
-                  <option value="">全部情緒功效</option>
+                  <option value="">全部情緒需求</option>
                   <option>放鬆減壓</option><option>安定安全感</option><option>快樂提振</option><option>專注清醒</option>
                   <option>自信魅力</option><option>情緒平衡</option><option>悲傷療癒</option><option>靜心冥想</option>
                 </select>
@@ -1238,16 +1462,16 @@ button,input,select,textarea{max-width:100%}
                 </select>
               </div>
               <div class="field">
-                <label>香味分類</label>
+                <label>香氣分類</label>
                 <select id="aromaCategoryFilter" onchange="renderSmartOilFinder()">
-                  <option value="">全部香味分類</option>
+                  <option value="">全部香氣分類</option>
                   <option>柑橘系</option><option>花香系</option><option>草本系</option><option>木質系</option>
                   <option>森林系</option><option>辛香系</option><option>樟腦系</option><option>樹脂系</option>
                 </select>
               </div>
             </div>
             <div class="row" style="margin-top:12px">
-              <button class="btn ghost" type="button" onclick="resetSmartOilFinder()">清除篩選</button>
+              <button class="btn ghost" type="button" onclick="resetSmartOilFinder()">重設篩選</button>
               <span class="muted small" id="smartFinderSummary">顯示全部精油</span>
             </div>
             <div id="smartOilGrid" class="grid grid-3" style="margin-top:14px"></div>
@@ -1265,17 +1489,18 @@ button,input,select,textarea{max-width:100%}
               <button class="core-chip" data-series="睡眠" onclick="showCoreSeries('睡眠',this)">😴 睡眠</button>
               <button class="core-chip" data-series="淨化" onclick="showCoreSeries('淨化',this)">✨ 淨化</button>
             </div>
-            <div id="coreSeriesResult" class="note" style="margin-top:14px">點選主題查看適合的精油。</div>
+            <div id="coreSeriesResult" class="note" style="margin-top:14px">請選擇主題，以查看適合的精油。</div>
             <div id="coreSeriesOilGrid" class="grid grid-3" style="margin-top:14px"></div>
           </div>
         </details>
       </div>
 
+
       <div class="encyclopedia-tools">
         <details class="tool-fold">
           <summary><span>🌟 生命靈數精油</span><small>1～9 號參考配方</small></summary>
           <div class="tool-content">
-            <div class="note">以下為其他老師配方，保留為參考來源，不直接視為芝心調香室官方定案配方。</div>
+            <div class="note">以下內容來自其他老師的參考配方，僅供比對與研究，不視為芝心調香室的正式定案配方。</div>
             <div id="numerologyGrid" class="grid grid-3" style="margin-top:16px"></div>
           </div>
         </details>
@@ -1288,12 +1513,6 @@ button,input,select,textarea{max-width:100%}
         </details>
       </div>
 
-      <details class="tool-fold" style="margin-top:18px">
-        <summary><span>📚 全部精油</span><small id="oilCountLabel"></small></summary>
-        <div class="tool-content">
-          <div id="oilGrid" class="grid grid-3"></div>
-        </div>
-      </details>
     </div>
   </section>
 
@@ -1301,7 +1520,7 @@ button,input,select,textarea{max-width:100%}
   <section id="records" class="panel">
     <div class="card">
       <div class="row" style="justify-content:space-between;align-items:flex-start">
-        <div><h2 style="margin:0">記錄管理</h2><p class="muted small" style="margin-bottom:0">製作紀錄、擴香紀錄與使用紀錄集中管理。</p></div>
+        <div><h2 style="margin:0">記錄管理</h2><p class="muted small" style="margin-bottom:0">集中管理製作、擴香與成品使用紀錄。</p></div>
       </div>
       <div class="record-tabs" style="margin-top:16px">
         <button class="record-tab-btn active" type="button" data-record-tab="production" onclick="openRecordTab('production',this)">製作紀錄</button>
@@ -1313,14 +1532,14 @@ button,input,select,textarea{max-width:100%}
         <div class="grid grid-2">
           <div class="card">
             <h2>📖 製作紀錄</h2>
-            <p class="muted small">記錄實際製作；儲存時再決定是否同步扣除庫存。</p>
+            <p class="muted small">記錄實際製作內容；儲存時可再決定是否同步扣除庫存。</p>
             <div class="grid grid-2">
               <div class="field"><label>配方／產品名稱</label><input id="manualProdName"></div>
               <div class="field"><label>產品類型</label><select id="manualProdType"><option>香氛噴霧</option><option>滾珠</option><option>按摩油</option><option>香氛蠟燭</option><option>擴香</option><option>其他</option></select></div>
               <div class="field"><label>數量</label><input id="manualProdQty" type="number" min="1" value="1"></div>
               <div class="field"><label>單位容量／重量</label><input id="manualProdVolume" type="number" min="0" value="30"></div>
             </div>
-            <div class="field" style="margin-top:12px"><label>使用原料（每行：名稱, 扣除量, 單位）</label><textarea id="manualProdMaterials" placeholder="例如：&#10;薰衣草,0.5,ml&#10;大豆蠟,170,g"></textarea></div>
+            <div class="field" style="margin-top:12px"><label>使用原料（每行格式：名稱、扣除量、單位）</label><textarea id="manualProdMaterials" placeholder="例如：&#10;薰衣草,0.5,ml&#10;大豆蠟,170,g"></textarea></div>
             <div class="field" style="margin-top:12px"><label>備註</label><textarea id="manualProdNote"></textarea></div>
             <button class="btn" style="margin-top:12px" onclick="addManualProductionRecord()">儲存製作紀錄</button>
           </div>
@@ -1331,7 +1550,7 @@ button,input,select,textarea{max-width:100%}
       <div id="recordDiffuserPanel" class="record-tab-panel">
         <div class="card">
           <h2>🌿 擴香紀錄</h2>
-          <p class="muted small">由「擴香日誌」儲存後自動建立，並同步扣除精油庫存。</p>
+          <p class="muted small">由「擴香日誌」儲存後自動建立，並同步扣除對應的精油庫存。</p>
           <div id="diffuserRecordList"></div>
         </div>
       </div>
@@ -1340,7 +1559,7 @@ button,input,select,textarea{max-width:100%}
         <div class="grid grid-2">
           <div class="card">
             <h2>🌿 使用紀錄</h2>
-            <p class="muted small">記錄噴霧、蠟燭、滾珠等成品的實際使用；與擴香日誌分開。</p>
+            <p class="muted small">記錄噴霧、蠟燭與滾珠等成品的實際使用情況，並與擴香紀錄分開管理。</p>
             <div class="grid grid-2">
               <div class="field"><label>使用的產品</label><input id="usageProduct"></div>
               <div class="field"><label>產品類型</label><select id="usageType"><option>香氛噴霧</option><option>滾珠</option><option>按摩油</option><option>香氛蠟燭</option><option>其他</option></select></div>
@@ -1361,7 +1580,7 @@ button,input,select,textarea{max-width:100%}
     <div class="grid grid-2">
       <div class="card">
         <h2>資料備份</h2>
-        <p class="muted">資料儲存在目前瀏覽器的 localStorage。建議定期匯出 JSON 備份。</p>
+        <p class="muted">資料會儲存在目前瀏覽器的 localStorage 中，建議定期匯出 JSON 備份檔。</p>
         <div class="row">
           <button class="btn" onclick="exportData()">匯出 JSON</button>
           <label class="btn secondary" style="cursor:pointer">匯入 JSON
@@ -1371,8 +1590,11 @@ button,input,select,textarea{max-width:100%}
       </div>
       <div class="card">
         <h2>重設</h2>
-        <p class="muted">會恢復最初庫存、刪除自訂配方與製作紀錄。</p>
-        <button class="btn danger" onclick="resetAll()">恢復初始資料</button>
+        <p class="muted">此操作會恢復初始庫存，並刪除自訂配方與製作紀錄。</p>
+        <div class="row">
+          <button class="btn ghost" onclick="restoreOriginalOils()">恢復原始精油資料</button>
+          <button class="btn danger" onclick="resetAll()">重設全部資料</button>
+        </div>
       </div>
     </div>
   </section>
@@ -1382,8 +1604,22 @@ button,input,select,textarea{max-width:100%}
 
 <div class="modal" id="oilModal" onclick="if(event.target===this)closeModal()">
   <div class="modal-box">
-    <button class="close" onclick="closeModal()">×</button>
     <div id="oilModalContent"></div>
+  </div>
+</div>
+
+<div class="modal" id="purchaseModal" onclick="if(event.target===this)closePurchaseModal()">
+  <div class="modal-box" style="width:min(460px,100%)">
+    <button class="close" type="button" onclick="closePurchaseModal()">×</button>
+    <h2 style="margin-top:0">完成採購並加入庫存</h2>
+    <p class="muted" id="purchaseModalText">請選擇本次採購的容量。</p>
+    <div class="purchase-size-grid">
+      <button class="purchase-size-btn" type="button" onclick="completeShoppingPurchase(10)">10 ml</button>
+      <button class="purchase-size-btn" type="button" onclick="completeShoppingPurchase(30)">30 ml</button>
+      <button class="purchase-size-btn" type="button" onclick="completeShoppingPurchase(50)">50 ml</button>
+      <button class="purchase-size-btn" type="button" onclick="completeShoppingPurchase(100)">100 ml</button>
+      <button class="purchase-size-btn custom" type="button" onclick="completeCustomShoppingPurchase()">輸入自訂容量</button>
+    </div>
   </div>
 </div>
 
@@ -5149,7 +5385,8 @@ const MASTER_OIL_DATABASE = [
   }
 ];
 
-let oils = MASTER_OIL_DATABASE.map(o=>({...o, aliases:[...(o.aliases||[])], tags:[...(o.tags||[])], sourceRecords:[...(o.sourceRecords||[])]}));
+function cloneOil(o){return {...o,aliases:[...(o.aliases||[])],tags:[...(o.tags||[])],sourceRecords:[...(o.sourceRecords||[])]};}
+let oils = MASTER_OIL_DATABASE.map(cloneOil);
 
 const numerology = {
   1:["甜橙","乳香","葡萄柚","茉莉"],
@@ -5177,20 +5414,31 @@ let state = JSON.parse(localStorage.getItem("zhixinAromaState") || "null") || {
   recipes: [],
   records: [],
   customOils: [],
+  oilOverrides: {},
+  deletedOilIds: [],
   diffuserLogs: [],
   diffuserFavorites: [],
   labFormulas: [],
   usageRecords: [],
-  labDraft: null
+  labDraft: null,
+  shoppingList: [],
+  oilFavorites: []
 };
 if(!state.customOils) state.customOils=[];
+if(!state.oilOverrides) state.oilOverrides={};
+if(!state.deletedOilIds) state.deletedOilIds=[];
 state.masterDatabaseVersion=MASTER_DATABASE_VERSION;
 if(!state.diffuserLogs) state.diffuserLogs=[];
 if(!state.diffuserFavorites) state.diffuserFavorites=[];
 if(!state.labFormulas) state.labFormulas=[];
 if(!state.usageRecords) state.usageRecords=[];
 if(state.labDraft===undefined) state.labDraft=null;
-if(state.customOils.length) oils = oils.concat(state.customOils.filter(c=>!oils.some(o=>o.name===c.name)));
+if(!Array.isArray(state.shoppingList)) state.shoppingList=[];
+if(!Array.isArray(state.oilFavorites)) state.oilFavorites=[];
+oils=MASTER_OIL_DATABASE
+  .filter(o=>!state.deletedOilIds.includes(o.id))
+  .map(o=>cloneOil({...o,...(state.oilOverrides[o.id]||{})}));
+if(state.customOils.length) oils = oils.concat(state.customOils.map(cloneOil).filter(c=>!oils.some(o=>o.id===c.id || o.name===c.name)));
 state.inventory.forEach(x=>{
   if(!x.unit){
     if(x.category==="蠟材") x.unit="g";
@@ -5212,7 +5460,17 @@ if(!state.inventory.some(x=>x.name==="香水基劑")){
 if(!state.inventory.some(x=>x.name==="生命之水（伏特加）")){
   state.inventory.push({name:"生命之水（伏特加）", category:"噴霧基底", ml:500, unit:"ml", spec:"", reorder:100});
 }
-function save(){ state.customOils=oils.filter(o=>o.custom===true); localStorage.setItem("zhixinAromaState", JSON.stringify(state)); updateKPIs(); }
+function save(){
+  state.customOils=oils.filter(o=>o.custom===true).map(cloneOil);
+  state.oilOverrides={};
+  oils.filter(o=>!o.custom).forEach(o=>{
+    const base=MASTER_OIL_DATABASE.find(m=>m.id===o.id);
+    if(base && JSON.stringify(cloneOil(base))!==JSON.stringify(cloneOil(o))) state.oilOverrides[o.id]=cloneOil(o);
+  });
+  localStorage.setItem("zhixinAromaState", JSON.stringify(state));
+  updateKPIs();
+  syncShoppingButtons();
+}
 function masterOilByName(name){
   return oils.find(o=>o.name===name || (o.aliases||[]).includes(name));
 }
@@ -5270,10 +5528,11 @@ function toneMatches(selectedTone, oilTone){
 }
 
 function formulaOilOptions(tone, selected=""){
-  const available=oils.filter(o=>toneMatches(tone,o.tone) && oilHasStock(o));
-  return '<option value="">請選擇精油</option>'+available.map(o=>
-    `<option value="${o.name}" ${o.name===selected?"selected":""}>${o.name}</option>`
-  ).join("");
+  const available=oils.filter(o=>toneMatches(tone,o.tone) && (oilHasStock(o)||o.name===selected));
+  return '<option value="">請選擇精油</option>'+available.map(o=>{
+    const missing=!oilHasStock(o);
+    return `<option value="${o.name}" ${o.name===selected?"selected":""}>${o.name}${missing?"（目前無庫存）":""}</option>`;
+  }).join("");
 }
 
 function addFormulaRow(tone="T", oilName="", ratio=""){
@@ -5379,6 +5638,68 @@ function initializeFormulaRows(){
   addFormulaRow("M","","33.3");
   addFormulaRow("B","","16.7");
 }
+function normalizeAromaText(value){
+  return String(value||"").replace(/[，、；;／/|]/g," ").replace(/\s+/g," ").trim();
+}
+function getOilScentFamilies(oil){
+  const text=normalizeAromaText([oil?.name,oil?.aroma,oil?.emotion,oil?.notes,(oil?.tags||[]).join(" ")].join(" "));
+  const rules=[
+    ["柑橘調",/柑橘|橙|檸檬|柚|葡萄柚|佛手柑|萊姆|橘|果皮/],
+    ["花香調",/花香|玫瑰|依蘭|薰衣草|茉莉|天竺葵|橙花|洋甘菊|桂花/],
+    ["木質調",/木質|雪松|檀香|森林|樹木|針葉|冷杉|松|柏|絲柏/],
+    ["草本調",/草本|迷迭香|百里香|羅勒|鼠尾草|牛膝草|藥草/],
+    ["清涼調",/薄荷|清涼|涼感|尤加利|樟腦|醒腦/],
+    ["辛香調",/辛香|香料|肉桂|丁香|薑|胡椒|小荳蔻|茴香/],
+    ["樹脂調",/樹脂|乳香|沒藥|安息香|岩蘭草|廣藿香/],
+    ["土質調",/土質|泥土|根莖|大地|接地/],
+    ["果香調",/果香|莓果|桃|梨|蘋果|熱帶水果/]
+  ];
+  const found=rules.filter(([,re])=>re.test(text)).map(([name])=>name);
+  return found.length?found:["自然芳香調"];
+}
+function buildBlendAromaAnalysis(items){
+  const valid=items.map(item=>{
+    const oil=oils.find(o=>o.name===item.name);
+    return oil?{...item,oil}:null;
+  }).filter(Boolean);
+  if(!valid.length)return null;
+  const total=valid.reduce((sum,x)=>sum+Math.max(0,Number(x.ratio)||0),0)||valid.length;
+  const familyScores={};
+  const toneScores={T:0,M:0,B:0};
+  valid.forEach(x=>{
+    const weight=(Math.max(0,Number(x.ratio)||0)||1)/total*100;
+    getOilScentFamilies(x.oil).forEach((f,i)=>familyScores[f]=(familyScores[f]||0)+weight/(i+1));
+    const tones=String(x.tone||x.oil.tone||"M").split("/").filter(t=>toneScores[t]!==undefined);
+    (tones.length?tones:["M"]).forEach(t=>toneScores[t]+=weight/(tones.length||1));
+  });
+  const families=Object.entries(familyScores).sort((a,b)=>b[1]-a[1]).map(([name])=>name);
+  const main=families[0]||"自然芳香調";
+  const secondary=families.slice(1,3);
+  const type=[...secondary,main].filter(Boolean);
+  const uniqueType=[...new Set(type)];
+  const scentType=uniqueType.length>1?uniqueType.map(x=>x.replace("調","")).join("")+"調":main;
+  const top=valid.filter(x=>String(x.tone||x.oil.tone).includes("T")).sort((a,b)=>b.ratio-a.ratio)[0];
+  const mid=valid.filter(x=>String(x.tone||x.oil.tone).includes("M")).sort((a,b)=>b.ratio-a.ratio)[0];
+  const base=valid.filter(x=>String(x.tone||x.oil.tone).includes("B")).sort((a,b)=>b.ratio-a.ratio)[0];
+  const opening=top?`${top.name}帶出${getOilScentFamilies(top.oil)[0].replace("調","")}感的開場`:`前段較為柔和，沒有特別突出的前調`;
+  const middle=mid?`${mid.name}形成配方中段的主要香氣核心`:`中段以整體混合香氣自然銜接`;
+  const ending=base?`${base.name}讓尾韻更穩定並增加深度`:`尾韻較輕盈，持香感可能偏短`;
+  let impression="香氣層次均衡，適合先進行試聞後再依喜好微調。";
+  if(toneScores.T>=50)impression="整體明亮、清新，開場感較強，香氣消散速度可能較快。";
+  else if(toneScores.M>=50)impression="整體重心落在中段，主題香氣較完整、柔和且容易被感受到。";
+  else if(toneScores.B>=40)impression="整體較沉穩厚實，尾韻明顯，持香感通常較完整。";
+  return {main,secondary,scentType,toneScores,opening,middle,ending,impression};
+}
+function aromaAnalysisHtml(result,full=false){
+  if(!result)return "";
+  const t=result.toneScores;
+  return `<h3>🌿 香氣分析</h3>
+    <div class="aroma-analysis-line"><span class="aroma-analysis-label">香調類型</span>${result.scentType}</div>
+    ${full?`<div class="aroma-analysis-line"><span class="aroma-analysis-label">主香調／輔助香調</span>${result.main}${result.secondary.length?`｜${result.secondary.join("、")}`:""}</div>`:""}
+    <div class="aroma-analysis-line"><span class="aroma-analysis-label">香氣層次</span>${result.opening}；${result.middle}；${result.ending}。</div>
+    <div class="aroma-analysis-line"><span class="aroma-analysis-label">整體印象</span>${result.impression}</div>
+    <div class="aroma-analysis-line"><span class="aroma-analysis-label">前／中／後調比例</span>T ${t.T.toFixed(0)}%・M ${t.M.toFixed(0)}%・B ${t.B.toFixed(0)}%</div>`;
+}
 let lastCalc=null;
 function updateProductFields(applyDefault=false){
   const type=document.getElementById("productType").value;
@@ -5466,7 +5787,15 @@ function calculateFormula(){
       ? `${sprayBaseName}：需要 ${baseMl.toFixed(2)} ml／現有 ${Number(sprayBaseInv.ml).toFixed(2)} ml ${sprayBaseInv.ml>=baseMl?"✅":"⚠️"}`
       : `${sprayBaseName}：庫存未建立`);
   }
-  stockCheck.innerHTML=checks.join("<br>");
+  const shortageButtons=selected.map((name,i)=>({name,need:allocated[i]/20,decision:shouldRecommendRestock(name,allocated[i]/20)})).filter(x=>x.decision.recommended).map(x=>`<button class="btn ghost" type="button" data-shopping-oil="${escapeAIText(x.name)}" onclick="addOilToShoppingList('${String(x.name).replaceAll("'","\\'")}','配方','${String(x.decision.reasons.join("；")).replaceAll("'","\\'")}','${String(lastCalc.name).replaceAll("'","\\'")}')">🛒 加入採購</button>`).join("");
+  stockCheck.innerHTML=checks.join("<br>")+(shortageButtons?`<div class="row" style="margin-top:10px">${shortageButtons}</div>`:"");
+  syncShoppingButtons();
+  const aromaBox=document.getElementById("calcAromaAnalysis");
+  const aromaResult=buildBlendAromaAnalysis(selected.map((name,i)=>({name,tone:tones[i],ratio:ratios[i]})));
+  if(aromaBox){
+    aromaBox.innerHTML=aromaAnalysisHtml(aromaResult,false);
+    aromaBox.style.display=aromaResult?"block":"none";
+  }
 }
 
 function saveCalculatedRecipe(){
@@ -5734,36 +6063,98 @@ function renderElements(){
 }
 
 
-function openAddOilForm(){ document.getElementById("addOilForm").style.display="block"; }
-function closeAddOilForm(){ document.getElementById("addOilForm").style.display="none"; }
+function resetOilForm(){
+  document.getElementById("editingOilId").value="";
+  document.getElementById("oilFormTitle").textContent="新增精油";
+  document.getElementById("saveOilBtn").textContent="儲存精油";
+  ["newOilName","newOilEn","newOilPart","newOilDrops","newOilAroma","newOilTags","newOilBody","newOilEmotion","newOilWarning"].forEach(id=>document.getElementById(id).value="");
+  document.getElementById("newOilTone").value="T";
+  document.getElementById("newOilElement").value="金";
+  document.getElementById("newOilStock").value=10;
+}
+function openAddOilForm(){ resetOilForm(); document.getElementById("addOilForm").style.display="block"; document.getElementById("addOilForm").scrollIntoView({behavior:"smooth",block:"start"}); }
+function closeAddOilForm(){ document.getElementById("addOilForm").style.display="none"; resetOilForm(); }
+function editOil(name){
+  const o=oils.find(x=>x.name===name); if(!o)return;
+  document.getElementById("editingOilId").value=o.id||o.name;
+  document.getElementById("oilFormTitle").textContent=`編輯精油｜${o.name}`;
+  document.getElementById("saveOilBtn").textContent="儲存修改";
+  document.getElementById("newOilName").value=o.name||"";
+  document.getElementById("newOilEn").value=o.en||"";
+  document.getElementById("newOilTone").value=["T","M","B","T/M","M/B"].includes(o.tone)?o.tone:"M";
+  document.getElementById("newOilPart").value=o.part||"";
+  document.getElementById("newOilElement").value=["金","木","水","火","土","待確認"].includes(o.element)?o.element:"待確認";
+  const inv=invByName(o.name);
+  document.getElementById("newOilStock").value=inv?Number(inv.ml||0):0;
+  document.getElementById("newOilAroma").value=o.aroma||"";
+  document.getElementById("newOilDrops").value=o.drops||"";
+  document.getElementById("newOilTags").value=(o.tags||[]).join(",");
+  document.getElementById("newOilBody").value=o.body||"";
+  document.getElementById("newOilEmotion").value=o.emotion||"";
+  document.getElementById("newOilWarning").value=o.warning||"";
+  document.getElementById("addOilForm").style.display="block";
+  closeModal();
+  document.getElementById("addOilForm").scrollIntoView({behavior:"smooth",block:"start"});
+}
 function saveNewOil(){
+  const editId=document.getElementById("editingOilId").value;
   const name=document.getElementById("newOilName").value.trim();
   if(!name){alert("請輸入精油名稱。");return;}
-  if(oils.some(o=>o.name===name)){alert("這支精油已存在。");return;}
-  const oil={
+  const duplicate=oils.find(o=>o.name===name && String(o.id||o.name)!==editId);
+  if(duplicate){alert("這支精油已存在。");return;}
+  const fields={
     name,
     en:document.getElementById("newOilEn").value.trim(),
     part:document.getElementById("newOilPart").value.trim()||"待補充",
     tone:document.getElementById("newOilTone").value,
+    volatility:document.getElementById("newOilTone").value,
     drops:document.getElementById("newOilDrops").value.trim()||"待確認",
     aroma:document.getElementById("newOilAroma").value.trim()||"待補充",
     body:document.getElementById("newOilBody").value.trim()||"待補充",
     emotion:document.getElementById("newOilEmotion").value.trim()||"待補充",
     tags:document.getElementById("newOilTags").value.split(/[,，]/).map(x=>x.trim()).filter(Boolean),
     element:document.getElementById("newOilElement").value,
-    warning:document.getElementById("newOilWarning").value.trim(),
-    custom:true
+    warning:document.getElementById("newOilWarning").value.trim()
   };
-  oils.push(oil);
   const stock=Number(document.getElementById("newOilStock").value||0);
-  state.inventory.push({name,category:"精油",ml:stock,unit:"ml",spec:"",reorder:3});
+  if(editId){
+    const idx=oils.findIndex(o=>String(o.id||o.name)===editId);
+    if(idx<0)return;
+    const oldName=oils[idx].name;
+    oils[idx]={...oils[idx],...fields};
+    const inv=invByName(oldName);
+    if(inv){inv.name=name;inv.ml=stock;} else state.inventory.push({name,category:"精油",ml:stock,unit:"ml",spec:"",reorder:3});
+    alert("精油資料已更新。");
+  }else{
+    const oil={id:`custom-${Date.now()}`,...fields,scientificName:"",notes:"",source:"自訂資料",sourceRecords:[],aliases:[],custom:true};
+    oils.push(oil);
+    state.inventory.push({name,category:"精油",ml:stock,unit:"ml",spec:"",reorder:3});
+    alert("新精油已加入資料庫與庫存。");
+  }
   save();
   refreshFormulaOilOptions();
-  renderOils();
-  renderInventory();
+  renderOils();renderInventory();renderSmartOilFinder();
   closeAddOilForm();
-  ["newOilName","newOilEn","newOilPart","newOilDrops","newOilAroma","newOilTags","newOilBody","newOilEmotion","newOilWarning"].forEach(id=>document.getElementById(id).value="");
-  alert("新精油已加入資料庫與庫存。");
+}
+function deleteOil(name){
+  const o=oils.find(x=>x.name===name); if(!o)return;
+  if(!confirm(`確定要從精油百科刪除「${o.name}」嗎？\n\n刪除後，AI 與配方選單將不再使用這支精油。既有歷史紀錄不會被刪除。`))return;
+  oils=oils.filter(x=>x!==o);
+  if(o.custom){
+    state.customOils=(state.customOils||[]).filter(x=>x.id!==o.id && x.name!==o.name);
+  }else{
+    if(!state.deletedOilIds.includes(o.id)) state.deletedOilIds.push(o.id);
+    delete state.oilOverrides[o.id];
+  }
+  save();refreshFormulaOilOptions();renderOils();renderSmartOilFinder();renderCandleRecommendations();
+  closeModal();
+}
+function restoreOriginalOils(){
+  if(!confirm("確定恢復原始精油百科？\n\nWord 匯入的精油修改與刪除將全部復原；你自行新增的精油會保留。"))return;
+  state.oilOverrides={};state.deletedOilIds=[];
+  oils=MASTER_OIL_DATABASE.map(cloneOil).concat((state.customOils||[]).map(cloneOil).filter(c=>!MASTER_OIL_DATABASE.some(o=>o.name===c.name)));
+  save();renderOils();renderSmartOilFinder();refreshFormulaOilOptions();renderCandleRecommendations();
+  alert("原始精油百科已恢復。");
 }
 
 
@@ -5891,7 +6282,7 @@ function showCandleFormulaDetails(addBlank=false){
 }
 function addRecommendedOilToCandle(name){
   showCandleFormulaDetails(false);
-  addCandleBlendRow(name,0);
+  addCandleBlendRow(name,0,candlePrimaryTone(name));
   const rows=[...document.querySelectorAll("#candleBlendRows .card")];
   if(rows.length===1) rows[0].querySelector(".candle-blend-ratio").value=100;
   else normalizeCandleRatios();
@@ -5899,9 +6290,13 @@ function addRecommendedOilToCandle(name){
   updateCandleTmbSummary();
 }
 function renderCandleRecommendations(){
-  const series=(document.getElementById("candleCoreSeries")||{}).value || "愛情";
+  const series=(document.getElementById("candleCoreSeries")||{}).value || "";
   const box=document.getElementById("candleRecommendations");
   if(!box)return;
+  if(!series){
+    box.innerHTML=`<div class="candle-theme-placeholder"><span class="icon">🌿</span><b>請先選擇蠟燭主題</b><br>AI 將推薦適合的精油組合。</div>`;
+    return;
+  }
   const matched=oils.filter(o=>(o.tags||[]).includes(series) && oilHasStock(o)).sort((a,b)=>candleScore(b.name)-candleScore(a.name));
   box.innerHTML=matched.length?matched.map(o=>`
     <div class="card" style="padding:12px">
@@ -5911,7 +6306,7 @@ function renderCandleRecommendations(){
       <div class="small" title="蠟燭適用性">${stars(candleScore(o.name))}</div>
       <p class="muted small" style="margin:6px 0">${o.aroma||o.emotion||""}</p>
       <button class="btn ghost" type="button" onclick="addRecommendedOilToCandle('${o.name.replaceAll("'","\\'")}')">＋ 加入蠟燭配方</button>
-    </div>`).join(""):`<p class="muted">目前沒有符合此系列的精油。</p>`;
+    </div>`).join(""):`<p class="muted">目前沒有符合此系列且有庫存的精油。</p>`;
 }
 
 function showCoreSeries(seriesName, el){
@@ -5930,58 +6325,134 @@ function showCoreSeries(seriesName, el){
     </div>`).join(""):`<p class="muted">目前資料庫尚未標記適合此系列的精油。</p>`;
 }
 
+function collectOilUsageStats(){
+  const stats={};
+  const touch=(name,recipe="",weight=1,date="")=>{if(!name)return;const key=masterOilByName(name)?.name||name;const x=stats[key]||(stats[key]={count:0,recipes:new Set(),recent:0});x.count+=weight;if(recipe)x.recipes.add(recipe);if(date){const t=new Date(date).getTime();if(Number.isFinite(t)&&Date.now()-t<=30*86400000)x.recent+=weight;}};
+  (state.records||[]).forEach(r=>(r.materials||[]).filter(m=>m.kind==="精油"||masterOilByName(m.name)).forEach(m=>touch(m.name,r.name,1,r.date)));
+  (state.diffuserLogs||[]).forEach(r=>(r.oils||[]).forEach(o=>touch(o.name,r.name,1,r.date)));
+  (state.recipes||[]).forEach(r=>(r.oils||[]).forEach(o=>touch(String(o.name||"").split("｜")[0],r.name,.5,r.date)));
+  (state.labFormulas||[]).forEach(r=>(r.oils||[]).forEach(o=>touch(o.name,r.name,.5,r.date)));
+  return stats;
+}
+function getOilAutoTags(name){
+  const stat=collectOilUsageStats()[masterOilByName(name)?.name||name]||{count:0,recipes:new Set(),recent:0};
+  const tags=[];
+  if(stat.count>=5||stat.recent>=3)tags.push("⭐ AI常用");
+  if(stat.recent>0)tags.push("🆕 最近使用");
+  return tags;
+}
+function oilAutoTagsHtml(name){const tags=getOilAutoTags(name);return tags.length?`<div class="ai-auto-tags">${tags.map(t=>`<span class="ai-auto-tag">${t}</span>`).join("")}</div>`:"";}
+function isFavoriteOil(name){return (state.oilFavorites||[]).includes(name);}
+function toggleOilFavorite(name,event){
+  if(event){event.preventDefault();event.stopPropagation();}
+  if(!name)return false;
+  const list=new Set(Array.isArray(state.oilFavorites)?state.oilFavorites:[]);
+  if(list.has(name))list.delete(name);else list.add(name);
+  state.oilFavorites=[...list];
+  save();
+  renderOils();
+  if(document.getElementById("oilModal")?.classList.contains("show"))openOil(name);
+  return false;
+}
+let currentOilView="all";
+function setOilView(view,button){
+  currentOilView=view||"all";
+  document.querySelectorAll(".oil-view-tab").forEach(x=>x.classList.toggle("active",x.dataset.oilView===currentOilView));
+  renderOils();
+}
+function oilLastUsedTime(name){
+  let latest=0; const match=n=>(masterOilByName(n)?.name||n)===(masterOilByName(name)?.name||name);
+  const readDate=d=>{const t=new Date(d||0).getTime();return Number.isFinite(t)?t:0;};
+  (state.records||[]).forEach(r=>{if((r.materials||[]).some(m=>match(m.name)))latest=Math.max(latest,readDate(r.date));});
+  (state.diffuserLogs||[]).forEach(r=>{if((r.oils||[]).some(o=>match(o.name)))latest=Math.max(latest,readDate(r.date));});
+  (state.recipes||[]).forEach(r=>{if((r.oils||[]).some(o=>match(String(o.name||"").split("｜")[0])))latest=Math.max(latest,readDate(r.date));});
+  (state.labFormulas||[]).forEach(r=>{if((r.oils||[]).some(o=>match(o.name)))latest=Math.max(latest,readDate(r.date));});
+  return latest;
+}
+function oilUsageScore(name){const x=collectOilUsageStats()[masterOilByName(name)?.name||name];return x?x.count+x.recent*2:0;}
+function oilViewLabel(){return {all:"📖 精油百科",mine:"🌿 我的精油",common:"⭐ 常用精油",recent:"🆕 最近使用"}[currentOilView]||"📖 精油百科";}
 function renderOils(){
   const countLabel=document.getElementById("oilCountLabel");
+  const title=document.getElementById("oilListTitle");
   const searchInput=document.getElementById("oilSearch");
   const toneFilter=document.getElementById("oilToneFilter");
   const q=(searchInput?.value||"").trim().toLowerCase();
   const tone=toneFilter?.value||"";
-  const filtered=oils.filter(o=>{
+  let filtered=oils.filter(o=>{
     const hay=oilSearchText(o).toLowerCase();
-    return hay.includes(q) && (!tone || String(o.tone||"").split("/").includes(tone));
+    if(!(hay.includes(q)&&(!tone||String(o.tone||"").split("/").includes(tone))))return false;
+    if(currentOilView==="mine")return Boolean(invByName(o.name));
+    if(currentOilView==="common"){const stat=collectOilUsageStats()[masterOilByName(o.name)?.name||o.name]||{count:0,recent:0};return isFavoriteOil(o.name)||stat.count>=5||stat.recent>=3;}
+    if(currentOilView==="recent")return oilLastUsedTime(o.name)>0;
+    return true;
   });
-  oilGrid.innerHTML=filtered.map((o,i)=>`
-    <div class="card oil-card" onclick="openOil('${o.name.replaceAll("'","\\'")}')">
-      <div class="row" style="justify-content:space-between"><h3 style="margin:0">${o.name}</h3><span class="badge">${o.tone}</span></div>
-      <p class="muted small">${o.en}</p>
-      <p>${o.aroma}</p>
-      ${o.tags.map(t=>`<span class="tag">${t}</span>`).join("")}
+  if(currentOilView==="common")filtered.sort((a,b)=>(Number(isFavoriteOil(b.name))-Number(isFavoriteOil(a.name)))||oilUsageScore(b.name)-oilUsageScore(a.name));
+  if(currentOilView==="recent")filtered.sort((a,b)=>oilLastUsedTime(b.name)-oilLastUsedTime(a.name));
+  const html=filtered.map(o=>`
+    <div class="card oil-card" onclick="openOil('${o.name.replaceAll("'","\'")}')">
+      <div class="oil-card-head"><div><h3 style="margin:0">${o.name}</h3><p class="muted small" style="margin:5px 0">${o.en||""}</p></div><div class="oil-card-meta"><span class="badge">${o.tone}</span><button class="oil-favorite-btn ${isFavoriteOil(o.name)?"active":""}" type="button" title="${isFavoriteOil(o.name)?"取消收藏":"加入收藏"}" onclick="return toggleOilFavorite('${o.name.replaceAll("'","\'")}',event)">${isFavoriteOil(o.name)?"⭐":"☆"}</button></div></div>
+      <p>${o.aroma||"待補充"}</p>
+      ${oilAutoTagsHtml(o.name)}
+      ${(o.tags||[]).map(t=>`<span class="tag">${t}</span>`).join("")}
     </div>`).join("");
-  if(countLabel) countLabel.textContent=`${oilGrid.children.length} 支`;
+  oilGrid.innerHTML=html||`<div class="oil-empty-state">目前這個分類沒有符合條件的精油。</div>`;
+  if(title)title.textContent=oilViewLabel();
+  if(countLabel)countLabel.textContent=`${filtered.length} 支`;
   renderSmartOilFinder();
 }
 function openOil(name){
-  const o=oils.find(x=>x.name===name); if(!o)return;
-  const inv=invByName(name);
+  const o=oils.find(x=>x.name===name);if(!o)return;
+  const stat=collectOilUsageStats()[masterOilByName(name)?.name||name]||{count:0,recipes:new Set(),recent:0};
+  const recentTime=oilLastUsedTime(name);
   oilModalContent.innerHTML=`
-    <h2>${o.name} <span class="muted small">${o.en||""}</span></h2>
-    <div class="grid grid-2">
+    <div class="oil-card-head">
+      <div><h2 style="margin:0">${o.name} <span class="muted small">${o.en||""}</span></h2></div>
+      <div class="oil-modal-actions">
+        <button class="oil-favorite-btn ${isFavoriteOil(o.name)?"active":""}" type="button" aria-label="收藏精油" onclick="return toggleOilFavorite('${o.name.replaceAll("'","\'")}',event)">${isFavoriteOil(o.name)?"⭐":"☆"}</button>
+        <button class="close" type="button" aria-label="關閉" onclick="closeModal()">×</button>
+      </div>
+    </div>
+    <div class="grid grid-2" style="margin-top:16px">
       <div><b>學名</b><p>${o.scientificName||"Word 未提供"}</p></div>
       <div><b>萃取部位</b><p>${o.part||"Word 未提供"}</p></div>
       <div><b>香調／揮發速度</b><p>${o.tone||"Word 未提供"}</p></div>
       <div><b>建議滴數</b><p>${o.drops||"Word 未提供"}</p></div>
-      <div><b>目前庫存</b><p>${inv?inv.ml+" "+(inv.unit||"ml"):"未建立"}</p></div>
       <div><b>資料來源</b><p>${o.source||"自訂資料"}</p></div>
+      <div><b>使用分析</b><p>${stat.count?`累積 ${stat.count.toFixed(1).replace(".0","")} 次${recentTime?`｜最近 ${new Date(recentTime).toLocaleDateString("zh-TW")}`:""}`:"尚無使用紀錄"}</p></div>
     </div>
     <b>香氣類型</b><p>${o.aroma||"Word 未提供"}</p>
     <b>身體功效</b><p>${o.body||"Word 未提供"}</p>
     <b>情緒功效</b><p>${o.emotion||"Word 未提供"}</p>
     ${o.notes?`<b>其他欄位／小註</b><p>${o.notes}</p>`:""}
+    <b>AI 使用標籤</b>${oilAutoTagsHtml(o.name)||"<p class='muted'>目前尚無使用標籤</p>"}
     <b>適合系列</b><p>${(o.tags||[]).length?o.tags.map(t=>`<span class="tag">${t}</span>`).join(""):"未分類"}</p>
     ${o.warning?`<div class="note"><b>注意事項／禁忌</b><br>${o.warning}</div>`:""}
-  `;
+    <div class="oil-detail-actions"><button class="btn ghost" type="button" onclick="editOil('${o.name.replaceAll("'","\'")}')">✏️ 編輯</button><button class="btn danger" type="button" onclick="deleteOil('${o.name.replaceAll("'","\'")}')">🗑️ 刪除</button></div>`;
   oilModal.classList.add("show");
 }
 function closeModal(){oilModal.classList.remove("show")}
 
 
+
 let lastCandle=null;
 let candleBlendRowId=0;
 
-function getCandleFragranceOptions(){
+function getCandleFragranceItems(){
   return state.inventory
     .filter(x=>(x.category==="香氛原料" || x.category==="精油") && Number(x.ml||0)>0)
-    .map(x=>x.name);
+    .map(x=>({inventoryName:x.name,oil:masterOilByName(x.name)}))
+    .filter(x=>x.oil);
+}
+
+function getCandleFragranceOptions(tone="", selected=""){
+  const items=getCandleFragranceItems().filter(x=>!tone || toneMatches(tone,String(x.oil.tone||"")));
+  const selectedOil=selected?masterOilByName(selected):null;
+  const selectedInventory=selectedOil
+    ? items.find(x=>x.oil.id===selectedOil.id)?.inventoryName || invByName(selected)?.name || selected
+    : selected;
+  const names=[...new Set(items.map(x=>x.inventoryName))];
+  if(selected && selectedOil && !names.includes(selectedInventory) && (!tone || toneMatches(tone,String(selectedOil.tone||"")))) names.push(selectedInventory);
+  return {names,selected:selectedInventory};
 }
 
 function populateCandleSelects(){
@@ -5990,26 +6461,46 @@ function populateCandleSelects(){
   refreshCandleBlendOptions();
 }
 
-function addCandleBlendRow(name="", ratio=""){
+function candlePrimaryTone(name, preferred=""){
+  const oil=masterOilByName(name);
+  const tones=String(oil?.tone||"").split("/").filter(t=>["T","M","B"].includes(t));
+  if(preferred && tones.includes(preferred)) return preferred;
+  return tones[0]||preferred||"T";
+}
+
+function candleToneSelectHtml(selected="T"){
+  return `<option value="T" ${selected==="T"?"selected":""}>前調（Top／T）</option>
+    <option value="M" ${selected==="M"?"selected":""}>中調（Middle／M）</option>
+    <option value="B" ${selected==="B"?"selected":""}>後調（Base／B）</option>`;
+}
+
+function candleOilOptions(tone, selected=""){
+  const result=getCandleFragranceOptions(tone,selected);
+  return '<option value="">請選擇精油</option>'+result.names.map(name=>`<option value="${name}" ${name===result.selected?"selected":""}>${name}</option>`).join("");
+}
+
+function addCandleBlendRow(name="", ratio="", tone=""){
   const details=document.getElementById("candleFormulaDetails"); if(details) details.style.display="block";
   candleBlendRowId++;
+  const resolvedTone=candlePrimaryTone(name,tone);
   const row=document.createElement("div");
   row.className="card";
   row.dataset.rowId=candleBlendRowId;
+  row.dataset.tone=resolvedTone;
   row.style.marginBottom="10px";
   row.innerHTML=`
     <div class="grid grid-3">
       <div class="field">
-        <label>香味原料</label>
-        <select class="candle-blend-material"></select>
+        <label>香調</label>
+        <select class="candle-blend-tone-select">${candleToneSelectHtml(resolvedTone)}</select>
       </div>
       <div class="field">
-        <label>自動香調</label>
-        <div class="note candle-blend-tone">待選擇</div>
+        <label>精油</label>
+        <select class="candle-blend-material">${candleOilOptions(resolvedTone,name)}</select>
       </div>
       <div class="field">
         <label>配方比例（%）</label>
-        <input class="candle-blend-ratio" type="number" min="0" max="100" step="0.01" value="${ratio}">
+        <input class="candle-blend-ratio" type="number" min="0" max="100" step="0.1" value="${ratio}">
       </div>
       <div class="field">
         <label>操作</label>
@@ -6017,25 +6508,27 @@ function addCandleBlendRow(name="", ratio=""){
       </div>
     </div>`;
   document.getElementById("candleBlendRows").appendChild(row);
-  const select=row.querySelector(".candle-blend-material");
-  const candleOptions=getCandleFragranceOptions();
-  select.innerHTML='<option value="">請選擇精油</option>'+candleOptions.map(x=>`<option value="${x}">${x}</option>`).join("");
-  if(name){
-    if(!candleOptions.includes(name)){
-      const option=document.createElement("option");
-      option.value=name;
-      option.textContent=name;
-      select.appendChild(option);
-    }
-    select.value=name;
-  }
-  updateCandleRowTone(row);
-  row.querySelector(".candle-blend-ratio").addEventListener("input",()=>{
+  const toneSelect=row.querySelector(".candle-blend-tone-select");
+  const oilSelect=row.querySelector(".candle-blend-material");
+  const ratioInput=row.querySelector(".candle-blend-ratio");
+  toneSelect.addEventListener("change",()=>{
+    row.dataset.tone=toneSelect.value;
+    oilSelect.innerHTML=candleOilOptions(toneSelect.value,"");
+    ratioInput.value=ratioInput.value||0;
+    lastCandle=null;
+    clearCandleAnalysis();
     updateCandleRatioSummary();
     updateCandleTmbSummary();
   });
-  select.addEventListener("change",()=>{
-    updateCandleRowTone(row);
+  oilSelect.addEventListener("change",()=>{
+    lastCandle=null;
+    clearCandleAnalysis();
+    updateCandleRatioSummary();
+    updateCandleTmbSummary();
+  });
+  ratioInput.addEventListener("input",()=>{
+    lastCandle=null;
+    clearCandleAnalysis(false);
     updateCandleRatioSummary();
     updateCandleTmbSummary();
   });
@@ -6043,9 +6536,8 @@ function addCandleBlendRow(name="", ratio=""){
   updateCandleTmbSummary();
 }
 
-
 function getOilToneByName(name){
-  const oil=oils.find(o=>o.name===name);
+  const oil=masterOilByName(name);
   return oil && oil.tone ? oil.tone : "未分類";
 }
 
@@ -6060,33 +6552,33 @@ function toneLabel(tone){
 }
 
 function updateCandleRowTone(row){
-  const name=row.querySelector(".candle-blend-material").value;
-  const tone=getOilToneByName(name);
-  row.dataset.tone=tone;
-  row.querySelector(".candle-blend-tone").textContent=toneLabel(tone);
+  const toneSelect=row.querySelector(".candle-blend-tone-select");
+  if(!toneSelect) return;
+  row.dataset.tone=toneSelect.value;
 }
 
 function updateCandleTmbSummary(){
-  let totals={T:0,M:0,B:0,unclassified:0};
-  document.querySelectorAll("#candleBlendRows .card").forEach(row=>{
-    const ratio=Number(row.querySelector(".candle-blend-ratio").value||0);
-    const tone=row.dataset.tone || getOilToneByName(row.querySelector(".candle-blend-material").value);
-    if(tone==="T") totals.T+=ratio;
-    else if(tone==="M") totals.M+=ratio;
-    else if(tone==="B") totals.B+=ratio;
-    else if(tone==="T/M"){totals.T+=ratio/2; totals.M+=ratio/2;}
-    else if(tone==="M/B"){totals.M+=ratio/2; totals.B+=ratio/2;}
-    else if(tone==="T/B"){totals.T+=ratio/2; totals.B+=ratio/2;}
-    else totals.unclassified+=ratio;
+  const box=document.getElementById("candleTmbSummary");
+  if(!box) return;
+  const rows=[...document.querySelectorAll("#candleBlendRows .card")];
+  const totals={T:0,M:0,B:0};
+  rows.forEach(row=>{
+    const ratio=Number(row.querySelector(".candle-blend-ratio")?.value||0);
+    const tone=row.querySelector(".candle-blend-tone-select")?.value||row.dataset.tone||"M";
+    if(totals[tone]!==undefined) totals[tone]+=ratio;
   });
-  const extra=totals.unclassified?`｜未分類：${totals.unclassified.toFixed(1).replace(".0","")}%`:"";
-  document.getElementById("candleTmbSummary").textContent=
-    `前調 T：${totals.T.toFixed(1).replace(".0","")}%｜中調 M：${totals.M.toFixed(1).replace(".0","")}%｜後調 B：${totals.B.toFixed(1).replace(".0","")}%${extra}`;
+  if(!rows.length){box.style.display="none";box.textContent="";return;}
+  box.style.display="block";
+  box.className="note small";
+  box.style.marginTop="10px";
+  box.textContent=`前調 T：${totals.T.toFixed(1).replace(".0","")}%｜中調 M：${totals.M.toFixed(1).replace(".0","")}%｜後調 B：${totals.B.toFixed(1).replace(".0","")}%`;
 }
 
 function removeCandleBlendRow(id){
   const row=document.querySelector(`[data-row-id="${id}"]`);
   if(row) row.remove();
+  lastCandle=null;
+  clearCandleAnalysis();
   updateCandleRatioSummary();
   updateCandleTmbSummary();
   if(!document.querySelector("#candleBlendRows .card")){
@@ -6095,21 +6587,22 @@ function removeCandleBlendRow(id){
 }
 
 function refreshCandleBlendOptions(){
-  const options=getCandleFragranceOptions();
-  document.querySelectorAll(".candle-blend-material").forEach(select=>{
+  document.querySelectorAll("#candleBlendRows .card").forEach(row=>{
+    const toneSelect=row.querySelector(".candle-blend-tone-select");
+    const select=row.querySelector(".candle-blend-material");
+    if(!toneSelect || !select) return;
     const current=select.value;
-    select.innerHTML='<option value="">請選擇精油</option>'+options.map(x=>`<option value="${x}">${x}</option>`).join("");
-    if(options.includes(current)) select.value=current;
-    updateCandleRowTone(select.closest(".card"));
+    select.innerHTML=candleOilOptions(toneSelect.value,current);
+    updateCandleRowTone(row);
   });
   updateCandleTmbSummary();
 }
 
 function getCandleBlend(){
   return [...document.querySelectorAll("#candleBlendRows .card")].map(row=>({
-    name:row.querySelector(".candle-blend-material").value,
-    ratio:Number(row.querySelector(".candle-blend-ratio").value||0),
-    tone:row.dataset.tone || getOilToneByName(row.querySelector(".candle-blend-material").value)
+    name:row.querySelector(".candle-blend-material")?.value||"",
+    ratio:Number(row.querySelector(".candle-blend-ratio")?.value||0),
+    tone:row.querySelector(".candle-blend-tone-select")?.value||row.dataset.tone||candlePrimaryTone(row.querySelector(".candle-blend-material")?.value||"")
   }));
 }
 
@@ -6122,17 +6615,153 @@ function updateCandleRatioSummary(){
   box.style.borderLeftColor=total>100?"var(--danger)":(Math.abs(total-100)<0.01?"var(--ok)":"var(--warn)");
 }
 
-function normalizeCandleRatios(){
-  const rows=[...document.querySelectorAll("#candleBlendRows .card")];
-  if(!rows.length) return;
-  const each=100/rows.length;
-  rows.forEach((row,i)=>{
-    row.querySelector(".candle-blend-ratio").value=(i===rows.length-1
-      ? 100-each*(rows.length-1)
-      : each).toFixed(2);
+function setCandleRatioActive(button){
+  document.querySelectorAll(".candle-ratio-btn").forEach(btn=>btn.classList.remove("active-choice"));
+  if(button) button.classList.add("active-choice");
+}
+
+function showCandleAiMessage(text){
+  const box=document.getElementById("candleAiMessage");
+  if(box) box.textContent=text;
+}
+
+function clearCandleAnalysis(resetMessage=true){
+  const box=document.getElementById("candleAromaAnalysis");
+  if(box){
+    box.style.display="block";
+    box.innerHTML=`<div class="candle-analysis-placeholder"><span class="icon">🤖</span><b>尚未分析香氣</b><br>配方已變更，請再次點擊「分析目前香氣」。<br>AI 將整理香調結構、前中後調比例、整體印象與平衡建議。</div>`;
+  }
+  if(resetMessage) showCandleAiMessage("配方已變更，可重新套用比例或進行香氣分析。");
+}
+
+function candleSelectedRows(){
+  return [...document.querySelectorAll("#candleBlendRows .card")].filter(row=>row.querySelector(".candle-blend-material")?.value);
+}
+
+function allocateCandleToneProfile(profile, rowWeightFn=null){
+  const rows=candleSelectedRows();
+  if(!rows.length) return false;
+  const groups={T:[],M:[],B:[]};
+  rows.forEach(row=>{
+    const tone=row.querySelector(".candle-blend-tone-select")?.value||"M";
+    groups[tone].push(row);
   });
+  const present=["T","M","B"].filter(t=>groups[t].length);
+  const profileSum=present.reduce((sum,t)=>sum+Number(profile[t]||0),0);
+  if(!profileSum) return false;
+  let usedTotal=0;
+  present.forEach((tone,toneIndex)=>{
+    const toneTotal=toneIndex===present.length-1
+      ? Math.round((100-usedTotal)*10)/10
+      : Math.round((100*Number(profile[tone]||0)/profileSum)*10)/10;
+    usedTotal=Math.round((usedTotal+toneTotal)*10)/10;
+    const weights=groups[tone].map(row=>Math.max(0.1,Number(rowWeightFn?rowWeightFn(row):1)||1));
+    const weightSum=weights.reduce((a,b)=>a+b,0)||groups[tone].length;
+    let toneUsed=0;
+    groups[tone].forEach((row,index)=>{
+      const value=index===groups[tone].length-1
+        ? Math.round((toneTotal-toneUsed)*10)/10
+        : Math.round((toneTotal*weights[index]/weightSum)*10)/10;
+      toneUsed=Math.round((toneUsed+value)*10)/10;
+      row.querySelector(".candle-blend-ratio").value=value.toFixed(1).replace(".0","");
+    });
+  });
+  lastCandle=null;
   updateCandleRatioSummary();
   updateCandleTmbSummary();
+  return true;
+}
+
+function applyCandleToneProfile(t,m,b,button,label="常用比例"){
+  if(!candleSelectedRows().length){showCandleAiMessage("請先選擇至少一支精油，再套用常用比例。");return;}
+  setCandleRatioActive(button);
+  allocateCandleToneProfile({T:Number(t),M:Number(m),B:Number(b)});
+  clearCandleAnalysis(false);
+  showCandleAiMessage(`已套用${label}：前調 ${t}%／中調 ${m}%／後調 ${b}%。若某個香調沒有精油，系統會依現有香調重新換算至 100%。`);
+}
+
+function normalizeCandleRatios(button=null){
+  const rows=candleSelectedRows();
+  if(!rows.length){showCandleAiMessage("請先選擇至少一支精油。");return;}
+  setCandleRatioActive(button);
+  const each=100/rows.length;
+  let assigned=0;
+  rows.forEach((row,i)=>{
+    const value=i===rows.length-1?Math.round((100-assigned)*10)/10:Math.round(each*10)/10;
+    assigned=Math.round((assigned+value)*10)/10;
+    row.querySelector(".candle-blend-ratio").value=value.toFixed(1).replace(".0","");
+  });
+  [...document.querySelectorAll("#candleBlendRows .card")].filter(row=>!row.querySelector(".candle-blend-material")?.value).forEach(row=>row.querySelector(".candle-blend-ratio").value=0);
+  lastCandle=null;
+  clearCandleAnalysis(false);
+  updateCandleRatioSummary();
+  updateCandleTmbSummary();
+  showCandleAiMessage("已平均分配目前已選精油的比例，仍可手動修改。");
+}
+
+function candleIntensityWeight(name){
+  const strong=/歐薄荷|胡椒薄荷|薄荷|丁香|肉桂|依蘭|岩蘭草|廣藿香|檸檬香茅|山雞椒|冬青/.test(name);
+  const gentle=/甜橙|佛手柑|葡萄柚|薰衣草|雪松|乳香|天竺葵/.test(name);
+  const suitability=0.8+candleScore(name)/10;
+  return suitability*(strong?0.68:(gentle?1.05:0.9));
+}
+
+function suggestCandleRatios(){
+  const rows=candleSelectedRows();
+  if(!rows.length){showCandleAiMessage("請先選擇至少一支精油，再使用 AI 建議比例。");return;}
+  const oilsInBlend=rows.map(row=>masterOilByName(row.querySelector(".candle-blend-material").value)).filter(Boolean);
+  const familyCounts={};
+  oilsInBlend.forEach(o=>getOilScentFamilies(o).forEach(f=>familyCounts[f]=(familyCounts[f]||0)+1));
+  const bright=(familyCounts["柑橘調"]||0)+(familyCounts["清涼調"]||0)+(familyCounts["草本調"]||0)*0.5;
+  const deep=(familyCounts["木質調"]||0)+(familyCounts["樹脂調"]||0)+(familyCounts["土質調"]||0)+(familyCounts["辛香調"]||0)*0.5;
+  const floral=familyCounts["花香調"]||0;
+  let profile={T:40,M:40,B:20},profileName="平衡型";
+  if(bright>deep+0.5){profile={T:45,M:35,B:20};profileName="清新明亮型";}
+  else if(deep>bright+0.5){profile={T:30,M:40,B:30};profileName="沉穩濃郁型";}
+  else if(floral>=2){profile={T:35,M:45,B:20};profileName="花香柔和型";}
+  setCandleRatioActive(null);
+  allocateCandleToneProfile(profile,row=>candleIntensityWeight(row.querySelector(".candle-blend-material").value));
+  clearCandleAnalysis(false);
+  const result=getCandleBlend().filter(x=>x.name).map(x=>`${x.name} ${x.ratio.toFixed(1).replace(".0","")}%`).join("、");
+  showCandleAiMessage(`AI 已依香調結構、蠟燭適用性與氣味強度，建立「${profileName}」初始比例：${result}。這是試作起點，仍可手動調整。`);
+  analyzeCandleFormula(false);
+}
+
+function candleBalanceAdvice(blend,result){
+  const total=blend.reduce((sum,x)=>sum+Math.max(0,Number(x.ratio)||0),0)||1;
+  const t=result.toneScores;
+  const advice=[];
+  if(t.T>55) advice.push("前調較突出，開場明亮但消散可能較快，可稍微增加中調或後調");
+  if(t.M<25) advice.push("中調偏少，香氣銜接可能較薄，可加入或提高一支中調精油");
+  if(t.B<12) advice.push("後調偏少，尾韻與穩定感可能不足，可少量提高後調");
+  if(t.B>42) advice.push("後調較厚重，若希望更清爽，可降低後調並增加少量前調");
+  const dominant=blend.filter(x=>x.ratio/total*100>=50).sort((a,b)=>b.ratio-a.ratio)[0];
+  if(dominant) advice.push(`${dominant.name}占比偏高，可能遮蓋其他精油，建議先以小批量試燒確認`);
+  if(!advice.length) advice.push("前、中、後調結構大致平衡，可先進行小批量試作與試燒，再依冷香與熱香表現微調");
+  return advice.join("；")+"。";
+}
+
+function analyzeCandleFormula(showMessage=true){
+  const blend=getCandleBlend().filter(x=>x.name && x.ratio>0);
+  const box=document.getElementById("candleAromaAnalysis");
+  if(!blend.length){
+    if(box){
+      box.style.display="block";
+      box.innerHTML=`<div class="candle-analysis-placeholder"><span class="icon">🤖</span><b>尚未分析香氣</b><br>請先選擇精油並設定大於 0 的比例，再進行香氣分析。</div>`;
+    }
+    showCandleAiMessage("請先選擇精油並設定大於 0 的比例，再進行香氣分析。");
+    return;
+  }
+  const analysisBlend=blend.map(x=>({...x,name:masterOilByName(x.name)?.name||x.name}));
+  const result=buildBlendAromaAnalysis(analysisBlend);
+  if(!result){showCandleAiMessage("目前選擇的精油缺少可分析的百科資料。");return;}
+  const total=blend.reduce((sum,x)=>sum+x.ratio,0);
+  box.innerHTML=`${aromaAnalysisHtml(result,true)}
+    <div class="aroma-analysis-line"><span class="aroma-analysis-label">蠟燭平衡提醒</span>${candleBalanceAdvice(blend,result)}</div>
+    ${Math.abs(total-100)>0.05?`<div class="note small" style="margin-top:10px">目前比例總和為 ${total.toFixed(1).replace(".0","")}%。分析已按現有比例換算；正式計算前仍需調整為 100%。</div>`:""}
+    <div class="note small" style="margin-top:10px">天然精油蠟燭的實際香氣仍會受到蠟材、燭芯、容器、加香溫度與養蠟時間影響，請以試燒結果為準。</div>`;
+  box.style.display="block";
+  if(showMessage) showCandleAiMessage("香氣分析已完成。分析只提供調整方向，不會自動更動目前配方。");
 }
 
 function calculateCandle(){
@@ -6205,6 +6834,7 @@ function calculateCandle(){
     checks.push(`${x.name}：需要 ${x.drops} 滴（約 ${x.mlApprox.toFixed(2)} ml）／現有 ${item?Number(item.ml).toFixed(2):0} ml ${item&&item.ml>=x.mlApprox?"✅":"⚠️"}`);
   });
   document.getElementById("candleStockCheck").innerHTML=checks.join("<br>");
+  analyzeCandleFormula(false);
 }
 
 function saveCandleRecipe(){
@@ -6259,7 +6889,7 @@ function openAIWorkspace(type, el){
   }else if(type==="stock"){
     content.innerHTML=`<div class="card"><h3>📦 依庫存推薦</h3><p class="muted">從目前庫存大於 0 ml 的精油中，依核心主題推薦。</p><div class="field"><label>核心主題</label><select id="aiStockTheme"><option value="" selected disabled>請選擇主題</option><option>財富</option><option>愛情</option><option>保護</option><option>放鬆</option><option>睡眠</option><option>淨化</option></select></div><button class="btn" type="button" style="margin-top:12px" onclick="generateAIStockSuggestion()">依庫存推薦</button><div id="aiStockResult" class="note" style="margin-top:14px">請先選擇主題。</div></div>`;
   }else if(type==="restock"){
-    content.innerHTML=`<div class="card"><h3>🛒 AI 補貨建議</h3><p class="muted">分析目前有庫存的精油、香味分類與前中後調分布，推薦下一批值得補充的精油。</p><button class="btn" type="button" onclick="generateAIRestockSuggestion()">開始分析</button><div id="aiRestockResult" class="note" style="margin-top:14px">按下「開始分析」查看建議。</div></div><div class="card" style="margin-top:16px"><div class="row" style="justify-content:space-between;align-items:center"><div><h3 style="margin:0">🛍️ 採購清單</h3><p class="muted small" style="margin:5px 0 0">由自由詢問 AI 或補貨建議加入。</p></div><button class="btn ghost" type="button" onclick="clearShoppingList()">清空清單</button></div><div id="shoppingList" style="margin-top:14px"></div></div>`;
+    content.innerHTML=`<div class="card"><h3>🛒 AI 補貨建議</h3><p class="muted">分析目前庫存、香味分類與前中後調分布，推薦下一批值得補充的精油。</p><button class="btn" type="button" onclick="generateAIRestockSuggestion()">開始分析</button><div id="aiRestockResult" class="note" style="margin-top:14px">按下「開始分析」查看建議。</div></div><div class="card" style="margin-top:16px"><div class="row" style="justify-content:space-between;align-items:center"><div><h3 id="shoppingListTitle" style="margin:0">🛍️ 採購清單（0 項）</h3><p class="muted small" style="margin:5px 0 0">AI 推薦、庫存不足與手動加入共用同一份清單。</p></div><button class="btn ghost" type="button" onclick="clearShoppingList()">清空清單</button></div><div id="shoppingList" style="margin-top:14px"></div></div>`;
     renderShoppingList();
   }else{
     content.innerHTML=`<div class="card"><h3>自由詢問 AI</h3><p class="muted">可以直接描述你想做的產品、香氣目的，或目前遇到的調香問題。</p><div class="field"><label>調香問題</label><textarea id="aiFreeQuestion" placeholder="例如：我想做提升財富能量的噴霧／我最近睡不好／幫我把目前配方調得更清爽"></textarea></div><div class="row" style="margin-top:12px"><button class="btn" type="button" onclick="answerAIFreeQuestion()">送出問題</button><button class="btn ghost" type="button" onclick="clearAIFreeTask()">重新開始</button></div><div id="aiFreeAnswer" class="note" style="margin-top:14px">輸入問題後，AI 會先判斷產品類型、需求方向與適合精油，再由你確認是否導入。</div></div>`;
@@ -6270,12 +6900,43 @@ let aiLastFormulaSuggestion=null;
 let aiLastCandleSuggestion=null;
 
 function aiMatchedOils(theme, inStockOnly=true){
-  return oils.filter(o=>{
-    const tagged=(o.tags||[]).includes(theme);
-    if(!tagged) return false;
+  const stockAllowed=o=>{
     if(!inStockOnly) return true;
     const inv=invByName(o.name);
     return inv && Number(inv.ml||0)>0;
+  };
+
+  // 先保留原本的精準標籤判斷，避免影響既有推薦結果。
+  const exactMatches=oils.filter(o=>(o.tags||[]).includes(theme) && stockAllowed(o));
+  if(exactMatches.length) return exactMatches;
+
+  // 若資料中沒有完全相同的主題標籤，再從名稱、別名、香氣、情緒與說明文字尋找相關內容。
+  const relatedKeywords={
+    睡眠:["睡眠","睡覺","助眠","入睡","安眠","失眠","淺眠","沉靜","安定","放鬆"],
+    放鬆:["放鬆","舒緩","舒壓","壓力","焦慮","緊繃","平靜","安定","柔和"],
+    專注:["專注","集中","清晰","清醒","思考","記憶","讀書","考試","工作","提神","醒腦","注意力"],
+    提振:["提振","活力","精神","疲累","疲倦","清新","明亮","振奮","行動力","提神"],
+    淨化:["淨化","潔淨","清潔","除味","異味","空氣","抗菌","清新","整理"],
+    保護:["保護","防護","安全感","穩定","扎根","安定","支持","界線"],
+    愛情:["愛情","感情","桃花","浪漫","甜美","親密","魅力","柔和","幸福"],
+    財富:["財富","招財","金錢","豐盛","事業","業績","成功","自信","行動力"]
+  };
+  const keywords=relatedKeywords[theme]||[theme];
+  return oils.filter(o=>{
+    if(!stockAllowed(o)) return false;
+    const searchable=[
+      o.name,
+      ...(o.aliases||[]),
+      ...(o.tags||[]),
+      o.aroma,
+      o.emotion,
+      o.notes,
+      o.description,
+      o.effect,
+      o.category,
+      o.source
+    ].filter(Boolean).join(" ");
+    return keywords.some(keyword=>searchable.includes(keyword));
   });
 }
 
@@ -6365,7 +7026,7 @@ function transferAICandleToCalculator(){
 
   document.getElementById("candleBlendRows").innerHTML="";
   const plan=buildAITMBPlan(selected);
-  plan.forEach(item=>addCandleBlendRow(item.oil.name,item.ratio));
+  plan.forEach(item=>addCandleBlendRow(item.oil.name,item.ratio,item.tone));
   document.getElementById("candleName").value=`${theme}療癒蠟燭`;
   const core=document.getElementById("candleCoreSeries");
   if(core && [...core.options].some(x=>x.value===theme)){
@@ -6386,6 +7047,22 @@ function generateAIStockSuggestion(){
   document.getElementById("aiStockResult").innerHTML=matched.length?`<b>${theme}｜目前有庫存</b><br>${matched.map(o=>{const inv=invByName(o.name);return `${o.name}（${Number(inv.ml).toFixed(1).replace('.0','')} ml）`;}).join("<br>")}`:"目前庫存中沒有符合此主題的精油。";
 }
 
+
+function shouldRecommendRestock(name,requiredMl=0){
+  const inv=invByName(name);
+  const stock=Number(inv?.ml||0);
+  const needed=Math.max(0,Number(requiredMl||0));
+  const reasons=[];
+  if(!inv || stock<=0) reasons.push("目前無庫存");
+  else if(stock<=3) reasons.push(`庫存偏低（${stock.toFixed(1).replace(".0","")} ml）`);
+  if(needed>0 && stock<needed) reasons.push(`不足本次需求 ${needed.toFixed(2).replace(/0+$/,'').replace(/\.$/,'')} ml`);
+  const stat=collectOilUsageStats()[masterOilByName(name)?.name||name];
+  if(stat){
+    if(Number(stat.recent||0)>0) reasons.push("近期曾使用");
+    if((stat.recipes?.size||0)>=2) reasons.push("多個配方會使用");
+  }
+  return {recommended:reasons.length>0,reasons,stock,requiredMl:needed};
+}
 
 const aiRestockCategories=["柑橘","花香","草本","木質","樹脂","香料"];
 
@@ -6416,7 +7093,7 @@ function generateAIRestockSuggestion(){
   if(!result) return;
   const ownedNames=getAIRestockOwnedNames();
   const ownedOils=oils.filter(o=>ownedNames.has(o.name));
-  const candidates=oils.filter(o=>!ownedNames.has(o.name));
+  const candidates=oils.filter(o=>shouldRecommendRestock(o.name).recommended);
   const categoryCounts=Object.fromEntries(aiRestockCategories.map(c=>[c,0]));
   const toneCounts={T:0,M:0,B:0};
 
@@ -6450,7 +7127,7 @@ function generateAIRestockSuggestion(){
 
   const recommendationRows=ranked.length?ranked.map((x,i)=>{
     const reasons=[];
-    if(weakestCategories.slice(0,2).includes(x.category)) reasons.push(`目前收藏中的${x.category}類較少`);
+    if(weakestCategories.slice(0,2).includes(x.category)) reasons.push(`目前庫存中的${x.category}類較少`);
     const matchedWeakTone=String(x.oil.tone||"M").split("/").find(t=>weakestTones.slice(0,1).includes(t));
     if(matchedWeakTone) reasons.push(`可補足${toneLabelShort[matchedWeakTone]}層次`);
     if((x.oil.tags||[]).length) reasons.push(`可運用於${x.oil.tags.slice(0,3).join("、")}`);
@@ -6465,11 +7142,12 @@ function generateAIRestockSuggestion(){
   const weakToneText=weakestTones.filter(t=>toneCounts[t]===toneCounts[weakestTones[0]]).map(t=>toneLabelShort[t]).join("、");
 
   result.innerHTML=`
-    <div><b>收藏分析</b><br>${ownedSummary}</div>
+    <div><b>庫存分析</b><br>${ownedSummary}</div>
     <div style="margin-top:14px"><b>香味分類分布</b>${categoryRows}</div>
     <div class="card" style="margin-top:12px;padding:14px"><b>AI 小提醒</b><div class="small" style="margin-top:7px">目前較需要補足：${weakCategoryText||"尚無明顯缺口"}；香調上可優先考慮${weakToneText||"不同層次"}。</div></div>
     <div style="margin-top:14px"><b>推薦補充 TOP 3</b>${recommendationRows}</div>
-    <div class="small muted" style="margin-top:12px">建議依目前庫存分布產生，仍可依個人喜好、用途與預算調整。</div>`;
+    <div class="small muted" style="margin-top:12px">AI 依無庫存、≤3ml、配方需求、近期使用與多配方使用判斷。</div>`;
+  syncShoppingButtons();
 }
 let aiFreeTask=null;
 let aiFreeRotation=0;
@@ -6585,8 +7263,8 @@ function renderAIFreeTask(){
   const oilRows=aiFreeTask.oils.map((o,i)=>{
     const inv=invByName(o.name);
     const stock=Number(inv?.ml||0)>0?`庫存 ${Number(inv.ml).toFixed(1).replace('.0','')} ml`:`目前無庫存`;
-    const shoppingBtn=Number(inv?.ml||0)<=0?`<button class="btn ghost" style="padding:7px 10px" onclick="addOilToShoppingList('${String(o.name).replaceAll("'","\\'")}')">＋ 加入採購</button>`:"";
-    return `<div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid var(--line)"><div><b>${escapeAIText(o.name)}</b><div class="small muted">${escapeAIText(o.aroma||o.emotion||"")}｜${stock}</div></div><div class="row" style="gap:6px">${shoppingBtn}<button class="btn ghost" style="padding:7px 10px" onclick="removeAIFreeOil(${i})">移除</button></div></div>`;
+    const safeName=String(o.name).replaceAll("'","\\'");
+    return `<div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--line);flex-wrap:wrap"><div style="min-width:180px;flex:1"><b>${escapeAIText(o.name)}</b><div class="small muted">${escapeAIText(o.aroma||o.emotion||"")}｜${stock}</div></div><div class="row ai-oil-actions" style="gap:6px"><button class="btn ghost" style="padding:7px 10px" onclick="addAIFreeOilToLab('${safeName}')">＋ 加入配方實驗室</button><button class="btn ghost" style="padding:7px 10px" onclick="openOil('${safeName}')">📖 查看百科</button>${shouldRecommendRestock(o.name).recommended?`<button class="btn ghost" data-shopping-oil="${escapeAIText(o.name)}" style="padding:7px 10px" onclick="addOilToShoppingList('${safeName}','AI 推薦','${String(shoppingReasonFor(o.name)).replaceAll("'","\'")}',aiFreeTask?.theme||'AI 配方')">🛒 加入採購</button>`:""}<button class="btn ghost" style="padding:7px 10px" onclick="removeAIFreeOil(${i})">移除</button></div></div>`;
   }).join("") || `<div class="muted">目前沒有符合條件的精油。</div>`;
   const importBtn=aiFreeTask.type==="product"?`<button class="btn" onclick="transferAIFreeToProduct()">導入產品配方</button>`:
     aiFreeTask.type==="candle"?`<button class="btn" onclick="transferAIFreeToCandle()">導入蠟燭計算</button>`:
@@ -6597,7 +7275,7 @@ function renderAIFreeTask(){
     <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px"><div><div class="small muted">AI 任務卡</div><h3 style="margin:4px 0 0">${escapeAIText(aiFreeTypeLabel(aiFreeTask.type))}</h3></div><span class="source-pill">已分析</span></div>
     <div class="grid2" style="margin-top:14px"><div class="note"><b>產品類型</b><br>${escapeAIText(aiFreeTypeLabel(aiFreeTask.type))}</div><div class="note"><b>目的</b><br>${escapeAIText(aiFreeTask.theme)}</div></div>
     ${(aiFreeTask.excluded||[]).length?`<div class="note" style="margin-top:12px"><b>已排除</b><br>${(aiFreeTask.excluded||[]).map(escapeAIText).join("、")}</div>`:""}
-    <div style="margin-top:14px"><b>推薦精油</b>${oilRows}</div>
+    <div style="margin-top:14px"><b>推薦精油</b><div class="ai-candidate-note">AI 已依照你的需求篩選出適合的精油，以下為候選精油。香氣具有個人喜好，不需要全部使用，可加入配方實驗室自由搭配。</div>${oilRows}</div>
     <div class="note" style="margin-top:14px"><b>推薦原因</b><br>${escapeAIText(aiFreePurposeReason(aiFreeTask.theme))}${(aiFreeTask.excluded||[]).length?` 並已依照你的偏好排除 ${(aiFreeTask.excluded||[]).map(escapeAIText).join("、")}。`:""}</div>
     ${missing.length?`<div class="note" style="margin-top:12px"><b>缺少庫存</b><br>${missing.map(o=>escapeAIText(o.name)).join("、")}<div style="margin-top:10px"><button class="btn ghost" onclick="addAIFreeMissingToShoppingList()">加入採購清單</button></div></div>`:""}
     <div class="row" style="margin-top:14px">${importBtn}<button class="btn ghost" onclick="rerollAIFreeTask()">重新推薦</button><button class="btn ghost" onclick="focusAIFreeModify()">修改需求</button></div>
@@ -6676,7 +7354,7 @@ function transferAIFreeToProduct(){
 function transferAIFreeToCandle(){
   if(!aiFreeTask?.oils?.length){alert("目前沒有可導入的精油。");return;}
   document.getElementById("candleBlendRows").innerHTML="";
-  buildAITMBPlan(aiFreeTask.oils).forEach(item=>addCandleBlendRow(item.oil.name,item.ratio));
+  buildAITMBPlan(aiFreeTask.oils).forEach(item=>addCandleBlendRow(item.oil.name,item.ratio,item.tone));
   document.getElementById("candleName").value=`${aiFreeTask.theme}療癒蠟燭`;
   updateCandleRatioSummary();updateCandleTmbSummary();calculateCandle();openTab("candles");
 }
@@ -6704,60 +7382,116 @@ function saveAIFreeOilList(){
   const s=document.getElementById("aiFreeTaskStatus");if(s)s.textContent="已保留這組精油，可繼續修改或再選擇導入位置。";
 }
 
-function getShoppingList(){
-  try{return JSON.parse(localStorage.getItem("zhixinShoppingList")||"[]").filter(Boolean);}catch(e){return [];}
+function normalizeShoppingItem(item){
+  if(typeof item==="string") return {name:item,reasons:[],sources:[],recipes:[],addedAt:Date.now()};
+  return {
+    name:item?.name||"",
+    reasons:[...new Set(item?.reasons||[])],
+    sources:[...new Set(item?.sources||[])],
+    recipes:[...new Set(item?.recipes||[])],
+    addedAt:item?.addedAt||Date.now()
+  };
 }
+function migrateLegacyShoppingList(){
+  if(state.shoppingList.length) return;
+  try{
+    const legacy=JSON.parse(localStorage.getItem("zhixinShoppingList")||"[]");
+    if(Array.isArray(legacy)&&legacy.length){state.shoppingList=legacy.map(normalizeShoppingItem).filter(x=>x.name);localStorage.removeItem("zhixinShoppingList");save();}
+  }catch(e){}
+}
+function getShoppingList(){return (state.shoppingList||[]).map(normalizeShoppingItem).filter(x=>x.name);}
 function saveShoppingList(list){
-  localStorage.setItem("zhixinShoppingList",JSON.stringify([...new Set(list)]));
+  const merged=[];
+  (list||[]).map(normalizeShoppingItem).forEach(item=>{
+    const found=merged.find(x=>x.name===item.name);
+    if(found){
+      found.reasons=[...new Set([...found.reasons,...item.reasons])];
+      found.sources=[...new Set([...found.sources,...item.sources])];
+      found.recipes=[...new Set([...found.recipes,...item.recipes])];
+      found.addedAt=Math.min(found.addedAt,item.addedAt);
+    }else merged.push(item);
+  });
+  state.shoppingList=merged;
+  save();
   renderShoppingList();
+  syncShoppingButtons();
 }
-function addOilToShoppingList(name){
+function shoppingReasonFor(name,context={}){
+  const stock=Number(invByName(name)?.ml||0),need=Number(context.needMl||0);
+  if(!invByName(name)) return "尚未建立庫存";
+  if(stock<=0) return "目前無庫存";
+  if(need>stock) return `配方需求 ${need.toFixed(2)} ml，高於現有 ${stock.toFixed(2)} ml`;
+  if(stock<=3) return `低庫存（目前 ${stock.toFixed(2)} ml）`;
+  return context.reason||"AI 建議補充";
+}
+function addOilToShoppingList(name,source="AI 推薦",reason="",recipe=""){
+  if(!name)return;
   const current=getShoppingList();
-  if(!current.includes(name)) current.push(name);
+  const found=current.find(x=>x.name===name);
+  const data={name,reasons:[reason||shoppingReasonFor(name)],sources:[source||"AI 推薦"],recipes:recipe?[recipe]:[],addedAt:Date.now()};
+  if(found){found.reasons=[...new Set([...found.reasons,...data.reasons])];found.sources=[...new Set([...found.sources,...data.sources])];found.recipes=[...new Set([...found.recipes,...data.recipes])];}
+  else current.push(data);
   saveShoppingList(current);
-  const s=document.getElementById("aiFreeTaskStatus");if(s)s.textContent=`已加入採購清單：${name}`;
+  const status=document.getElementById("aiFreeTaskStatus");if(status)status.textContent=`已加入採購清單：${name}`;
 }
 function addAIFreeMissingToShoppingList(){
-  const missing=(aiFreeTask?.oils||[]).filter(o=>Number(invByName(o.name)?.ml||0)<=0).map(o=>o.name);
-  saveShoppingList([...getShoppingList(),...missing]);
-  const s=document.getElementById("aiFreeTaskStatus");if(s)s.textContent=`已加入採購清單：${missing.join("、")}`;
+  const missing=(aiFreeTask?.oils||[]).filter(o=>Number(invByName(o.name)?.ml||0)<=3).map(o=>o.name);
+  missing.forEach(name=>addOilToShoppingList(name,"AI 推薦",shoppingReasonFor(name),aiFreeTask?.theme||"AI 配方"));
+  const status=document.getElementById("aiFreeTaskStatus");if(status)status.textContent=missing.length?`已加入採購清單：${missing.join("、")}`:"目前沒有缺貨或低庫存精油。";
 }
-function removeShoppingItem(name){
-  saveShoppingList(getShoppingList().filter(x=>x!==name));
-}
+function removeShoppingItem(name){saveShoppingList(getShoppingList().filter(x=>x.name!==name));}
 function clearShoppingList(){
-  const list=getShoppingList();
-  if(!list.length){
-    renderShoppingList();
-    alert("採購清單目前是空的。");
-    return;
-  }
-  if(confirm("確定要清空採購清單嗎？")){
-    saveShoppingList([]);
-    const result=document.getElementById("aiRestockResult");
-    if(result) result.textContent="採購清單已清空。";
-  }
+  if(!getShoppingList().length){renderShoppingList();alert("採購清單目前是空的。");return;}
+  if(confirm("確定要清空採購清單嗎？")) saveShoppingList([]);
 }
+let pendingPurchaseOil="";
 function markShoppingItemPurchased(name){
+  pendingPurchaseOil=name||"";
+  const text=document.getElementById("purchaseModalText");
+  if(text)text.textContent=`請選擇「${pendingPurchaseOil}」本次購入容量。`;
+  document.getElementById("purchaseModal")?.classList.add("show");
+}
+function closePurchaseModal(){document.getElementById("purchaseModal")?.classList.remove("show");pendingPurchaseOil="";}
+function completeCustomShoppingPurchase(){
+  const value=prompt("請輸入本次購入容量（ml）：",10);
+  if(value===null)return;
+  completeShoppingPurchase(Number(value));
+}
+function completeShoppingPurchase(amount){
+  const name=pendingPurchaseOil;
+  amount=Number(amount);
+  if(!name)return;
+  if(!Number.isFinite(amount)||amount<=0){alert("請輸入大於 0 的購入量。");return;}
   const inv=invByName(name);
-  const value=prompt(`請輸入「${name}」購入後的庫存量（ml）：`,inv&&Number(inv.ml)>0?inv.ml:10);
-  if(value===null) return;
-  const amount=Number(value);
-  if(!Number.isFinite(amount)||amount<0){alert("請輸入正確的庫存量。");return;}
-  if(inv){inv.ml=amount;inv.unit=inv.unit||"ml";}
-  else state.inventory.push({name,category:"精油",ml:amount,unit:"ml",spec:"10ml／瓶",reorder:3});
+  if(inv){inv.ml=Number(inv.ml||0)+amount;inv.unit=inv.unit||"ml";}
+  else state.inventory.push({name,category:"精油",ml:amount,unit:"ml",spec:`${amount}ml／瓶`,reorder:3});
+  state.shoppingList=getShoppingList().filter(x=>x.name!==name);
   save();
-  removeShoppingItem(name);
-  renderInventory();
-  refreshFormulaOilOptions();
-  populateCandleSelects();
+  document.getElementById("purchaseModal")?.classList.remove("show");
+  pendingPurchaseOil="";
+  renderShoppingList();renderInventory();renderOils();refreshFormulaOilOptions();populateCandleSelects();syncShoppingButtons();
+  alert(`${name} 已增加 ${amount} ml 至庫存，並從採購清單移除。`);
 }
 function renderShoppingList(){
-  const box=document.getElementById("shoppingList");
-  if(!box) return;
   const list=getShoppingList();
-  if(!list.length){box.innerHTML='<div class="note muted">目前沒有待採購的精油。</div>';return;}
-  box.innerHTML=list.map(name=>`<div style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)"><div><b>${escapeAIText(name)}</b><div class="small muted">目前無庫存</div></div><div class="row" style="gap:6px"><button class="btn" type="button" onclick="markShoppingItemPurchased('${String(name).replaceAll("'","\\'")}')">已購入</button><button class="btn ghost" type="button" onclick="removeShoppingItem('${String(name).replaceAll("'","\\'")}')">移除</button></div></div>`).join("");
+  const html=!list.length?'<div class="note muted">📦 目前沒有待採購的精油</div>':list.map(item=>{
+    const safe=String(item.name).replaceAll("'","\\'");
+    const stock=Number(invByName(item.name)?.ml||0);
+    return `<div class="shopping-item"><div class="shopping-item-head"><div><b>${escapeAIText(item.name)}</b><div class="small muted">目前庫存：${stock.toFixed(2)} ml</div></div><div class="row" style="gap:6px"><button class="btn" type="button" onclick="markShoppingItemPurchased('${safe}')">➕ 加入庫存</button><button class="btn ghost" type="button" onclick="removeShoppingItem('${safe}')">🗑️ 移除</button></div></div><div class="shopping-meta"><div class="shopping-reason"><b>加入原因：</b>${item.reasons.map(escapeAIText).join("；")||"AI 建議補充"}</div><div><b>來源：</b>${item.sources.map(x=>`<span class="source-pill">${escapeAIText(x)}</span>`).join("")||"—"}</div><div><b>使用於哪些配方：</b>${item.recipes.length?item.recipes.map(escapeAIText).join("、"):"尚未指定"}</div></div></div>`;
+  }).join("");
+  const box=document.getElementById("shoppingList");
+  if(box)box.innerHTML=html;
+  const title=document.getElementById("shoppingListTitle");
+  if(title)title.textContent=`🛍️ 採購清單（${list.length} 項）`;
+}
+function isInShoppingList(name){return getShoppingList().some(x=>x.name===name);}
+function syncShoppingButtons(){
+  document.querySelectorAll('[data-shopping-oil]').forEach(btn=>{
+    const added=isInShoppingList(btn.dataset.shoppingOil);
+    btn.textContent=added?"✅ 已加入採購":"🛒 加入採購";
+    btn.classList.toggle("shopping-added",added);
+  });
+  document.querySelectorAll('.lab-oil-row').forEach(updateLabRowStock);
 }
 
 
@@ -7044,7 +7778,7 @@ function captureLabDraft(){
 function restoreLabDraft(){
   const d=state.labDraft;if(!d)return false;
   document.getElementById("labName").value=d.name||"";document.getElementById("labPurpose").value=d.purpose||"";document.getElementById("labSource").value=d.source||"手動";document.getElementById("labStatus").value=d.status||"草稿";document.getElementById("labNotes").value=d.notes||"";
-  document.getElementById("labOilRows").innerHTML="";(d.oils||[]).forEach(x=>addLabOilRow(x.name,x.ratio,x.drops));return true;
+  document.getElementById("labOilRows").innerHTML="";(d.oils||[]).forEach(x=>addLabOilRow(x.name,x.ratio,x.drops,x.tone));return true;
 }
 function deleteCurrentLabDraft(){
   const hasDraft=Boolean(state.labDraft);
@@ -7060,7 +7794,7 @@ function deleteCurrentLabDraft(){
   document.getElementById("labNotes").value="";
   document.getElementById("labOilRows").innerHTML="";
   addLabOilRow("", "", "");
-  document.getElementById("labAnalysis").textContent="加入精油後按「AI 分析」。";
+  document.getElementById("labAnalysis").textContent="加入精油後按「分析目前香氣」。";
   ["labAromaAnalysis","labTmbAnalysis","labLongevityAnalysis","labSuggestionAnalysis"].forEach(id=>{
     const el=document.getElementById(id); if(el) el.textContent="尚未分析";
   });
@@ -7072,26 +7806,168 @@ function enableLabAutosave(){
   section.addEventListener("input",()=>{clearTimeout(window._labSaveTimer);window._labSaveTimer=setTimeout(captureLabDraft,250)});
   section.addEventListener("change",captureLabDraft);
 }
-function addLabOilRow(name="",ratio="",drops=""){
+function labOilOptions(tone="",selected=""){
+  const list=oils.filter(o=>!tone||toneMatches(tone,String(o.tone||""))).sort((a,b)=>{
+    const aMine=invByName(a.name)?1:0,bMine=invByName(b.name)?1:0;
+    const aFav=isFavoriteOil(a.name)?1:0,bFav=isFavoriteOil(b.name)?1:0;
+    return (bMine-aMine)||(bFav-aFav)||oilUsageScore(b.name)-oilUsageScore(a.name)||a.name.localeCompare(b.name,"zh-Hant");
+  });
+  return '<option value="">請選擇精油</option>'+list.map(o=>`<option value="${o.name}" ${o.name===selected?"selected":""}>${o.name}</option>`).join("");
+}
+function updateLabRowStock(row){
+  const name=row.querySelector(".lab-oil")?.value||"";
+  const note=row.querySelector(".lab-stock-note");
+  const buy=row.querySelector(".lab-buy-btn");
+  const book=row.querySelector(".lab-book-btn");
+  const inv=name?invByName(name):null,stock=Number(inv?.ml||0);
+  const decision=name?shouldRecommendRestock(name):{recommended:false,reasons:[]};
+  if(note){
+    note.classList.remove("missing","low","ok");
+    if(!name)note.textContent="";
+    else if(!inv||stock<=0){note.textContent="❌ 無庫存";note.classList.add("missing");}
+    else if(stock<=3){note.textContent=`⚠️ 庫存不足（${stock.toFixed(1).replace(".0","")} ml）`;note.classList.add("low");}
+    else{note.textContent=`✅ 庫存充足（${stock.toFixed(1).replace(".0","")} ml）`;note.classList.add("ok");}
+  }
+  if(book){book.disabled=!name;book.title=name?`查看 ${name} 百科`:"請先選擇精油";}
+  if(buy){const added=name&&isInShoppingList(name);buy.disabled=!decision.recommended;buy.dataset.shoppingOil=name;buy.textContent=added?"✅ 已加入採購":"🛒 加入採購";buy.classList.toggle("shopping-added",Boolean(added));buy.classList.toggle("is-needed",Boolean(name&&decision.recommended));}
+}
+function addLabOilRow(name="",ratio="",drops="",tone=""){
   const box=document.getElementById("labOilRows"); if(!box)return;
+  const resolvedTone=tone|| (name?labPrimaryTone(name):"T");
   const row=document.createElement("div"); row.className="lab-oil-row";
-  row.innerHTML=`<div class="field"><label>精油</label><select class="lab-oil">${diffuserOilOptions(name)}</select></div>
+  row.innerHTML=`<div class="field"><label>香調</label><select class="lab-tone"><option value="T">前調（Top／T）</option><option value="M">中調（Middle／M）</option><option value="B">後調（Base／B）</option></select></div>
+    <div class="field"><label>精油</label><select class="lab-oil">${labOilOptions(resolvedTone,name)}</select><div class="lab-stock-actions"><div class="lab-stock-note"></div><button class="btn ghost lab-book-btn" type="button" aria-label="查看精油百科">📖</button><button class="btn ghost lab-buy-btn" type="button">🛒 加入採購</button></div></div>
     <div class="field"><label>比例（%）</label><input class="lab-ratio" type="number" min="0" step="0.1" value="${ratio}"></div>
     <div class="field"><label>實測滴數</label><input class="lab-drops" type="number" min="0" step="1" value="${drops}"></div>
-    <button class="btn danger" type="button" onclick="this.parentElement.remove();captureLabDraft()">刪除</button>`;
+    <button class="btn danger lab-delete-btn-row" type="button" onclick="this.parentElement.remove();captureLabDraft()">刪除</button>`;
   box.appendChild(row);
+  const toneSelect=row.querySelector(".lab-tone"),oilSelect=row.querySelector(".lab-oil");
+  toneSelect.value=resolvedTone;
+  toneSelect.addEventListener("change",()=>{const current=oilSelect.value;oilSelect.innerHTML=labOilOptions(toneSelect.value,current);if([...oilSelect.options].some(x=>x.value===current))oilSelect.value=current;updateLabRowStock(row);captureLabDraft();});
+  oilSelect.addEventListener("change",()=>{updateLabRowStock(row);captureLabDraft();});
+  row.querySelector(".lab-buy-btn").addEventListener("click",()=>addLabRowToShoppingList(row));
+  row.querySelector(".lab-book-btn").addEventListener("click",()=>{const oil=oilSelect.value;if(oil)openOil(oil);});
+  updateLabRowStock(row);
 }
 function getLabBlend(){
   return [...document.querySelectorAll("#labOilRows .lab-oil-row")].map(row=>({
+    tone:row.querySelector(".lab-tone")?.value||labPrimaryTone(row.querySelector(".lab-oil").value),
     name:row.querySelector(".lab-oil").value,
     ratio:Number(row.querySelector(".lab-ratio").value||0),
     drops:Number(row.querySelector(".lab-drops").value||0)
   })).filter(x=>x.name);
 }
-function normalizeLabRatios(){
-  const rows=[...document.querySelectorAll("#labOilRows .lab-oil-row")]; if(!rows.length)return;
+function addLabRowToShoppingList(row){
+  const name=row.querySelector(".lab-oil")?.value;
+  if(!name)return alert("請先選擇精油。");
+  const decision=shouldRecommendRestock(name);
+  if(!decision.recommended)return alert(`${name} 目前庫存充足，不需要加入採購。`);
+  const source=(document.getElementById("labName")?.value||"未命名實驗配方").trim();
+  addOilToShoppingList(name,"配方",decision.reasons.join("；"),source);
+  showLabAiMessage(`${name} 已加入 AI調香師 → 補貨建議 → 採購清單。`);
+}
+function addLabMissingToShoppingList(){
+  const source=(document.getElementById("labName")?.value||"未命名實驗配方").trim();
+  const missing=getLabBlend().filter(x=>shouldRecommendRestock(x.name,Number(x.drops||0)/20).recommended);
+  if(!missing.length){alert("目前配方沒有缺貨或低庫存精油。");return;}
+  missing.forEach(x=>{const d=shouldRecommendRestock(x.name,Number(x.drops||0)/20);addOilToShoppingList(x.name,"配方",d.reasons.join("；"),source);});
+  showLabAiMessage(`已將 ${missing.map(x=>x.name).join("、")} 加入 AI調香師 → 補貨建議 → 採購清單。`);
+}
+let currentLabTmbPreset={T:3,M:2,B:1};
+function setLabRatioActive(button){
+  document.querySelectorAll(".lab-ratio-btn").forEach(btn=>btn.classList.remove("active-choice"));
+  if(button)button.classList.add("active-choice");
+}
+function labPrimaryTone(name){
+  const oil=oils.find(o=>o.name===name);
+  if(!oil)return "M";
+  if(typeof getAIOilTone==="function")return getAIOilTone(oil,{T:0,M:0,B:0})||"M";
+  return String(oil.tone||"M").split("/")[0]||"M";
+}
+function applyLabTmbRatio(t,m,b,button){
+  const rows=[...document.querySelectorAll("#labOilRows .lab-oil-row")].filter(r=>r.querySelector(".lab-oil")?.value);
+  currentLabTmbPreset={T:Number(t),M:Number(m),B:Number(b)};
+  setLabRatioActive(button);
+  if(!rows.length){showLabAiMessage("請先加入至少一支精油，再套用常用比例。");return;}
+  const groups={T:[],M:[],B:[]};
+  rows.forEach(r=>groups[r.querySelector(".lab-tone")?.value||labPrimaryTone(r.querySelector(".lab-oil").value)]?.push(r));
+  const present=["T","M","B"].filter(k=>groups[k].length);
+  const weightSum=present.reduce((sum,k)=>sum+currentLabTmbPreset[k],0)||present.length;
+  let assigned=0;
+  present.forEach((tone,gi)=>{
+    const groupTotal=gi===present.length-1?100-assigned:100*currentLabTmbPreset[tone]/weightSum;
+    const each=groupTotal/groups[tone].length;
+    groups[tone].forEach((r,i)=>{
+      const value=i===groups[tone].length-1?groupTotal-each*(groups[tone].length-1):each;
+      r.querySelector(".lab-ratio").value=value.toFixed(1).replace(".0","");
+    });
+    assigned+=groupTotal;
+  });
+  captureLabDraft();
+  showLabAiMessage(`已套用 T${t}・M${m}・B${b} 初始比例，仍可依聞香感受自行微調。`);
+}
+function normalizeLabRatios(button){
+  const rows=[...document.querySelectorAll("#labOilRows .lab-oil-row")].filter(r=>r.querySelector(".lab-oil")?.value); if(!rows.length){showLabAiMessage("請先加入至少一支精油。");return;}
   const each=100/rows.length;
   rows.forEach((r,i)=>r.querySelector(".lab-ratio").value=(i===rows.length-1?100-each*(rows.length-1):each).toFixed(1).replace(".0",""));
+  setLabRatioActive(button);captureLabDraft();showLabAiMessage("已平均分配所有精油比例，仍可手動修改。");
+}
+function showLabAiMessage(text){
+  const box=document.getElementById("labAiMessage");if(!box)return;box.textContent=text;box.classList.add("show");
+}
+function buildLabInitialFormula(){
+  const rows=[...document.querySelectorAll("#labOilRows .lab-oil-row")].filter(r=>r.querySelector(".lab-oil")?.value);
+  if(!rows.length){alert("請先加入至少一支精油。");return;}
+  applyLabTmbRatio(currentLabTmbPreset.T,currentLabTmbPreset.M,currentLabTmbPreset.B,document.querySelector(`[data-lab-ratio="${currentLabTmbPreset.T}-${currentLabTmbPreset.M}-${currentLabTmbPreset.B}"]`));
+  document.getElementById("labSource").value="AI推薦";
+  showLabAiMessage("AI 已依精油香調建立初始配方，可依個人喜好自由調整。此結果不是標準答案。");
+  analyzeLabFormula();captureLabDraft();
+}
+function showLabFineTuneAdvice(){
+  const blend=getLabBlend();if(!blend.length){alert("請先加入精油。");return;}
+  const total=blend.reduce((s,x)=>s+x.ratio,0);
+  if(total<=0){showLabAiMessage("目前尚未設定比例，請先套用常用比例或自行輸入比例。");return;}
+  const tones={T:0,M:0,B:0};
+  blend.forEach(x=>{tones[x.tone||labPrimaryTone(x.name)]+=x.ratio/total*100;});
+  let advice="目前 T／M／B 結構大致平衡，可先進行試聞，再依個人感受微調。";
+  if(tones.T>55)advice="目前前調較突出。若聞起來太尖銳或消散太快，可稍微降低前調，增加中調或後調。";
+  else if(tones.M>55)advice="目前中調較突出。若希望開場更明亮，可增加少量前調；若想更沉穩，可增加少量後調。";
+  else if(tones.B>45)advice="目前後調較厚重。若希望香氣更清爽，可降低後調並增加少量前調。";
+  else if(tones.B<12)advice="目前後調較少。若希望香氣更穩定、尾韻更完整，可加入少量後調精油。";
+  showLabAiMessage(`AI 微調建議：${advice} 建議僅供參考，系統不會直接修改配方。`);
+  analyzeLabFormula();
+}
+function addAIFreeOilToLab(name){
+  const labPanel=document.getElementById("lab");
+  const labButton=document.querySelector('.nav button[data-tab="lab"]');
+  document.querySelectorAll(".panel").forEach(panel=>panel.classList.remove("active"));
+  document.querySelectorAll(".nav button").forEach(btn=>btn.classList.remove("active"));
+  if(labPanel)labPanel.classList.add("active");
+  if(labButton)labButton.classList.add("active");
+
+  const existing=[...document.querySelectorAll("#labOilRows .lab-oil")].some(sel=>sel.value===name);
+  if(existing){
+    showLabAiMessage(`${name} 已在配方實驗室中。`);
+    window.scrollTo({top:0,behavior:"smooth"});
+    return;
+  }
+  const empty=[...document.querySelectorAll("#labOilRows .lab-oil-row")].find(r=>!r.querySelector(".lab-oil")?.value);
+  if(empty){
+    const tone=labPrimaryTone(name);
+    empty.querySelector(".lab-tone").value=tone;
+    empty.querySelector(".lab-oil").innerHTML=labOilOptions(tone,name);
+    empty.querySelector(".lab-oil").value=name;
+    updateLabRowStock(empty);
+  }else{
+    addLabOilRow(name,"","",labPrimaryTone(name));
+  }
+  const source=document.getElementById("labSource");
+  if(source)source.value="AI推薦";
+  captureLabDraft();
+  showLabAiMessage(`已將 ${name} 加入配方實驗室，請繼續挑選或套用常用比例。`);
+  const mobileNav=document.getElementById("mainNav");
+  if(mobileNav)mobileNav.classList.remove("mobile-open");
+  window.scrollTo({top:0,behavior:"smooth"});
 }
 function nextLabVersion(name){
   const versions=state.labFormulas.filter(x=>x.name===name).map(x=>x.version||1);
@@ -7131,19 +8007,12 @@ function analyzeLabFormula(){
   const blend=getLabBlend();
   if(!blend.length){alert("請先加入精油。");return;}
   const totalRatio=blend.reduce((a,b)=>a+b.ratio,0)||1;
-  const tones={T:0,M:0,B:0};
-  const aromas=[];
-  blend.forEach(x=>{
-    const oil=oils.find(o=>o.name===x.name); if(!oil)return;
-    aromas.push(oil.aroma);
-    const r=x.ratio/totalRatio*100;
-    const ts=(oil.tone||"M").split("/");
-    ts.forEach(t=>{if(tones[t]!==undefined)tones[t]+=r/ts.length;});
-  });
+  const result=buildBlendAromaAnalysis(blend.map(x=>({name:x.name,ratio:x.ratio,tone:x.tone||labPrimaryTone(x.name)})));
+  const tones=result?.toneScores||{T:0,M:0,B:0};
   const longevity=tones.B>=35?"偏長":tones.B>=20?"中等":"偏短";
   const suggestion=tones.T<20?"可增加前調，讓開場更明亮。":tones.B<15?"可增加少量後調，提升穩定與持香。":"T/M/B 結構大致平衡，可進入實測。";
-  document.getElementById("labAnalysis").innerHTML=`已分析 ${blend.length} 支精油，比例總和 ${blend.reduce((a,b)=>a+b.ratio,0).toFixed(1).replace(".0","")}%。`;
-  document.getElementById("labAromaAnalysis").textContent=[...new Set(aromas)].slice(0,3).join("；")||"待補充";
+  document.getElementById("labAnalysis").innerHTML=aromaAnalysisHtml(result,true);
+  document.getElementById("labAromaAnalysis").textContent=result?`${result.scentType}｜${result.impression}`:"待補充";
   document.getElementById("labTmbAnalysis").textContent=`T ${tones.T.toFixed(0)}%｜M ${tones.M.toFixed(0)}%｜B ${tones.B.toFixed(0)}%`;
   document.getElementById("labLongevityAnalysis").textContent=longevity;
   document.getElementById("labSuggestionAnalysis").textContent=suggestion;
@@ -7156,7 +8025,7 @@ function loadLabFormula(id){
   document.getElementById("labStatus").value=f.status||"草稿";
   document.getElementById("labNotes").value=f.notes||"";
   document.getElementById("labOilRows").innerHTML="";
-  f.oils.forEach(x=>addLabOilRow(x.name,x.ratio,x.drops));
+  f.oils.forEach(x=>addLabOilRow(x.name,x.ratio,x.drops,x.tone));
   analyzeLabFormula();openTab("lab");
 }
 function convertLabFormula(id,type){
@@ -7165,11 +8034,13 @@ function convertLabFormula(id,type){
     document.getElementById("formulaRows").innerHTML="";
     f.oils.forEach(x=>{
       const oil=oils.find(o=>o.name===x.name);
-      const tone=getAIOilTone(oil,{T:0,M:0,B:0});
+      const tone=x.tone||getAIOilTone(oil,{T:0,M:0,B:0});
       addFormulaRow(tone,x.name,x.ratio||1);
     });
     document.getElementById("calcName").value=f.name;
     openTab("calc");calculateFormula();
+    const missing=f.oils.filter(x=>Number(invByName(x.name)?.ml||0)<=0);
+    if(missing.length)setTimeout(()=>alert(`此配方尚有 ${missing.length} 支精油無庫存：${missing.map(x=>x.name).join("、")}。配方已完整帶入，但正式製作前請先補貨。`),80);
   }else if(type==="candle"){
     document.getElementById("candleBlendRows").innerHTML="";
     f.oils.forEach(x=>addCandleBlendRow(x.name,x.ratio||1));
@@ -7198,7 +8069,7 @@ function renderLabFormulaList(){
       <div class="row" style="justify-content:space-between"><h3 style="margin:0">${f.name}</h3><span class="version-pill">V${f.version||1}</span></div>
       <p class="muted small">${f.date}｜${f.purpose||"未填用途"}</p>
       <p><span class="source-pill">${f.source}</span><span class="status warn">${f.status}</span></p>
-      <div>${f.oils.map(x=>`<span class="tag">${x.name}｜${x.ratio||0}%｜${x.drops||0}滴</span>`).join("")}</div>
+      <div>${f.oils.map(x=>`<span class="tag">${x.tone||labPrimaryTone(x.name)}｜${x.name}｜${x.ratio||0}%｜${x.drops||0}滴</span>`).join("")}</div>
       <p class="small">${f.notes||""}</p>
       <div class="row">
         <button class="btn secondary small" onclick="loadLabFormula(${f.id})">建立下一版</button>
@@ -7323,12 +8194,13 @@ function importData(e){
 }
 function resetAll(){
   if(!confirm("確定恢復初始資料？"))return;
-  state={inventory:JSON.parse(JSON.stringify(initialInventory)),recipes:[],records:[],customOils:[],diffuserLogs:[],diffuserFavorites:[],labFormulas:[],usageRecords:[],labDraft:null}; oils=MASTER_OIL_DATABASE.map(o=>({...o, aliases:[...(o.aliases||[])], tags:[...(o.tags||[])], sourceRecords:[...(o.sourceRecords||[])]}));
+  state={inventory:JSON.parse(JSON.stringify(initialInventory)),recipes:[],records:[],customOils:[],oilOverrides:{},deletedOilIds:[],diffuserLogs:[],diffuserFavorites:[],labFormulas:[],usageRecords:[],labDraft:null,shoppingList:[],oilFavorites:[]}; oils=MASTER_OIL_DATABASE.map(cloneOil);
   save();renderAll();
 }
 function renderAll(){
   updateKPIs();renderInventory();renderShoppingList();renderRecipes();renderNumerology();renderElements();renderOils();renderSmartOilFinder();renderRecords();renderUsageRecords();populateCandleSelects();refreshFormulaOilOptions();initializeDiffuserLab();renderDiffuserHistory();renderDiffuserFavorites();renderLabFormulaList();
 }
+migrateLegacyShoppingList();
 initializeFormulaRows();
 populateCandleSelects();
 updateProductFields();
