@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>芝心調香室 V21.2.1 Stable｜AI 配方串聯版</title>
+<title>芝心調香室 V21.3 Stable｜AI 香氣理解版</title>
 <style>
 :root{
   --bg:#f5f1e9;
@@ -840,6 +840,29 @@ button,input,select,textarea{max-width:100%}
   #candles .candle-info-card{position:static}
 }
 
+/* V21.3 Stable｜AI 香氣理解優化（僅自由提問） */
+.ai-inspiration-wrap{margin-top:12px;padding:13px 14px;border:1px solid var(--line);border-radius:14px;background:#fbfaf7}
+.ai-inspiration-title{font-weight:800;margin-bottom:9px}
+.ai-inspiration-chips{display:flex;gap:8px;flex-wrap:wrap}
+.ai-inspiration-chip{border:1px solid var(--line);background:#fff;color:var(--ink);padding:8px 11px;border-radius:999px;cursor:pointer;font-size:13px;font-weight:700}
+.ai-inspiration-chip:hover{border-color:var(--accent);background:#f4f7f2}
+.ai-understanding-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}
+.ai-understanding-box{padding:12px 14px;border:1px solid var(--line);border-radius:13px;background:#fff;line-height:1.65}
+.ai-understanding-box b{display:block;margin-bottom:3px}
+.ai-summary-card{margin-top:14px;padding:15px;border:1px solid #d7e0d4;border-radius:15px;background:#f1f5ef}
+.ai-summary-score{font-size:18px;font-weight:900;color:#596653}
+.ai-reason-list{display:grid;gap:4px;margin-top:7px;line-height:1.55}
+.ai-clarify-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:12px}
+.ai-clarify-options .btn{width:100%;text-align:left}
+@media(max-width:700px){.ai-understanding-grid,.ai-clarify-options{grid-template-columns:1fr}.ai-inspiration-chip{flex:1 1 140px;text-align:left}}
+
+/* V21.3 Stable｜自由提問香氣想像（僅新增顯示區塊） */
+.ai-imagination-card{margin-top:14px;padding:15px;border:1px solid var(--line);border-radius:15px;background:#fbfaf7}
+.ai-imagination-card h3{margin:0 0 10px}
+.ai-imagination-list{display:grid;gap:7px;line-height:1.6}
+.ai-imagination-line{padding:8px 10px;border-radius:10px;background:#fff;border:1px solid #ebe4da}
+@media(max-width:700px){.ai-imagination-card{padding:13px}.ai-imagination-line{padding:8px 9px}}
+
 </style>
 </head>
 <body>
@@ -865,7 +888,7 @@ button,input,select,textarea{max-width:100%}
         <p>精油資料・原料庫存・產品配方・蠟燭製作・調香紀錄</p>
       </div>
     </div>
-    <div class="badge">芝心聊癒專屬 V21.2.1 Stable｜AI 配方串聯版</div>
+    <div class="badge">芝心聊癒專屬 V22</div>
   </header>
 
   <button class="mobile-nav-toggle" id="mobileNavToggle" type="button" aria-controls="mainNav" aria-expanded="false">
@@ -6892,7 +6915,7 @@ function openAIWorkspace(type, el){
     content.innerHTML=`<div class="card"><h3>🛒 AI 補貨建議</h3><p class="muted">分析目前庫存、香味分類與前中後調分布，推薦下一批值得補充的精油。</p><button class="btn" type="button" onclick="generateAIRestockSuggestion()">開始分析</button><div id="aiRestockResult" class="note" style="margin-top:14px">按下「開始分析」查看建議。</div></div><div class="card" style="margin-top:16px"><div class="row" style="justify-content:space-between;align-items:center"><div><h3 id="shoppingListTitle" style="margin:0">🛍️ 採購清單（0 項）</h3><p class="muted small" style="margin:5px 0 0">AI 推薦、庫存不足與手動加入共用同一份清單。</p></div><button class="btn ghost" type="button" onclick="clearShoppingList()">清空清單</button></div><div id="shoppingList" style="margin-top:14px"></div></div>`;
     renderShoppingList();
   }else{
-    content.innerHTML=`<div class="card"><h3>自由詢問 AI</h3><p class="muted">可以直接描述你想做的產品、香氣目的，或目前遇到的調香問題。</p><div class="field"><label>調香問題</label><textarea id="aiFreeQuestion" placeholder="例如：我想做提升財富能量的噴霧／我最近睡不好／幫我把目前配方調得更清爽"></textarea></div><div class="row" style="margin-top:12px"><button class="btn" type="button" onclick="answerAIFreeQuestion()">送出問題</button><button class="btn ghost" type="button" onclick="clearAIFreeTask()">重新開始</button></div><div id="aiFreeAnswer" class="note" style="margin-top:14px">輸入問題後，AI 會先判斷產品類型、需求方向與適合精油，再由你確認是否導入。</div></div>`;
+    content.innerHTML=`<div class="card"><h3>自由詢問 AI</h3><p class="muted">直接描述想要的香氣、感受與不喜歡的方向。系統會先翻譯需求，再從目前精油百科中推薦。</p><div class="field"><label>調香問題</label><textarea id="aiFreeQuestion" placeholder="例如：我想要木質調，但帶一點女孩感，不要太甜。"></textarea></div><div class="ai-inspiration-wrap"><div class="ai-inspiration-title">不知道怎麼描述？</div><div class="ai-inspiration-chips"><button class="ai-inspiration-chip" type="button" onclick="fillAIFreeInspiration('我想要森林木質感，沉穩但不要太厚重。')">🌲 森林木質</button><button class="ai-inspiration-chip" type="button" onclick="fillAIFreeInspiration('我想要溫柔女孩感，帶柔和花香但不要太甜。')">🌸 溫柔女孩感</button><button class="ai-inspiration-chip" type="button" onclick="fillAIFreeInspiration('我想要文青咖啡館的溫暖木質與微辛香，有質感但不濃。')">☕ 文青咖啡館</button><button class="ai-inspiration-chip" type="button" onclick="fillAIFreeInspiration('我想要雨後森林的清新、濕潤木質與自然感。')">🌧 雨後森林</button><button class="ai-inspiration-chip" type="button" onclick="fillAIFreeInspiration('我想要清新明亮的柑橘草本，不要厚重。')">🍋 清新明亮</button><button class="ai-inspiration-chip" type="button" onclick="fillAIFreeInspiration('我想要睡前放鬆，柔和、安定，不要太濃。')">🌙 睡前放鬆</button><button class="ai-inspiration-chip" type="button" onclick="fillAIFreeInspiration('我想要木質居家感，溫暖、自然、有質感。')">🏡 木質居家</button><button class="ai-inspiration-chip" type="button" onclick="fillAIFreeInspiration('我想要靜心療癒，樹脂木質為主，沉穩但不厚重。')">🧘 靜心療癒</button></div></div><div class="row" style="margin-top:12px"><button class="btn" type="button" onclick="answerAIFreeQuestion()">送出問題</button><button class="btn ghost" type="button" onclick="clearAIFreeTask()">重新開始</button></div><div id="aiFreeAnswer" class="note" style="margin-top:14px">輸入問題後，AI 會先顯示「我理解你的需求」，再進行推薦。</div></div>`;
   }
 }
 
@@ -7163,6 +7186,71 @@ const aiFreeThemeAliases={
   "財富":["財富","招財","金錢","豐盛","事業","業績"]
 };
 
+const aiAromaTranslationRules={
+  aroma:{
+    木質:["木質","木頭","木香","木質調","檜木","雪松感"],森林:["森林","樹林","針葉","雨後森林","森呼吸"],花香:["花香","花調","花朵","柔和花香"],柑橘:["柑橘","果香","檸檬","佛手柑","橙","葡萄柚","明亮果香"],草本:["草本","藥草","綠意","青草"],樹脂:["樹脂","香脂","乳香感","沉香感"],辛香:["辛香","香料","暖香料","咖啡館"],清新:["清新","清爽","乾淨","輕盈"],溫暖:["溫暖","暖感","暖香","被包覆"],涼感:["涼感","清涼","薄荷感","冷冽"]
+  },
+  feeling:{
+    女孩感:["女孩感","女生一點","少女感","女性感","有女人味"],溫柔:["溫柔","柔和","柔軟"],知性:["知性","優雅","文青","氣質"],成熟:["成熟","穩重","大人感"],神秘:["神秘","深邃","暗黑"],高級:["高級","質感","精品感","有品味"],自然:["自然","大自然","原始","不人工"],明亮:["明亮","陽光","活潑","開朗"],療癒:["療癒","安撫","修復"],放鬆:["放鬆","舒壓","平靜","安定"]
+  }
+};
+
+const aiNegativeTranslationRules={
+  太甜:["不要太甜","不甜","避免甜","不要甜膩","不膩"],太濃:["不要太濃","不濃","淡一點","不要強烈"],太厚重:["不要太厚重","不厚重","不要沉重","輕一點"],太像男香:["不要太像男香","不要男香","不男性化","不要太陽剛"],花香:["不要花香","不喜歡花香","排除花香"],木質:["不要木質","不喜歡木質","排除木質"],太涼:["不要太涼","不涼","不要薄荷感"],太辛辣:["不要太辛辣","不要辛香","不辣"]
+};
+
+function fillAIFreeInspiration(text){
+  const input=document.getElementById("aiFreeQuestion");
+  if(input){input.value=text;input.focus();}
+}
+
+function matchAITranslationGroup(q,group){
+  return Object.entries(group).filter(([,words])=>words.some(w=>q.includes(w))).map(([label])=>label);
+}
+
+function parseAIFreeNeed(q){
+  const text=String(q||"").trim();
+  const aromas=matchAITranslationGroup(text,aiAromaTranslationRules.aroma);
+  const feelings=matchAITranslationGroup(text,aiAromaTranslationRules.feeling);
+  const avoids=matchAITranslationGroup(text,aiNegativeTranslationRules);
+  const primaryPriority=["木質","森林","花香","柑橘","草本","樹脂","辛香","清新","溫暖","涼感"];
+  const primary=primaryPriority.filter(x=>aromas.includes(x)).slice(0,3);
+  const accents=[];
+  if(feelings.includes("女孩感")||feelings.includes("溫柔")) accents.push("柔和花香");
+  if(feelings.includes("知性")||feelings.includes("高級")) accents.push("細緻、乾淨的提亮層次");
+  if(aromas.includes("柑橘")||feelings.includes("明亮")) accents.push("少量柑橘提亮");
+  if(!accents.length && primary.length>1) accents.push(...primary.slice(1));
+  const vagueOnly=/^(我不知道|不知道|好聞就好|女生一點|有質感|隨便|都可以|你決定)[。！!？? ]*$/.test(text) || (text.length<=6 && /不知道|好聞|女生|質感|隨便|都可以/.test(text));
+  return {
+    primary:primary.length?primary:[detectAIFreeTheme(text)==="放鬆"?"柔和、舒緩":"依需求判斷"],
+    accents:[...new Set(accents)].slice(0,3),
+    feelings:[...new Set(feelings)].slice(0,4),
+    avoids:[...new Set(avoids)].slice(0,4),
+    vague:vagueOnly,
+    confidence:Math.max(58,Math.min(96,62+primary.length*7+feelings.length*5+avoids.length*4))
+  };
+}
+
+function renderAIFreeNeedUnderstanding(need){
+  const avoidText=need.avoids.length?need.avoids.map(x=>x.startsWith("太")?x:`不要${x}`).join("、"):"尚未指定";
+  const mood=need.feelings.length?need.feelings.join("、"):(need.primary.includes("清新")?"清爽、自然":"協調、舒服");
+  return `<div class="card" style="box-shadow:none"><h3 style="margin-top:0">我理解你的需求</h3><div class="ai-understanding-grid"><div class="ai-understanding-box"><b>🌲 主體香氣</b>${need.primary.map(escapeAIText).join("、")}</div><div class="ai-understanding-box"><b>🌸 點綴香氣</b>${need.accents.length?need.accents.map(escapeAIText).join("、"):"依主體香氣柔和補足"}</div><div class="ai-understanding-box"><b>✨ 整體氛圍</b>${escapeAIText(mood)}</div><div class="ai-understanding-box"><b>🚫 希望避免</b>${escapeAIText(avoidText)}</div></div></div>`;
+}
+
+function renderAIFreeVagueClarification(){
+  const result=document.getElementById("aiFreeAnswer");if(!result)return;
+  result.innerHTML=`<div class="card" style="box-shadow:none"><h3 style="margin-top:0">請再告訴我一點點</h3><p>你比較接近哪一種？</p><div class="ai-clarify-options"><button class="btn ghost" onclick="setAIFreeMoodClarification('清新自然')">○ 清新自然</button><button class="btn ghost" onclick="setAIFreeMoodClarification('柔和甜美')">○ 柔和甜美</button><button class="btn ghost" onclick="setAIFreeMoodClarification('知性優雅')">○ 知性優雅</button><button class="btn ghost" onclick="setAIFreeMoodClarification('神秘成熟')">○ 神秘成熟</button></div><div class="small muted" style="margin-top:10px">第一版只補問這一次，選擇後會重新理解並推薦。</div></div>`;
+}
+
+function setAIFreeMoodClarification(answer){
+  const input=document.getElementById("aiFreeQuestion");
+  const base=(input?.value||"").trim();
+  const expanded={清新自然:"我想要清新自然，帶草本或柑橘，不要太濃。",柔和甜美:"我想要柔和甜美，有女孩感，但不要太甜膩。",知性優雅:"我想要知性優雅，有質感，木質為主並帶柔和花香。",神秘成熟:"我想要神秘成熟，樹脂與木質為主，不要太厚重。"}[answer]||answer;
+  if(input) input.value=expanded;
+  answerAIFreeQuestion(true);
+}
+
+
 function escapeAIText(value){
   return String(value??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;");
 }
@@ -7176,7 +7264,13 @@ function detectAIFreeType(q){
 }
 
 function detectAIFreeTheme(q){
-  return Object.entries(aiFreeThemeAliases).find(([,words])=>words.some(w=>q.includes(w)))?.[0] || "放鬆";
+  const direct=Object.entries(aiFreeThemeAliases).find(([,words])=>words.some(w=>q.includes(w)))?.[0];
+  if(direct) return direct;
+  if(/木質|森林|樹脂|知性|成熟|神秘|高級|質感/.test(q)) return "保護";
+  if(/女孩感|女性感|溫柔|花香|甜美/.test(q)) return "愛情";
+  if(/清新|明亮|柑橘|涼感/.test(q)) return "提振";
+  if(/療癒|自然|草本|靜心/.test(q)) return "放鬆";
+  return "放鬆";
 }
 
 function aiFreeTypeLabel(type){
@@ -7196,20 +7290,33 @@ function aiFreePurposeReason(theme){
   })[theme]||"依目前需求整理香氣方向。";
 }
 
-function buildAIFreeOilSelection(theme, excluded=[], seen=[]){
-  // 自由詢問 AI 使用完整精油百科，不以庫存作為推薦限制。
-  const excludedSet=new Set(excluded||[]);
-  const seenSet=new Set(seen||[]);
-  const all=aiMatchedOils(theme,false).filter(o=>!excludedSet.has(o.name));
+function buildAIFreeOilSelection(theme, excluded=[], seen=[], need=null){
+  // 僅使用目前精油百科 oils，不連接任何外部 API 或網路資料。
+  const excludedSet=new Set(excluded||[]),seenSet=new Set(seen||[]);
+  const all=oils.filter(o=>!excludedSet.has(o.name));
   if(!all.length) return [];
-
-  // 重新推薦時優先顯示尚未出現過的精油，避免只換掉一支、其餘原地跳動。
-  const fresh=all.filter(o=>!seenSet.has(o.name));
-  const pool=fresh.length?fresh:all;
-  const start=aiFreeRotation%pool.length;
-  return Array.from({length:Math.min(4,pool.length)},(_,i)=>pool[(start+i)%pool.length]);
+  const n=need||parseAIFreeNeed(aiFreeTask?.question||"");
+  const terms=[...(n.primary||[]),...(n.accents||[]),...(n.feelings||[])];
+  const negative=n.avoids||[];
+  const scored=all.map((o,index)=>{
+    const text=[o.name,...(o.aliases||[]),o.aroma,o.emotion,o.notes,...(o.tags||[])].filter(Boolean).join(" ");
+    let score=(o.tags||[]).includes(theme)?8:0;
+    terms.forEach(t=>{if(text.includes(t.replace("柔和花香","花香").replace("少量柑橘提亮","柑橘")))score+=5;});
+    if((n.feelings||[]).includes("女孩感") && /花香|柔和|甜美|女性|優雅/.test(text)) score+=6;
+    if((n.feelings||[]).includes("知性") && /木質|乾淨|清新|細膩|穩定/.test(text)) score+=5;
+    if((n.feelings||[]).includes("高級") && /樹脂|木質|花香|細膩|深沉/.test(text)) score+=4;
+    if(negative.includes("太甜") && /濃郁甜美|甜香|甜潤|清甜/.test(text)) score-=6;
+    if(negative.includes("太厚重") && /厚重|濃郁|煙燻|深沉/.test(text)) score-=5;
+    if(negative.includes("花香") && /花香|花草/.test(text)) score-=12;
+    if(negative.includes("木質") && /木質|森林|樹脂/.test(text)) score-=12;
+    if(seenSet.has(o.name)) score-=2;
+    return {o,score,index};
+  }).sort((a,b)=>b.score-a.score||a.index-b.index);
+  const fresh=scored.filter(x=>!seenSet.has(x.o.name));
+  const pool=(fresh.length>=4?fresh:scored).filter(x=>x.score>-10);
+  const offset=pool.length?aiFreeRotation%pool.length:0;
+  return Array.from({length:Math.min(4,pool.length)},(_,i)=>pool[(offset+i)%pool.length].o);
 }
-
 function detectAIFreeExcludedOils(q){
   if(!/不喜歡|不要|避開|排除|拿掉|移除|討厭|不愛/.test(q)) return [];
   const normalized=String(q||"").replace(/[，。！？、；;,.!?]/g," ");
@@ -7246,57 +7353,124 @@ function setAIFreeClarification(answer){
 function setAIFreeType(type){
   if(!aiFreeTask) aiFreeTask={question:document.getElementById("aiFreeQuestion")?.value||"",theme:"放鬆",excluded:[],seen:[]};
   aiFreeTask.type=type;
-  aiFreeTask.oils=buildAIFreeOilSelection(aiFreeTask.theme,aiFreeTask.excluded||[],aiFreeTask.seen||[]);
+  aiFreeTask.oils=buildAIFreeOilSelection(aiFreeTask.theme,aiFreeTask.excluded||[],aiFreeTask.seen||[],aiFreeTask.need);
   renderAIFreeTask();
 }
 
 function createAIFreeTask(q,type,theme){
   const excluded=detectAIFreeExcludedOils(q);
-  aiFreeTask={question:q,type,theme,excluded,seen:[],oils:buildAIFreeOilSelection(theme,excluded,[])};
+  const need=parseAIFreeNeed(q);
+  aiFreeTask={question:q,type,theme,need,excluded,seen:[],oils:[]};
+  aiFreeTask.oils=buildAIFreeOilSelection(theme,excluded,[],need);
   renderAIFreeTask();
+}
+
+function getAIFreeOilReasons(oil,need){
+  const text=[oil.aroma,oil.emotion,oil.notes,...(oil.tags||[])].filter(Boolean).join(" ");
+  const reasons=[];
+  const primary=need?.primary||[];
+  if(primary.some(x=>x==="木質"||x==="森林") && /木質|森林|針葉|樹脂/.test(text)) reasons.push("建立木質與森林主體");
+  if(primary.includes("花香") && /花香|花草/.test(text)) reasons.push("補上柔和花香層次");
+  if(primary.includes("柑橘") && /柑橘|果香|檸檬|明亮/.test(text)) reasons.push("增加清新明亮感");
+  if(primary.includes("草本") && /草本|藥草|綠葉/.test(text)) reasons.push("增加自然草本感");
+  if(primary.includes("樹脂") && /樹脂|香脂/.test(text)) reasons.push("增加深度與持香感");
+  if((need?.feelings||[]).includes("女孩感") && /花香|柔和|甜美|細膩/.test(text)) reasons.push("增加溫柔女性感");
+  if((need?.feelings||[]).includes("知性") && /木質|清新|乾淨|穩定/.test(text)) reasons.push("讓香氣更知性乾淨");
+  if((need?.avoids||[]).includes("太厚重") && /柑橘|清新|明亮|輕盈/.test(text)) reasons.push("降低木質的厚重感");
+  if((need?.avoids||[]).includes("太甜") && !/濃郁甜美|甜潤|甜香/.test(text)) reasons.push("避免香氣過度甜膩");
+  if(!reasons.length) reasons.push("補足整體香氣層次","協調前中後調結構");
+  if(reasons.length<3) reasons.push(/T/.test(oil.tone||"")?"提亮整體香氣":/B/.test(oil.tone||"")?"穩定整體香氣":"銜接主體與點綴香氣");
+  return [...new Set(reasons)].slice(0,3);
+}
+
+function buildAIFreeAromaImagination(task){
+  const selected=(task?.oils||[]).filter(Boolean);
+  if(!selected.length) return [];
+  const need=task.need||parseAIFreeNeed(task.question||"");
+  const corpus=selected.map(o=>[o.aroma,o.notes,...(o.tags||[]),o.tone,o.volatility].filter(Boolean).join(" ")).join(" ");
+  const tones=selected.map(o=>String(o.tone||o.volatility||"")).join("/");
+  const lines=[];
+  const push=line=>{if(line&&!lines.includes(line)) lines.push(line);};
+
+  if(/森林|針葉|冷杉|雲杉|檜|雪松|絲柏/.test(corpus)) push(/濕潤|雨後|土質/.test(corpus)?"🌧 像雨後走進帶著木頭氣息的森林。":"🌲 像在安靜的森林裡散步，木質感自然、不生硬。");
+  if(/木質|木材|雪松|檀香|檜|絲柏/.test(corpus)) push(/花香|花草|柔和|細膩/.test(corpus)?"☕ 有日系木質咖啡館的安靜感，並帶一點柔和層次。":"🏡 整體像乾淨的木質居家，沉穩但不會過度厚重。");
+  if(/花香|花草|茉莉|天竺葵|薰衣草|依蘭/.test(corpus)) push(/濃郁|甜潤|甜美/.test(corpus)?"🌸 花香會比較明顯，但由其他香氣拉回自然平衡。":"🌸 中間會浮出淡淡花香，不會搶走主體香氣。");
+  if(/柑橘|果香|檸檬|葡萄柚|佛手柑|甜橙|萊姆|明亮/.test(corpus)) push("🍋 開始聞起來較清新明亮，讓整體不顯沉重。");
+  if(/草本|綠葉|藥草/.test(corpus)) push(/涼感|清涼|薄荷|尤加利/.test(corpus)?"🌿 帶有清爽草本與微涼空氣感，聞起來乾淨俐落。":"🌿 帶有自然草本氣息，像整理過、通風良好的空間。");
+  if(/樹脂|香脂|乳香|沒藥|苦配巴/.test(corpus)) push("🪵 尾段會留下溫暖的木質與樹脂感，讓香氣更完整。");
+  if(/T/.test(tones)&&/M/.test(tones)&&/B/.test(tones)) push("✨ 香氣會從較輕盈的前段，慢慢過渡到柔和、穩定的尾韻。");
+  else if(/T/.test(tones)&&/M/.test(tones)) push("✨ 整體偏輕盈自然，前段清楚，中段較柔和。");
+  else if(/M/.test(tones)&&/B/.test(tones)) push("✨ 整體偏柔和沉穩，香氣會慢慢留在空間裡。");
+
+  if((need.feelings||[]).some(x=>/女孩感|溫柔|知性|優雅/.test(x))) push("✨ 木質或草本之中帶著柔和感，呈現自然、知性的氣質。");
+  if((need.avoids||[]).includes("太甜")) push("🚫 甜感只作點綴，整體仍以清爽或木質層次為主。");
+  if((need.avoids||[]).includes("太厚重")) push("🚫 尾韻保留穩定感，但不會一路壓得太沉。");
+
+  if(lines.length<3) push("🌿 整體是自然、舒服、容易想像的生活氣味。");
+  if(lines.length<3) push("✨ 各支精油會互相銜接，不會只剩單一明顯味道。");
+  return lines.slice(0,5);
+}
+
+function renderAIFreeAromaImagination(task){
+  const lines=buildAIFreeAromaImagination(task);
+  if(!lines.length) return "";
+  return `<div class="ai-imagination-card"><h3>🌿 香氣想像</h3><div class="ai-imagination-list">${lines.map(line=>`<div class="ai-imagination-line">${escapeAIText(line)}</div>`).join("")}</div></div>`;
+}
+
+function getAIFreeSummaryText(task){
+  const n=task.need||parseAIFreeNeed(task.question||"");
+  const main=n.primary.join("、");
+  const accent=n.accents.length?n.accents.join("、"):"柔和補足";
+  return `${main}為主，${accent}${n.avoids.length?`，並避開${n.avoids.join("、")}`:""}。`;
 }
 
 function renderAIFreeTask(){
   const result=document.getElementById("aiFreeAnswer");
   if(!result||!aiFreeTask) return;
+  const need=aiFreeTask.need||parseAIFreeNeed(aiFreeTask.question||"");
+  aiFreeTask.need=need;
   const missing=aiFreeTask.oils.filter(o=>Number(invByName(o.name)?.ml||0)<=0);
   const oilRows=aiFreeTask.oils.map((o,i)=>{
     const inv=invByName(o.name);
     const stock=Number(inv?.ml||0)>0?`庫存 ${Number(inv.ml).toFixed(1).replace('.0','')} ml`:`目前無庫存`;
-    const safeName=String(o.name).replaceAll("'","\\'");
-    return `<div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--line);flex-wrap:wrap"><div style="min-width:180px;flex:1"><b>${escapeAIText(o.name)}</b><div class="small muted">${escapeAIText(o.aroma||o.emotion||"")}｜${stock}</div></div><div class="row ai-oil-actions" style="gap:6px"><button class="btn ghost" style="padding:7px 10px" onclick="addAIFreeOilToLab('${safeName}')">＋ 加入配方實驗室</button><button class="btn ghost" style="padding:7px 10px" onclick="openOil('${safeName}')">📖 查看百科</button>${shouldRecommendRestock(o.name).recommended?`<button class="btn ghost" data-shopping-oil="${escapeAIText(o.name)}" style="padding:7px 10px" onclick="addOilToShoppingList('${safeName}','AI 推薦','${String(shoppingReasonFor(o.name)).replaceAll("'","\'")}',aiFreeTask?.theme||'AI 配方')">🛒 加入採購</button>`:""}<button class="btn ghost" style="padding:7px 10px" onclick="removeAIFreeOil(${i})">移除</button></div></div>`;
-  }).join("") || `<div class="muted">目前沒有符合條件的精油。</div>`;
+    const safeName=String(o.name).replaceAll("'","\'");
+    const reasons=getAIFreeOilReasons(o,need).map(r=>`<div>✔ ${escapeAIText(r)}</div>`).join("");
+    return `<div style="padding:13px 0;border-bottom:1px solid var(--line)"><div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap"><div style="min-width:180px;flex:1"><b>${escapeAIText(o.name)}</b><div class="small muted">${escapeAIText(o.aroma||o.emotion||"")}｜${stock}</div><div class="ai-reason-list"><b>為什麼推薦？</b>${reasons}</div></div><div class="row ai-oil-actions" style="gap:6px"><button class="btn ghost" style="padding:7px 10px" onclick="addAIFreeOilToLab('${safeName}')">＋ 加入配方實驗室</button><button class="btn ghost" style="padding:7px 10px" onclick="openOil('${safeName}')">📖 查看百科</button>${shouldRecommendRestock(o.name).recommended?`<button class="btn ghost" data-shopping-oil="${escapeAIText(o.name)}" style="padding:7px 10px" onclick="addOilToShoppingList('${safeName}','AI 推薦','${String(shoppingReasonFor(o.name)).replaceAll("'","\'")}',aiFreeTask?.theme||'AI 配方')">🛒 加入採購</button>`:""}<button class="btn ghost" style="padding:7px 10px" onclick="removeAIFreeOil(${i})">移除</button></div></div></div>`;
+  }).join("") || `<div class="muted">目前精油百科中沒有符合條件的精油。</div>`;
   const importBtn=aiFreeTask.type==="product"?`<button class="btn" onclick="transferAIFreeToProduct()">導入產品配方</button>`:
     aiFreeTask.type==="candle"?`<button class="btn" onclick="transferAIFreeToCandle()">導入蠟燭計算</button>`:
     aiFreeTask.type==="diffuser"?`<button class="btn" onclick="transferAIFreeToDiffuser()">導入擴香日誌</button>`:
-    aiFreeTask.type==="oils"?"":
-    `<button class="btn" onclick="renderAIFreeClarification('type')">選擇導入位置</button>`;
-  result.innerHTML=`<div class="card" style="box-shadow:none">
-    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px"><div><div class="small muted">AI 任務卡</div><h3 style="margin:4px 0 0">${escapeAIText(aiFreeTypeLabel(aiFreeTask.type))}</h3></div><span class="source-pill">已分析</span></div>
+    aiFreeTask.type==="oils"?"":`<button class="btn" onclick="renderAIFreeClarification('type')">選擇導入位置</button>`;
+  const basis=[...need.primary,...need.feelings.map(x=>x==="女孩感"?"女孩感":x),...need.avoids.map(x=>x==="太甜"?"不甜":x==="太厚重"?"不厚重":x)].slice(0,5);
+  result.innerHTML=`${renderAIFreeNeedUnderstanding(need)}${renderAIFreeAromaImagination(aiFreeTask)}<div class="card" style="box-shadow:none;margin-top:14px">
+    <div class="ai-summary-card"><div class="ai-summary-score">🎯 本次需求符合度：${need.confidence}%</div><div style="margin-top:8px"><b>AI 判斷依據：</b><div class="ai-reason-list">${basis.map(x=>`<div>✔ ${escapeAIText(x)}</div>`).join("")||"<div>✔ 依目前描述整理</div>"}</div></div><div style="margin-top:9px"><b>因此推薦：</b><br>${escapeAIText(getAIFreeSummaryText(aiFreeTask))}</div></div>
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-top:14px"><div><div class="small muted">AI 任務卡</div><h3 style="margin:4px 0 0">${escapeAIText(aiFreeTypeLabel(aiFreeTask.type))}</h3></div><span class="source-pill">來源：目前精油百科</span></div>
     <div class="grid2" style="margin-top:14px"><div class="note"><b>產品類型</b><br>${escapeAIText(aiFreeTypeLabel(aiFreeTask.type))}</div><div class="note"><b>目的</b><br>${escapeAIText(aiFreeTask.theme)}</div></div>
-    ${(aiFreeTask.excluded||[]).length?`<div class="note" style="margin-top:12px"><b>已排除</b><br>${(aiFreeTask.excluded||[]).map(escapeAIText).join("、")}</div>`:""}
-    <div style="margin-top:14px"><b>推薦精油</b><div class="ai-candidate-note">AI 已依照你的需求篩選出適合的精油，以下為候選精油。香氣具有個人喜好，不需要全部使用，可加入配方實驗室自由搭配。</div>${oilRows}</div>
-    <div class="note" style="margin-top:14px"><b>推薦原因</b><br>${escapeAIText(aiFreePurposeReason(aiFreeTask.theme))}${(aiFreeTask.excluded||[]).length?` 並已依照你的偏好排除 ${(aiFreeTask.excluded||[]).map(escapeAIText).join("、")}。`:""}</div>
+    ${(aiFreeTask.excluded||[]).length?`<div class="note" style="margin-top:12px"><b>已排除精油</b><br>${(aiFreeTask.excluded||[]).map(escapeAIText).join("、")}</div>`:""}
+    <div style="margin-top:14px"><b>推薦精油</b><div class="ai-candidate-note">以下候選精油全部來自目前精油百科。香氣具有個人喜好，不需要全部使用，可加入配方實驗室自由搭配。</div>${oilRows}</div>
     ${missing.length?`<div class="note" style="margin-top:12px"><b>缺少庫存</b><br>${missing.map(o=>escapeAIText(o.name)).join("、")}<div style="margin-top:10px"><button class="btn ghost" onclick="addAIFreeMissingToShoppingList()">加入採購清單</button></div></div>`:""}
     <div class="row" style="margin-top:14px"><button class="btn" onclick="transferAIFreeToLabAndAnalyze()">一鍵加入配方實驗室並分析</button>${importBtn}<button class="btn ghost" onclick="rerollAIFreeTask()">重新推薦</button><button class="btn ghost" onclick="focusAIFreeModify()">修改需求</button></div>
     <div id="aiFreeTaskStatus" class="small muted" style="margin-top:10px">系統不會自動導入，請確認後再按按鈕。</div>
   </div>`;
 }
-
-function answerAIFreeQuestion(){
+function answerAIFreeQuestion(fromClarification=false){
   const input=document.getElementById("aiFreeQuestion");
   const q=(input?.value||"").trim();
   const result=document.getElementById("aiFreeAnswer");
   if(!q){if(result) result.textContent="請先輸入問題。";return;}
 
-  if(aiFreeTask){
+  const need=parseAIFreeNeed(q);
+  if(need.vague && !fromClarification){renderAIFreeVagueClarification();return;}
+
+  if(aiFreeTask && !fromClarification){
     const dislikedNames=detectAIFreeExcludedOils(q);
     if(dislikedNames.length){
+      aiFreeTask.question=q;aiFreeTask.need=need;
       aiFreeTask.excluded=[...new Set([...(aiFreeTask.excluded||[]),...dislikedNames])];
       aiFreeTask.seen=[...new Set([...(aiFreeTask.seen||[]),...(aiFreeTask.oils||[]).map(o=>o.name)])];
-      aiFreeTask.oils=buildAIFreeOilSelection(aiFreeTask.theme,aiFreeTask.excluded,aiFreeTask.seen);
+      aiFreeTask.oils=buildAIFreeOilSelection(aiFreeTask.theme,aiFreeTask.excluded,aiFreeTask.seen,need);
       renderAIFreeTask();
-      const s=document.getElementById("aiFreeTaskStatus");if(s)s.textContent=`已排除 ${dislikedNames.join("、")}，並重新整理建議。`;
+      const st=document.getElementById("aiFreeTaskStatus");if(st)st.textContent=`已排除 ${dislikedNames.join("、")}，並重新整理建議。`;
       return;
     }
   }
@@ -7304,15 +7478,12 @@ function answerAIFreeQuestion(){
   const type=detectAIFreeType(q);
   const theme=detectAIFreeTheme(q);
   const isGeneralSleep=/睡不好|失眠/.test(q) && !/難入睡|淺眠|半夜|容易醒|睡醒很累/.test(q);
-  aiFreeTask={question:q,type,theme,excluded:detectAIFreeExcludedOils(q),seen:[],oils:[]};
+  aiFreeTask={question:q,type,theme,need,excluded:detectAIFreeExcludedOils(q),seen:[],oils:[]};
   if(isGeneralSleep){renderAIFreeClarification("sleep");return;}
-  if(type==="unknown"){
-    aiFreeTask.oils=buildAIFreeOilSelection(theme,aiFreeTask.excluded||[],aiFreeTask.seen||[]);
-    renderAIFreeClarification("type");return;
-  }
-  createAIFreeTask(q,type,theme);
+  aiFreeTask.oils=buildAIFreeOilSelection(theme,aiFreeTask.excluded||[],[],need);
+  if(type==="unknown"){renderAIFreeClarification("type");return;}
+  renderAIFreeTask();
 }
-
 function removeAIFreeOil(index){
   if(!aiFreeTask?.oils?.[index]) return;
   aiFreeTask.excluded=[...new Set([...(aiFreeTask.excluded||[]),aiFreeTask.oils[index].name])];
@@ -7324,7 +7495,7 @@ function rerollAIFreeTask(){
   if(!aiFreeTask) return;
   aiFreeTask.seen=[...new Set([...(aiFreeTask.seen||[]),...(aiFreeTask.oils||[]).map(o=>o.name)])];
   aiFreeRotation+=Math.max(1,aiFreeTask.oils?.length||1);
-  aiFreeTask.oils=buildAIFreeOilSelection(aiFreeTask.theme,aiFreeTask.excluded||[],aiFreeTask.seen||[]);
+  aiFreeTask.oils=buildAIFreeOilSelection(aiFreeTask.theme,aiFreeTask.excluded||[],aiFreeTask.seen||[],aiFreeTask.need);
   renderAIFreeTask();
   const s=document.getElementById("aiFreeTaskStatus");if(s)s.textContent="已改用尚未推薦過的精油重新整理。";
 }
@@ -7338,7 +7509,7 @@ function focusAIFreeModify(){
 function clearAIFreeTask(){
   aiFreeTask=null;aiFreeRotation=0;
   const q=document.getElementById("aiFreeQuestion");if(q)q.value="";
-  const r=document.getElementById("aiFreeAnswer");if(r)r.innerHTML="輸入問題後，AI 會先判斷產品類型、需求方向與適合精油，再由你確認是否導入。";
+  const r=document.getElementById("aiFreeAnswer");if(r)r.innerHTML="輸入問題後，AI 會先顯示「我理解你的需求」，再進行推薦。";
 }
 
 function transferAIFreeToProduct(){
