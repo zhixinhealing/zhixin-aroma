@@ -583,7 +583,7 @@ function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
 let S=lsGet(LS_KEY);
 if(!S){const legacy=lsGet("zhixinAromaState");if(legacy&&legacy.inventory){try{S={...migrateOld(legacy),_meta:{}};S._autoMigrated=1}catch(e){S=null}}}
 S=S||freshState(); S._meta=S._meta||{};
-function defaultStudio(){return {mode:"rollon",name:"",recipeId:null,version:1,status:"草稿",tags:[],notes:"",params:{qty:1,volume:10,conc:3,base:"荷荷芭基底油",use:"space",weight:180,pct:7,wax:"大豆蠟",wick:"燭芯",wickPer:1,jar:"蠟燭容器",bottle:"",pack:"",price:"",cure:7,device:"water",area:5,minutes:30,premix:5},rows:[]}}
+function defaultStudio(){return {mode:"spray",name:"",recipeId:null,version:1,status:"草稿",tags:[],notes:"",params:{qty:1,volume:30,conc:3,base:"香水基劑",use:"space",weight:180,pct:7,wax:"大豆蠟",wick:"燭芯",wickPer:1,jar:"蠟燭容器",bottle:"",pack:"",price:"",cure:7,device:"water",area:5,minutes:30,premix:5},rows:[]}}
 let studio=Object.assign(defaultStudio(),lsGet(LS_STUDIO)||{});
 const ui={view:"home",oilQ:"",oilTone:"",oilTheme:"",oilNeed:"",oilStock:false,oilFav:false,invCat:"全部",invQ:"",invLow:false,recTab:"recipes",recMode:"",recStatus:"",recQ:"",recKind:"",aiMode:"auto",aiStock:false,chat:[],aiBusy:null,analysis:null};
 
@@ -680,7 +680,7 @@ function shell(){
 }
 function footer(){
  const cur=layout();
- return `<footer class="site-foot"><span>芝心調香室・芝心聊癒・<span class="num">V3.9</span>（2026/11/18）</span><div class="row" style="gap:8px"><span>版面</span><div class="seg" role="group" aria-label="切換版面">${[["auto","自動"],["mobile","手機版"],["desktop","電腦版"]].map(([k,l])=>`<button data-act="layout" data-v="${k}" aria-pressed="${cur===k}">${l}</button>`).join("")}</div></div></footer>`;
+ return `<footer class="site-foot"><span>芝心調香室・芝心聊癒・<span class="num">V4.0</span>（2026/11/18）</span><div class="row" style="gap:8px"><span>版面</span><div class="seg" role="group" aria-label="切換版面">${[["auto","自動"],["mobile","手機版"],["desktop","電腦版"]].map(([k,l])=>`<button data-act="layout" data-v="${k}" aria-pressed="${cur===k}">${l}</button>`).join("")}</div></div></footer>`;
 }
 function layout(){try{return localStorage.getItem("zhixin-layout")||"auto"}catch(e){return "auto"}}
 function applyLayout(v){
@@ -885,7 +885,7 @@ function costHtml(res){
 }
 function studioFromRecipe(r){
  const d=defaultStudio();
- studio={...d,mode:r.mode||"rollon",name:r.name,recipeId:r.id,version:r.version||1,status:r.status||"測試中",tags:r.tags||[],notes:r.notes||"",params:{...d.params,...(MODES[r.mode]?.kind==="liquid"&&!r.params?.volume?{volume:MODES[r.mode].vol,conc:MODES[r.mode].conc}:{}),...(r.params||{})},rows:(r.rows||[]).map(x=>({oil:findOil(x.oil)?.name||x.oil,tone:x.tone||findOil(x.oil)?.tone||"M",ratio:x.ratio}))};
+ studio={...d,mode:MODES[r.mode]?r.mode:"spray",name:r.name,recipeId:r.id,version:r.version||1,status:r.status||"測試中",tags:r.tags||[],notes:r.notes||"",params:{...d.params,...(MODES[r.mode]?.kind==="liquid"&&!r.params?.volume?{volume:MODES[r.mode].vol,conc:MODES[r.mode].conc}:{}),...(r.params||{})},rows:(r.rows||[]).map(x=>({oil:findOil(x.oil)?.name||x.oil,tone:x.tone||findOil(x.oil)?.tone||"M",ratio:x.ratio}))};
  ui.analysis=null; saveStudio();
 }
 function setMode(mode){
@@ -1057,10 +1057,10 @@ function wishDialog(){
  dialog("收藏網路配方",`<div class="stack">
   <div class="seg" id="w-tab" role="group"><button type="button" data-v="one" aria-pressed="true">一款</button><button type="button" data-v="many" aria-pressed="false">一次貼很多款</button></div>
   <div id="w-one" class="stack"><div class="grid g2"><label class="f">配方名稱<input id="w-name" placeholder="例如：晨光木屋"></label>
-   <label class="f">打算做成<select id="w-mode">${modes.map(([k,v])=>`<option value="${k}" ${k==="diffuser"?"selected":""}>${v.label}</option>`).join("")}</select></label></div>
+   <label class="f">打算做成<select id="w-mode"><option value="" selected>請選擇（可以之後再決定）</option>${modes.map(([k,v])=>`<option value="${k}">${v.label}</option>`).join("")}</select></label></div>
    <label class="f">配方（直接貼上，例如：葡萄柚2份+雪松2份+乳香1份）<textarea id="w-blend" style="min-height:64px"></textarea></label></div>
   <div id="w-many" class="stack" hidden><label class="f">每行一款，名稱和配方用 ｜ 隔開<textarea id="w-lines" style="min-height:140px" placeholder="01 晨光木屋 | 葡萄柚2份+雪松2份+乳香1份&#10;02 窗邊柑橘 | 甜橙2份+佛手柑1份+苦橙葉1份"></textarea></label>
-   <label class="f">打算做成<select id="w-mode2">${modes.map(([k,v])=>`<option value="${k}" ${k==="diffuser"?"selected":""}>${v.label}</option>`).join("")}</select></label></div>
+   <label class="f">打算做成<select id="w-mode2"><option value="" selected>請選擇（可以之後再決定）</option>${modes.map(([k,v])=>`<option value="${k}">${v.label}</option>`).join("")}</select></label></div>
   <div class="grid g2"><label class="f">來源（作者、帳號、書名）<input id="w-from" placeholder="例如：小紅書・鎏鏡"></label><label class="f">連結（選填）<input id="w-link" placeholder="https://"></label></div>
   <label class="f">為什麼想試（選填）<input id="w-note" placeholder="例如：冬天居家感覺很棒"></label>
   <div id="w-preview" class="note">貼上配方後，這裡會顯示讀到的精油。</div></div>`,{onOpen:sc=>{
@@ -1089,7 +1089,7 @@ function recipeList(){
  <div class="card flat" style="margin-bottom:14px"><div class="row"><input style="max-width:260px" placeholder="搜尋名稱、精油或標籤" value="${h(ui.recQ)}" data-ui="recQ">
   <div class="chips"><button class="chip" data-act="rec-mode" data-v="" aria-pressed="${!ui.recMode}">全部</button>${Object.entries(MODES).map(([k,v])=>`<button class="chip" data-act="rec-mode" data-v="${k}" aria-pressed="${ui.recMode===k}">${v.short}</button>`).join("")}</div>
   <select style="max-width:130px" data-ui="recStatus"><option value="">所有狀態</option>${STATUSES.map(s=>`<option ${ui.recStatus===s?"selected":""}>${s}</option>`).join("")}</select></div></div>
- ${list.length?`<div class="grid g2">${list.map(r=>`<div class="card rcard"><div class="row between"><div><b style="font-family:var(--display);font-size:18px">${h(r.name)}</b> <span class="small muted">V${r.version||1}</span></div><div class="row">${stPill(r.status)}<span class="pill n">${MODES[r.mode]?.short||""}</span></div></div>
+ ${list.length?`<div class="grid g2">${list.map(r=>`<div class="card rcard"><div class="row between"><div><b style="font-family:var(--display);font-size:18px">${h(r.name)}</b> <span class="small muted">V${r.version||1}</span></div><div class="row">${stPill(r.status)}<span class="pill n">${MODES[r.mode]?.short||"還沒決定"}</span></div></div>
   <div class="oils">${(r.rows||[]).map(x=>`<span><i class="dot ${primaryTone(x.tone||findOil(x.oil)?.tone)}"></i>${h(x.oil)} <span class="muted num">${fmt(x.ratio)} 份</span></span>`).join("")}</div>
   ${(r.tags||[]).length?`<div class="chips">${r.tags.map(t=>`<span class="pill n">${h(t)}</span>`).join("")}</div>`:""}
   ${r.from||r.link?`<div class="small">來源：${h(r.from||"")}${r.link?` <a href="${h(r.link)}" target="_blank" rel="noopener">開啟連結</a>`:""}</div>`:""}
@@ -1390,7 +1390,7 @@ document.addEventListener("click",e=>{
   case "row-del": studio.rows.splice(rowI(),1); saveStudio(); render(); break;
   case "preset": {const r=partsByTone(studio.rows,+d.t,+d.m,+d.b);studio.rows.forEach((x,i)=>x.ratio=r[i]);saveStudio();render();break}
   case "even": {const r=studio.rows.map(()=>1);studio.rows.forEach((x,i)=>x.ratio=r[i]);saveStudio();render();break}
-  case "studio-new": ask("清空調配台","目前的配方會被清空（已儲存的配方不受影響）。","清空").then(ok=>{if(ok){const m=studio.mode;studio=defaultStudio();studio.rows=[];setMode(m);render()}}); break;
+  case "studio-new": ask("清空調配台","目前的配方會被清空（已儲存的配方不受影響）。","清空").then(ok=>{if(ok){studio=defaultStudio();studio.rows=[];setMode("spray");render()}}); break;
   case "save-recipe": saveRecipe(); break;
   case "make": makeIt(); break;
   case "ai-analyze": aiAnalyze(); break;
