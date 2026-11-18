@@ -662,7 +662,7 @@ const dateStr=ts=>{const d=new Date(ts);return `${d.getFullYear()}/${String(d.ge
 
 /* ---------- 路由 ---------- */
 function go(v){if(location.hash!=="#"+v)location.hash=v;else{ui.view=v;render()}}
-window.addEventListener("hashchange",()=>{const v=location.hash.slice(1);ui.view=VIEWS.some(x=>x[0]===v)?v:"home";render();window.scrollTo(0,0)});
+window.addEventListener("hashchange",()=>{const v=location.hash.slice(1);const prev=ui.view;ui.view=VIEWS.some(x=>x[0]===v)?v:"home";if(ui.view==="stock"&&prev!=="stock"){ui.invCat="全部";ui.invOpen=null}render();window.scrollTo(0,0)});
 
 function shell(){
  const nav=VIEWS.map(([k,l,ic])=>`<a href="#${k}" ${ui.view===k?'aria-current="page"':""}><span class="ic">${ic}</span>${l}</a>`).join("");
@@ -675,7 +675,7 @@ function shell(){
 }
 function footer(){
  const cur=layout();
- return `<footer class="site-foot"><span>芝心調香室・芝心聊癒・<span class="num">V4.0 ${HAS_REF?"完整版":"分享版"}</span>（2026/11/18）</span><div class="row" style="gap:8px"><span>版面</span><div class="seg" role="group" aria-label="切換版面">${[["auto","自動"],["mobile","手機版"],["desktop","電腦版"]].map(([k,l])=>`<button data-act="layout" data-v="${k}" aria-pressed="${cur===k}">${l}</button>`).join("")}</div></div></footer>`;
+ return `<footer class="site-foot"><span>芝心調香室・芝心聊癒・<span class="num">V4.1 ${HAS_REF?"完整版":"分享版"}</span>（2026/11/18）</span><div class="row" style="gap:8px"><span>版面</span><div class="seg" role="group" aria-label="切換版面">${[["auto","自動"],["mobile","手機版"],["desktop","電腦版"]].map(([k,l])=>`<button data-act="layout" data-v="${k}" aria-pressed="${cur===k}">${l}</button>`).join("")}</div></div></footer>`;
 }
 function layout(){try{return localStorage.getItem("zhixin-layout")||"auto"}catch(e){return "auto"}}
 function applyLayout(v){
@@ -1345,12 +1345,12 @@ function backupDialog(){
    <input type="file" id="importFile" accept=".json,application/json"><div id="importMsg" class="small" style="margin-top:6px"></div></div>
   <div><h3 style="margin-bottom:6px">匯出備份</h3><div class="row"><button class="btn soft" id="expBtn">下載 JSON 備份</button><button class="btn ghost" id="copyBtn">複製備份文字</button></div></div>
   ${HAS_REF?`  <div><h3 style="margin-bottom:6px">這台裝置的顯示設定</h3><label class="row small"><input type="checkbox" id="refToggle" ${showRef()?"checked":""}> 顯示參考資料（生命靈數靈感、五行精油）</label><div class="small muted" style="margin-top:4px">只影響這台裝置的這個瀏覽器，朋友那邊預設不會顯示。</div></div>`:""}
-  <hr class="sep"><div class="row between"><span class="small muted">清除所有資料，回到初始庫存</span><button class="btn danger sm" id="resetBtn">全部重設</button></div></div>`,{onOpen:sc=>{
+  <hr class="sep"><div class="row between"><span class="small muted">清除配方與紀錄，庫存品項保留、數量歸零</span><button class="btn danger sm" id="resetBtn">全部重設</button></div></div>`,{onOpen:sc=>{
   const data=()=>JSON.stringify({app:"zhixin-v3",exported:new Date().toISOString(),...Object.fromEntries(DOCS.map(k=>[k,S[k]]))},null,1);
   sc.querySelector("#expBtn").onclick=async()=>{const fname=`芝心調香室備份_${new Date().toISOString().slice(0,10)}.json`;if(!window.claude?.use){const u=URL.createObjectURL(new Blob([data()],{type:"application/json"}));const l=document.createElement("a");l.href=u;l.download=fname;document.body.append(l);l.click();l.remove();setTimeout(()=>URL.revokeObjectURL(u),2000);toast("已下載備份");return}try{const d=await window.claude.use("downloads");if(!d)throw 0;await d.save({filename:`芝心調香室備份_${new Date().toISOString().slice(0,10)}.json`,data:data()});toast("已匯出")}catch(e){try{await navigator.clipboard.writeText(data());toast("無法直接下載，已改為複製到剪貼簿")}catch(_){toast("這個環境不能下載，請用「複製備份文字」")}}};
   sc.querySelector("#copyBtn").onclick=async()=>{try{await navigator.clipboard.writeText(data());toast("已複製，可貼到記事本保存")}catch(e){toast("無法複製")}};
   if(sc.querySelector("#refToggle"))sc.querySelector("#refToggle").onchange=e=>{try{localStorage.setItem("zhixin-showref",e.target.checked?"1":"0")}catch(_){}render();toast(e.target.checked?"已顯示參考資料（在精油庫最下方）":"已隱藏參考資料")};
-  sc.querySelector("#resetBtn").onclick=()=>ask("全部重設","所有配方、紀錄與庫存都會清除，建議先匯出備份。確定重設？","重設","danger").then(ok=>{if(ok){S=freshState();touch(...DOCS);sc.remove();render();toast("已重設")}});
+  sc.querySelector("#resetBtn").onclick=()=>ask("全部重設","所有配方、紀錄與採購清單都會清除；庫存品項會保留，數量全部歸零。建議先匯出備份。確定重設？","重設","danger").then(ok=>{if(ok){S.recipes=[];S.records=[];S.misc.shopping=[];S.inventory.forEach(i=>{i.capacity=capOf(i);i.amount=0});touch(...DOCS);sc.remove();render();toast("已重設：配方與紀錄已清除，庫存數量歸零")}});
   sc.querySelector("#importFile").onchange=e=>{const f=e.target.files[0];if(!f)return;const rd=new FileReader();rd.onload=()=>{try{
    const obj=JSON.parse(rd.result); let next;
    if(obj.app==="zhixin-v3"){next={...freshState(),...Object.fromEntries(DOCS.map(k=>[k,obj[k]??freshState()[k]]))}}
@@ -1446,6 +1446,7 @@ document.addEventListener("keydown",e=>{if(e.target.id==="aiInput"&&e.key==="Ent
 /* ---------- 啟動 ---------- */
 (function start(){
  applyLayout(layout());
+ ensureCapacity();
  if(S._autoMigrated){delete S._autoMigrated;lsSet(LS_KEY,S);setTimeout(()=>toast("已自動搬入這個瀏覽器裡的舊版資料"),400)}
  const v=location.hash.slice(1); ui.view=VIEWS.some(x=>x[0]===v)?v:"home";
  render();
