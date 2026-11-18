@@ -431,6 +431,7 @@ function compute(studio,ctx){
   out.lines=rows.map((r,i)=>({oil:r.oil,tone:r.tone,share:shares[i],drops:drops[i],ml:drops[i]/20,need:drops[i]/20,unit:"ml"}));
   if(p.device==="nebulizer") out.infos.push(`無水霧化機不用滴數：先調好一瓶 ${fmt(p.premix||5)} ml 複方，建議間歇使用（開 15 分、關 15 分）。`);
   if(rows.length>5) out.infos.push("擴香以 2–5 支精油較容易聞出層次。");
+  if(p.device!=="nebulizer"&&rows.length&&total<rows.length*2) out.warnings.push(`這次只用 ${total} 滴，卻有 ${rows.length} 支精油，每支只分到 1–2 滴，比例調整幾乎沒有作用。建議減到 ${Math.max(2,Math.floor(total/2))} 支以內，或改用「無水霧化機」先調一小瓶複方。`);
   out.materials=out.lines.map(l=>({name:l.oil,amount:l.ml,unit:"ml"}));
  }
  if(ctx){
@@ -502,7 +503,7 @@ function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
 let S=lsGet(LS_KEY);
 if(!S){const legacy=lsGet("zhixinAromaState");if(legacy&&legacy.inventory){try{S={...migrateOld(legacy),_meta:{}};S._autoMigrated=1}catch(e){S=null}}}
 S=S||freshState(); S._meta=S._meta||{};
-function defaultStudio(){return {mode:"rollon",name:"",recipeId:null,version:1,status:"草稿",tags:[],notes:"",params:{qty:1,volume:10,conc:3,base:"荷荷芭基底油",use:"space",weight:180,pct:7,wax:"大豆蠟",wick:"燭芯",wickPer:1,jar:"蠟燭容器",device:"water",area:5,minutes:30,premix:5},rows:[{oil:"甜橙",tone:"T",ratio:50},{oil:"薰衣草",tone:"M",ratio:33},{oil:"雪松",tone:"B",ratio:17}]}}
+function defaultStudio(){return {mode:"rollon",name:"",recipeId:null,version:1,status:"草稿",tags:[],notes:"",params:{qty:1,volume:10,conc:3,base:"荷荷芭基底油",use:"space",weight:180,pct:7,wax:"大豆蠟",wick:"燭芯",wickPer:1,jar:"蠟燭容器",device:"water",area:5,minutes:30,premix:5},rows:[]}}
 let studio=Object.assign(defaultStudio(),lsGet(LS_STUDIO)||{});
 const ui={view:"home",oilQ:"",oilTone:"",oilTheme:"",oilNeed:"",oilStock:false,oilFav:false,invCat:"全部",invQ:"",invLow:false,recTab:"recipes",recMode:"",recStatus:"",recQ:"",recKind:"",aiMode:"auto",aiStock:false,chat:[],aiBusy:null,analysis:null};
 
