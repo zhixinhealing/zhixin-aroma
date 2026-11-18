@@ -213,34 +213,65 @@ td.r,th.r{text-align:right}
 .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:var(--surface);padding:10px 16px;border-radius:12px;z-index:60;font-size:14px;max-width:90vw}
 
 .bottom-nav{display:none}
+
+
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* 版面：自動（依螢幕）、強制手機版、強制電腦版 */
 @media (max-width:980px){
-  .split,.ai-wrap{grid-template-columns:1fr}
-  .sticky{position:static}
-  .quick{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .g4{grid-template-columns:repeat(2,minmax(0,1fr))}
+:root:not([data-layout="desktop"]):not([data-layout="mobile"]) .split,:root:not([data-layout="desktop"]):not([data-layout="mobile"]) .ai-wrap{grid-template-columns:1fr}
+:root:not([data-layout="desktop"]):not([data-layout="mobile"]) .sticky{position:static}
+:root:not([data-layout="desktop"]):not([data-layout="mobile"]) .quick{grid-template-columns:repeat(2,minmax(0,1fr))}
+:root:not([data-layout="desktop"]):not([data-layout="mobile"]) .g4{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 @media (max-width:760px){
-  .shell{grid-template-columns:1fr}
-  .rail{display:none}
-  .mobile-top{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;padding-top:max(12px,env(safe-area-inset-top));border-bottom:1px solid var(--line);background:var(--surface);position:sticky;top:0;z-index:20}
-  .mobile-top .brand svg{width:32px;height:32px}
-  main{padding:16px 16px 96px}
-  .bottom-nav{display:grid;grid-template-columns:repeat(6,1fr);position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-top:1px solid var(--line);z-index:30;padding-bottom:env(safe-area-inset-bottom)}
-  .bottom-nav a{display:flex;flex-direction:column;align-items:center;gap:1px;padding:8px 0 7px;font-size:11px;color:var(--muted);text-decoration:none}
-  .bottom-nav a .ic{font-family:var(--display);font-size:19px;line-height:1.1}
-  .bottom-nav a[aria-current="page"]{color:var(--accent);font-weight:700}
-  .g2,.g3{grid-template-columns:1fr}
-  .shell{background:var(--bg)}
-  .hide-m{display:none}
-  .stepper input{width:56px}
-  .hello{grid-template-columns:1fr;padding:18px}
-  .hello h1{font-size:24px}
-  .oil-row{grid-template-columns:40px minmax(0,1fr) 70px 24px}
-  .oil-row .ar{display:none}
-  .composer{bottom:76px}
-  h2{font-size:20px}
+:root:not([data-layout="desktop"]):not([data-layout="mobile"]) .shell{grid-template-columns:1fr}
+:root:not([data-layout="desktop"]):not([data-layout="mobile"]) .rail{display:none}
+:root:not([data-layout="desktop"]):not([data-layout="mobile"]) .mobile-top{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;padding-top:max(12px,env(safe-area-inset-top));border-bottom:1px solid var(--line);background:var(--surface);position:sticky;top:0;z-index:20}
+:root:not([data-layout="desktop"]):not([data-layout="mobile"]) .mobile-top .brand svg{width:32px;height:32px}
+:root:not([data-layout="desktop"]):not([data-layout="mobile"]) main{padding:16px 16px 96px}
+:root:not([data-layout="desktop"]):not([data-layout="mobile"]) .bottom-nav{display:grid;grid-template-columns:repeat(6,1fr);position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-top:1px solid var(--line);z-index:30;padding-bottom:env(safe-area-inset-bottom)}
+:root:not([data-layout="desktop"]):not([data-layout="mobile"]) .bottom-nav a{display:flex;flex-direction:column;align-items:center;gap:1px;padding:8px 0 7px;font-size:11px;color:var(--muted);text-decoration:none}
+:root:not([data-layout="desktop"]):not([data-layout="mobile"]) .bottom-nav a .ic{font-family:var(--display);font-size:19px;line-height:1.1}
+:root:not([data-layout="desktop"]):not([data-layout="mobile"]) .bottom-nav a[aria-current="page"]{color:var(--accent);font-weight:700}
+:root:not([data-layout="desktop"]):not([data-layout="mobile"]) .g2,:root:not([data-layout="desktop"]):not([data-layout="mobile"]) .g3{grid-template-columns:1fr}
+:root:not([data-layout="desktop"]):not([data-layout="mobile"]) .shell{background:var(--bg)}
+:root:not([data-layout="desktop"]):not([data-layout="mobile"]) .hide-m{display:none}
+:root:not([data-layout="desktop"]):not([data-layout="mobile"]) .stepper input{width:56px}
+:root:not([data-layout="desktop"]):not([data-layout="mobile"]) .hello{grid-template-columns:1fr;padding:18px}
+:root:not([data-layout="desktop"]):not([data-layout="mobile"]) .hello h1{font-size:24px}
+:root:not([data-layout="desktop"]):not([data-layout="mobile"]) .oil-row{grid-template-columns:40px minmax(0,1fr) 70px 24px}
+:root:not([data-layout="desktop"]):not([data-layout="mobile"]) .oil-row .ar{display:none}
+:root:not([data-layout="desktop"]):not([data-layout="mobile"]) .composer{bottom:76px}
+:root:not([data-layout="desktop"]):not([data-layout="mobile"]) h2{font-size:20px}
 }
-@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+:root[data-layout="mobile"] .split,:root[data-layout="mobile"] .ai-wrap{grid-template-columns:1fr}
+:root[data-layout="mobile"] .sticky{position:static}
+:root[data-layout="mobile"] .quick{grid-template-columns:repeat(2,minmax(0,1fr))}
+:root[data-layout="mobile"] .g4{grid-template-columns:repeat(2,minmax(0,1fr))}
+:root[data-layout="mobile"] .shell{grid-template-columns:1fr}
+:root[data-layout="mobile"] .rail{display:none}
+:root[data-layout="mobile"] .mobile-top{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;padding-top:max(12px,env(safe-area-inset-top));border-bottom:1px solid var(--line);background:var(--surface);position:sticky;top:0;z-index:20}
+:root[data-layout="mobile"] .mobile-top .brand svg{width:32px;height:32px}
+:root[data-layout="mobile"] main{padding:16px 16px 96px}
+:root[data-layout="mobile"] .bottom-nav{display:grid;grid-template-columns:repeat(6,1fr);position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-top:1px solid var(--line);z-index:30;padding-bottom:env(safe-area-inset-bottom)}
+:root[data-layout="mobile"] .bottom-nav a{display:flex;flex-direction:column;align-items:center;gap:1px;padding:8px 0 7px;font-size:11px;color:var(--muted);text-decoration:none}
+:root[data-layout="mobile"] .bottom-nav a .ic{font-family:var(--display);font-size:19px;line-height:1.1}
+:root[data-layout="mobile"] .bottom-nav a[aria-current="page"]{color:var(--accent);font-weight:700}
+:root[data-layout="mobile"] .g2,:root[data-layout="mobile"] .g3{grid-template-columns:1fr}
+:root[data-layout="mobile"] .shell{background:var(--bg)}
+:root[data-layout="mobile"] .hide-m{display:none}
+:root[data-layout="mobile"] .stepper input{width:56px}
+:root[data-layout="mobile"] .hello{grid-template-columns:1fr;padding:18px}
+:root[data-layout="mobile"] .hello h1{font-size:24px}
+:root[data-layout="mobile"] .oil-row{grid-template-columns:40px minmax(0,1fr) 70px 24px}
+:root[data-layout="mobile"] .oil-row .ar{display:none}
+:root[data-layout="mobile"] .composer{bottom:76px}
+:root[data-layout="mobile"] h2{font-size:20px}
+:root[data-layout="mobile"] .shell{max-width:480px;margin:0 auto;border-left:1px solid var(--line);border-right:1px solid var(--line)}
+:root[data-layout="mobile"] .bottom-nav{max-width:480px;margin:0 auto}
+.site-foot{margin-top:40px;padding:18px 0 4px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
+.site-foot .seg button{padding:5px 11px;font-size:13px}
 
 </style>
 </head>
@@ -563,8 +594,17 @@ function shell(){
  <aside class="rail"><div class="brand">${FOX}<div><b>芝心調香室</b><span>芝心聊癒</span></div></div><nav class="nav" aria-label="主選單">${nav}</nav>
   <div class="rail-foot"><div data-sync class="sync"></div><button class="btn ghost sm" data-act="backup">資料備份與搬家</button></div></aside>
  <div><header class="mobile-top"><div class="brand">${FOX}<div><b>芝心調香室</b></div></div><button class="btn ghost sm" data-act="backup">備份</button></header>
- <main id="main">${VIEW[ui.view]()}</main></div>
+ <main id="main">${VIEW[ui.view]()}${footer()}</main></div>
  <nav class="bottom-nav" aria-label="主選單">${VIEWS.map(([k,l,ic])=>`<a href="#${k}" ${ui.view===k?'aria-current="page"':""}><span class="ic">${ic}</span>${l.replace("AI 調香師","AI").replace("調配台","調配")}</a>`).join("")}</nav></div>`;
+}
+function footer(){
+ const cur=layout();
+ return `<footer class="site-foot"><span>芝心調香室・芝心聊癒</span><div class="row" style="gap:8px"><span>版面</span><div class="seg" role="group" aria-label="切換版面">${[["auto","自動"],["mobile","手機版"],["desktop","電腦版"]].map(([k,l])=>`<button data-act="layout" data-v="${k}" aria-pressed="${cur===k}">${l}</button>`).join("")}</div></div></footer>`;
+}
+function layout(){try{return localStorage.getItem("zhixin-layout")||"auto"}catch(e){return "auto"}}
+function applyLayout(v){
+ const root=document.documentElement; if(v==="auto")root.removeAttribute("data-layout");else root.setAttribute("data-layout",v);
+ const vp=document.querySelector('meta[name="viewport"]'); if(vp) vp.setAttribute("content",v==="desktop"?"width=1240":"width=device-width, initial-scale=1, viewport-fit=cover");
 }
 function render(){
  const y=window.scrollY; document.getElementById("app").innerHTML=shell(); renderSync(); AFTER[ui.view]?.(); window.scrollTo(0,y);
@@ -1033,6 +1073,7 @@ document.addEventListener("click",e=>{
  const rowI=()=>+el.closest(".orow").dataset.i;
  switch(a){
   case "backup": backupDialog(); break;
+  case "layout": try{localStorage.setItem("zhixin-layout",d.v)}catch(_){} applyLayout(d.v); render(); window.scrollTo(0,document.body.scrollHeight); toast({auto:"版面：依螢幕自動切換",mobile:"已切換成手機版",desktop:"已切換成電腦版"}[d.v]); break;
   case "quick": studio.rows=studio.rows.filter(r=>r.oil); setMode(d.mode); go("studio"); break;
   case "mode": setMode(d.mode); render(); break;
   case "use": studio.params.use=d.use; if(d.use==="body"&&studio.params.conc>2) studio.params.conc=1.5; else if(d.use!=="body") studio.params.conc=MODES.spray.conc; saveStudio(); render(); break;
@@ -1099,6 +1140,7 @@ document.addEventListener("keydown",e=>{if(e.target.id==="aiInput"&&e.key==="Ent
 
 /* ---------- 啟動 ---------- */
 (function start(){
+ applyLayout(layout());
  if(S._autoMigrated){delete S._autoMigrated;lsSet(LS_KEY,S);setTimeout(()=>toast("已自動搬入這個瀏覽器裡的舊版資料"),400)}
  const v=location.hash.slice(1); ui.view=VIEWS.some(x=>x[0]===v)?v:"home";
  render();
