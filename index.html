@@ -308,6 +308,7 @@ td.r,th.r{text-align:right}
 .inv-edit{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;padding:4px 10px 14px}
 @media (max-width:760px){:root:not([data-layout="desktop"]) .inv-main{grid-template-columns:minmax(0,1fr) 54px;gap:6px 10px}:root:not([data-layout="desktop"]) .inv-bar{grid-column:1/-1;grid-row:2}}
 :root[data-layout="mobile"] .inv-main{grid-template-columns:minmax(0,1fr) 54px;gap:6px 10px}:root[data-layout="mobile"] .inv-bar{grid-column:1/-1;grid-row:2}
+[hidden]{display:none!important}
 
 </style>
 </head>
@@ -355,7 +356,7 @@ const MODES={
 const DEVICES={water:"水氧機",stone:"擴香石",nebulizer:"無水霧化機"};
 const THEMES=["財富","愛情","保護","放鬆","睡眠","淨化"];
 const THEME_ICON={財富:"◆",愛情:"♥",保護:"◈",放鬆:"≈",睡眠:"☾",淨化:"✧"};
-const STATUSES=["草稿","測試中","待調整","定案","放棄"];
+const STATUSES=["想試試","草稿","測試中","待調整","定案","放棄"];
 const INV_CATS=["精油","基底油","香水基劑","噴霧基底","酒精","純露","香氛原料","蠟材","燭芯","瓶器","貼紙","包裝盒","其他"];
 const FAMILIES=[
  {k:"柑橘",re:/柑橘|橙|檸檬|葡萄柚|萊姆|果皮|佛手柑|橘|柚|果香/},
@@ -542,6 +543,30 @@ function costOf(res,invByName,qty){
  res.materials.forEach(m=>{const u=unitCost(invByName(m.name));if(u==null){missing.push(m.name);m.cost=null}else{m.cost=m.amount*u;total+=m.cost}});
  return {total,per:qty>0?total/qty:total,missing};
 }
+/* 網路配方文字解析：簡體轉繁體常見字＋別名 */
+const S2T={"柠":"檸","广":"廣","马":"馬","兰":"蘭","叶":"葉","郁":"鬱","罗":"羅","苏":"蘇","树":"樹","桧":"檜","丝":"絲","药":"藥","没":"沒","依兰":"依蘭","姜":"薑","欧":"歐","蓝":"藍","绿":"綠","红":"紅","黄":"黃","橙花":"橙花","雪松":"雪松","乔":"鬱","圣":"聖","鲁":"魯","秘":"秘","醒":"醒","玫瑰草":"玫瑰草","杜":"杜","荚":"莢","莱":"萊","丁":"丁","迭":"迭","选":"迭","尔":"爾","厘":"釐","岛":"島","岁":"歲","种":"種","萝":"蘿","卜":"蔔","缬":"纈","千层":"千層","层":"層","洋甘菊":"洋甘菊","茴":"茴","乳":"乳","纯":"純","露":"露","滴":"滴","份":"份","听":"聽","间":"間","书":"書","写":"寫","静":"靜","读":"讀","边":"邊","后":"後","时":"時","来":"來","访":"訪","进":"進","门":"門","发":"發","轻":"輕","们":"們","这":"這","气":"氣","质":"質","香气":"香氣","冬":"冬","觉":"覺","梦":"夢","爱":"愛","财":"財","宁":"寧","浓":"濃","动":"動","专":"專","层":"層","鲜":"鮮","温":"溫","晒":"曬","阳":"陽","风":"風","灵":"靈","净":"淨","护":"護","睡":"睡","晨":"晨","处":"處","实":"實","验":"驗","调":"調","搭":"搭","配":"配","收":"收","藏":"藏","适":"適","合":"合","点":"點","烛":"燭","喷":"噴","雾":"霧","滚":"滾","珠":"珠","摩":"摩","脸":"臉","庆":"慶","节":"節","饮":"飲","茶":"茶","热":"熱","凉":"涼","闻":"聞"};
+const OIL_ALIAS={"真正薰衣草":"薰衣草","醒目薰衣草":"醒目薰衣草","甜馬鬱蘭":"馬鬱蘭","馬鬱蘭":"馬鬱蘭","檀香":"皇家夏威夷檀香","檜木":"紅檜","依蘭依蘭":"依蘭","薄荷":"歐薄荷","胡椒薄荷":"歐薄荷","萊姆":"萊姆／青檸","青檸":"萊姆／青檸","橘子":"紅橘","苦橙":"苦橙葉"};
+function toTrad(s){let o=String(s);for(const [k,v] of Object.entries(S2T).sort((a,b)=>b[0].length-a[0].length))o=o.split(k).join(v);return o}
+function parseBlend(text,findOil){
+ const t=toTrad(text).replace(/[（(][^）)]*[）)]/g,"");
+ const parts=t.split(/[+＋、,，;；\n]|\s+和\s+|\s+加\s+/).map(x=>x.trim()).filter(Boolean);
+ const rows=[];
+ for(const p of parts){
+  const m=p.match(/^(.+?)\s*[:：x×*]?\s*(\d+(?:\.\d+)?)\s*(份|滴|%|ml)?$/);
+  if(!m) continue;
+  let name=m[1].replace(/精油$/,"").trim(); name=OIL_ALIAS[name]||name;
+  const o=findOil(name)||findOil(name.replace(/^(真正|甜|野生|有機)/,""));
+  rows.push({oil:o?o.name:name,tone:o?o.tone:"M",ratio:Number(m[2]),known:!!o});
+ }
+ return rows;
+}
+/* 一次貼多款：每行「名稱｜配方」 */
+function parseMany(text,findOil){
+ return String(text).split(/\n+/).map(l=>l.trim()).filter(Boolean).map(l=>{
+  const m=toTrad(l).match(/^(?:\d+[.、\s]*)?(.+?)\s*[|｜:：]\s*(.+)$/); if(!m) return null;
+  const rows=parseBlend(m[2],findOil); return rows.length?{name:m[1].trim(),rows}:null;
+ }).filter(Boolean);
+}
 
 /* ===== 芝心調香室 V3 — 畫面與互動 ===== */
 const $=s=>document.querySelector(s);
@@ -655,7 +680,7 @@ function shell(){
 }
 function footer(){
  const cur=layout();
- return `<footer class="site-foot"><span>芝心調香室・芝心聊癒・<span class="num">V3.7</span>（2026/11/18）</span><div class="row" style="gap:8px"><span>版面</span><div class="seg" role="group" aria-label="切換版面">${[["auto","自動"],["mobile","手機版"],["desktop","電腦版"]].map(([k,l])=>`<button data-act="layout" data-v="${k}" aria-pressed="${cur===k}">${l}</button>`).join("")}</div></div></footer>`;
+ return `<footer class="site-foot"><span>芝心調香室・芝心聊癒・<span class="num">V3.9</span>（2026/11/18）</span><div class="row" style="gap:8px"><span>版面</span><div class="seg" role="group" aria-label="切換版面">${[["auto","自動"],["mobile","手機版"],["desktop","電腦版"]].map(([k,l])=>`<button data-act="layout" data-v="${k}" aria-pressed="${cur===k}">${l}</button>`).join("")}</div></div></footer>`;
 }
 function layout(){try{return localStorage.getItem("zhixin-layout")||"auto"}catch(e){return "auto"}}
 function applyLayout(v){
@@ -728,6 +753,7 @@ function recordLine(r){
 
 /* ================= 調配台 ================= */
 function saveStudio(){lsSet(LS_STUDIO,studio)}
+function showRef(){try{return localStorage.getItem("zhixin-showref")==="1"}catch(e){return false}}
 function partsTotal(){return studio.rows.filter(r=>r.oil).reduce((a,r)=>a+(Number(r.ratio)||0),0)}
 function partsSummary(){const t=partsTotal();return t?`共 ${fmt(t)} 份`:""}
 function shareText(i){const r=studio.rows[i],t=partsTotal();return r&&r.oil&&t?`佔 ${fmt((Number(r.ratio)||0)/t*100,0)}%`:""}
@@ -896,7 +922,7 @@ function makeIt(){
    if(deduct) res.materials.forEach(x=>{const inv=S.inventory.find(i=>i.id===x.invId);if(inv)inv.amount=round(Math.max(0,inv.amount-x.amount),2)});
    const cureD=isD?0:Math.max(0,Number(sc.querySelector("#mk-cure")?.value)||0); const cst=costOf(res,invByName,isD?1:Math.max(1,Number(p.qty)||1));
    S.records.unshift({id:uid(),kind:isD?"diffuser":"production",ts:Date.now(),readyTs:cureD?Date.now()+cureD*864e5:undefined,cureDays:cureD||undefined,cost:cst.missing.length===res.materials.length?undefined:round(cst.total,1),price:Number(p.price)||undefined,jar:m.kind==="candle"?p.jar:undefined,wick:m.kind==="candle"?p.wick:undefined,name:studio.name||m.label,mode:studio.mode,typeLabel:m.label,recipeId:studio.recipeId,qty:p.qty,size:m.kind==="liquid"?p.volume+" ml":m.kind==="candle"?p.weight+" g":"",device:isD?DEVICES[p.device]:undefined,rating,materials:res.materials.map(x=>({name:x.name,amount:round(x.amount,3),unit:x.unit})),deducted:deduct,note:sc.querySelector("#mk-note").value.trim()});
-   if(studio.status==="草稿"){studio.status="測試中";saveStudio()}
+   if(studio.status==="草稿"||studio.status==="想試試"){studio.status="測試中";saveStudio()}
    touch("records","inventory"); render(); toast(deduct?"已記錄並扣除庫存":"已記錄");
   }}]});
 }
@@ -1026,19 +1052,51 @@ VIEW.recipes=()=>{
  const tabs=`<div class="seg" role="group"><button data-act="rec-tab" data-tab="recipes" aria-pressed="${ui.recTab==="recipes"}">配方 ${S.recipes.length}</button><button data-act="rec-tab" data-tab="records" aria-pressed="${ui.recTab==="records"}">紀錄 ${S.records.length}</button></div>`;
  return `<div class="page-head"><div><h2>配方本</h2><p>所有產品的配方與版本、製作、擴香和使用回饋都在這裡。</p></div>${tabs}</div>${ui.recTab==="recipes"?recipeList():recordList()}`;
 };
+function wishDialog(){
+ const modes=Object.entries(MODES);
+ dialog("收藏網路配方",`<div class="stack">
+  <div class="seg" id="w-tab" role="group"><button type="button" data-v="one" aria-pressed="true">一款</button><button type="button" data-v="many" aria-pressed="false">一次貼很多款</button></div>
+  <div id="w-one" class="stack"><div class="grid g2"><label class="f">配方名稱<input id="w-name" placeholder="例如：晨光木屋"></label>
+   <label class="f">打算做成<select id="w-mode">${modes.map(([k,v])=>`<option value="${k}" ${k==="diffuser"?"selected":""}>${v.label}</option>`).join("")}</select></label></div>
+   <label class="f">配方（直接貼上，例如：葡萄柚2份+雪松2份+乳香1份）<textarea id="w-blend" style="min-height:64px"></textarea></label></div>
+  <div id="w-many" class="stack" hidden><label class="f">每行一款，名稱和配方用 ｜ 隔開<textarea id="w-lines" style="min-height:140px" placeholder="01 晨光木屋 | 葡萄柚2份+雪松2份+乳香1份&#10;02 窗邊柑橘 | 甜橙2份+佛手柑1份+苦橙葉1份"></textarea></label>
+   <label class="f">打算做成<select id="w-mode2">${modes.map(([k,v])=>`<option value="${k}" ${k==="diffuser"?"selected":""}>${v.label}</option>`).join("")}</select></label></div>
+  <div class="grid g2"><label class="f">來源（作者、帳號、書名）<input id="w-from" placeholder="例如：小紅書・鎏鏡"></label><label class="f">連結（選填）<input id="w-link" placeholder="https://"></label></div>
+  <label class="f">為什麼想試（選填）<input id="w-note" placeholder="例如：冬天居家感覺很棒"></label>
+  <div id="w-preview" class="note">貼上配方後，這裡會顯示讀到的精油。</div></div>`,{onOpen:sc=>{
+   let tab="one";
+   sc.querySelector("#w-tab").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;tab=b.dataset.v;sc.querySelectorAll("#w-tab button").forEach(x=>x.setAttribute("aria-pressed",x===b));sc.querySelector("#w-one").hidden=tab!=="one";sc.querySelector("#w-many").hidden=tab!=="many";upd()});
+   const fmtRows=rows=>rows.map(r=>`${r.known?"":"⚠ "}${h(r.oil)} ${fmt(r.ratio)} 份`).join("＋");
+   const upd=()=>{const pv=sc.querySelector("#w-preview");
+    if(tab==="one"){const rows=parseBlend(sc.querySelector("#w-blend").value,findOil);pv.innerHTML=rows.length?`讀到：${fmtRows(rows)}${rows.some(r=>!r.known)?`<br>⚠ 的精油不在精油庫，一樣會收藏，之後可以換成類似的。`:""}`:"貼上配方後，這裡會顯示讀到的精油。"}
+    else{const list=parseMany(sc.querySelector("#w-lines").value,findOil);pv.innerHTML=list.length?`讀到 ${list.length} 款：<br>${list.map(x=>`<b>${h(x.name)}</b>：${fmtRows(x.rows)}`).join("<br>")}`:"每行一款，例如：晨光木屋 | 葡萄柚2份+雪松2份+乳香1份"}};
+   sc.addEventListener("input",upd); sc._tab=()=>tab;
+  },actions:[{label:"取消",cls:"ghost"},{label:"收藏到想試試",run:sc=>{
+   const v=id=>sc.querySelector("#"+id).value.trim(); const many=!sc.querySelector("#w-many").hidden;
+   const base={status:"想試試",version:1,tags:["網路配方"],from:v("w-from"),link:v("w-link"),notes:v("w-note"),params:{},source:"網路收藏",created:Date.now(),updated:Date.now()};
+   let items=[];
+   if(many){items=parseMany(v("w-lines"),findOil).map(x=>({...base,id:uid(),name:x.name,mode:v("w-mode2"),rows:x.rows.map(({known,...r})=>r)}))}
+   else{const rows=parseBlend(v("w-blend"),findOil);if(!rows.length){toast("讀不到配方，請用「精油名＋數字」的格式");return false}items=[{...base,id:uid(),name:v("w-name")||"網路配方",mode:v("w-mode"),rows:rows.map(({known,...r})=>r)}]}
+   if(!items.length){toast("讀不到配方，每行請寫成「名稱 | 配方」");return false}
+   S.recipes.unshift(...items);touch("recipes");ui.recTab="recipes";ui.recStatus="想試試";go("recipes");render();toast(`已收藏 ${items.length} 款到「想試試」`);
+  }}]});
+}
 function recipeList(){
  const q=ui.recQ.trim();
  const list=S.recipes.filter(r=>(!ui.recMode||r.mode===ui.recMode)&&(!ui.recStatus||r.status===ui.recStatus)&&(!q||(r.name+(r.tags||[]).join("")+(r.notes||"")+(r.rows||[]).map(x=>x.oil).join("")).includes(q)));
- const stPill=s=>`<span class="pill ${s==="定案"?"ok":s==="放棄"?"n":s==="草稿"?"n":"warn"}">${h(s)}</span>`;
- return `<div class="card flat" style="margin-bottom:14px"><div class="row"><input style="max-width:260px" placeholder="搜尋名稱、精油或標籤" value="${h(ui.recQ)}" data-ui="recQ">
+ const stPill=s=>`<span class="pill ${s==="定案"?"ok":s==="放棄"||s==="草稿"?"n":s==="想試試"?"bad":"warn"}">${s==="想試試"?"☆ ":""}${h(s)}</span>`;
+ return `<div class="row between" style="margin-bottom:12px"><div class="small muted">${S.recipes.filter(r=>r.status==="想試試").length?`想試試的配方有 ${S.recipes.filter(r=>r.status==="想試試").length} 款`:"看到喜歡的網路配方，可以先收藏起來之後再試"}</div><button class="btn amber" data-act="wish-new">＋ 收藏網路配方</button></div>
+ <div class="card flat" style="margin-bottom:14px"><div class="row"><input style="max-width:260px" placeholder="搜尋名稱、精油或標籤" value="${h(ui.recQ)}" data-ui="recQ">
   <div class="chips"><button class="chip" data-act="rec-mode" data-v="" aria-pressed="${!ui.recMode}">全部</button>${Object.entries(MODES).map(([k,v])=>`<button class="chip" data-act="rec-mode" data-v="${k}" aria-pressed="${ui.recMode===k}">${v.short}</button>`).join("")}</div>
   <select style="max-width:130px" data-ui="recStatus"><option value="">所有狀態</option>${STATUSES.map(s=>`<option ${ui.recStatus===s?"selected":""}>${s}</option>`).join("")}</select></div></div>
  ${list.length?`<div class="grid g2">${list.map(r=>`<div class="card rcard"><div class="row between"><div><b style="font-family:var(--display);font-size:18px">${h(r.name)}</b> <span class="small muted">V${r.version||1}</span></div><div class="row">${stPill(r.status)}<span class="pill n">${MODES[r.mode]?.short||""}</span></div></div>
   <div class="oils">${(r.rows||[]).map(x=>`<span><i class="dot ${primaryTone(x.tone||findOil(x.oil)?.tone)}"></i>${h(x.oil)} <span class="muted num">${fmt(x.ratio)} 份</span></span>`).join("")}</div>
   ${(r.tags||[]).length?`<div class="chips">${r.tags.map(t=>`<span class="pill n">${h(t)}</span>`).join("")}</div>`:""}
+  ${r.from||r.link?`<div class="small">來源：${h(r.from||"")}${r.link?` <a href="${h(r.link)}" target="_blank" rel="noopener">開啟連結</a>`:""}</div>`:""}
+  ${(r.rows||[]).some(x=>!findOil(x.oil))?`<div class="small" style="color:var(--warn)">${(r.rows||[]).filter(x=>!findOil(x.oil)).map(x=>h(x.oil)).join("、")} 不在精油庫，試做時可換成類似的</div>`:""}
   ${r.notes?`<div class="small muted">${h(r.notes).slice(0,120)}</div>`:""}
   <div class="row between"><span class="small muted">${dateStr(r.updated||r.created)}・${h(r.source||"")}${(()=>{const n=S.records.filter(x=>x.recipeId===r.id).length;return n?`・做過 ${n} 次`:""})()}</span>
-   <div class="row"><button class="btn sm" data-act="rec-open" data-id="${r.id}">帶入調配台</button><button class="iconbtn" data-act="rec-del" data-id="${r.id}" aria-label="刪除">🗑</button></div></div></div>`).join("")}</div>`:`<div class="empty">${S.recipes.length?"沒有符合條件的配方":"在調配台按「儲存配方」，或讓 AI 調香師幫你配一個"}</div>`}`;
+   <div class="row"><button class="btn sm" data-act="rec-open" data-id="${r.id}">${r.status==="想試試"?"試做看看":"帶入調配台"}</button><button class="iconbtn" data-act="rec-del" data-id="${r.id}" aria-label="刪除">🗑</button></div></div></div>`).join("")}</div>`:`<div class="empty">${S.recipes.length?"沒有符合條件的配方":"在調配台按「儲存配方」，或讓 AI 調香師幫你配一個"}</div>`}`;
 }
 function recordList(){
  const list=S.records.filter(r=>!ui.recKind||r.kind===ui.recKind);
@@ -1127,9 +1185,9 @@ VIEW.oils=()=>{
  <div class="row between small muted" style="margin-bottom:6px"><span>${filtering?`找到 ${total} 支`:ui.oilAll?`全部 ${total} 支（★常用、有庫存排前面）`:`★常用與有庫存的精油排在前面・共 ${total} 支`}</span>${ui.oilQ||ui.oilTone||ui.oilTheme||ui.oilNeed||ui.oilStock||ui.oilFav?`<button class="btn ghost sm" data-act="oil-reset">清除篩選</button>`:""}</div>
  <div class="card" style="padding:6px 10px"><div class="oil-list">${list.map(o=>{const st=stockOf(o.name);return `<div class="oil-row" data-act="oil-open" data-id="${h(o.id)}" tabindex="0" role="button"><span>${toneTag(o.tone)}</span><div class="nm"><b>${h(o.name)}</b><small>${h(o.en||"")}</small></div><div class="ar">${h(o.aroma||"")}</div><span class="num small ${st>0?"":"muted"}" style="text-align:right">${st>0?fmt(st)+" ml":"—"}</span><button class="star ${isFav(o)?"on":""}" data-act="oil-fav" data-id="${h(o.id)}" aria-label="常用">★</button></div>`}).join("")||`<div class="empty" style="margin:10px 0">沒有符合的精油</div>`}</div>
   ${!filtering&&total>12?`<div style="text-align:center;padding:12px 0 8px"><button class="btn soft" data-act="oil-all">${ui.oilAll?"收起，只看前 12 支":`展開全部 ${total} 支`}</button></div>`:""}</div>
- <h3 style="margin:22px 0 10px">參考資料</h3>
- <div class="grid g2" style="align-items:start"><div class="card"><details class="fold"><summary>生命靈數精油 1–9</summary><div class="small muted" style="margin:8px 0">其他老師提供的參考配方，僅供比對研究。</div><div class="list">${Object.entries(NUMEROLOGY).map(([n,a])=>`<div class="li"><b class="num" style="font-size:18px;width:28px">${n}</b><span style="flex:1">${a.join("・")}</span><button class="btn ghost sm" data-act="num-use" data-n="${n}">帶入</button></div>`).join("")}</div></details></div>
-  <div class="card"><details class="fold"><summary>五行精油</summary><div class="stack" style="margin-top:10px">${ELEMENTS.map(e=>`<div><b>${h(e.name)}</b><div class="small muted">${e.effects.join("、")}</div><div class="small">範例：${e.examples.join("｜")}</div></div>`).join("")}</div></details></div></div>`;
+ ${showRef()?`<h3 style="margin:22px 0 10px">參考資料</h3>
+ <div class="grid g2" style="align-items:start"><div class="card"><details class="fold"><summary>生命靈數靈感 1–9</summary><div class="small muted" style="margin:8px 0">其他老師提供的參考組合，當作靈感就好，不用被框住。可以依自己喜歡的香氣、手上有的精油自由替換或增減。</div><div class="list">${Object.entries(NUMEROLOGY).map(([n,a])=>`<div class="li"><b class="num" style="font-size:18px;width:28px">${n}</b><span style="flex:1">${a.join("・")}</span><button class="btn ghost sm" data-act="num-use" data-n="${n}">當靈感帶入</button></div>`).join("")}</div></details></div>
+  <div class="card"><details class="fold"><summary>五行精油</summary><div class="stack" style="margin-top:10px">${ELEMENTS.map(e=>`<div><b>${h(e.name)}</b><div class="small muted">${e.effects.join("、")}</div><div class="small">範例：${e.examples.join("｜")}</div></div>`).join("")}</div></details></div></div>`:""}`;
 };
 function oilDetail(id){
  const o=oils().find(x=>x.id===id); if(!o) return;
@@ -1291,10 +1349,12 @@ function backupDialog(){
   <div><h3 style="margin-bottom:6px">從舊版搬過來</h3><div class="small muted" style="margin-bottom:8px">打開舊版調香室 →「資料備份」→「匯出 JSON」，再選擇那個檔案。新版匯出的備份也可以從這裡還原。</div>
    <input type="file" id="importFile" accept=".json,application/json"><div id="importMsg" class="small" style="margin-top:6px"></div></div>
   <div><h3 style="margin-bottom:6px">匯出備份</h3><div class="row"><button class="btn soft" id="expBtn">下載 JSON 備份</button><button class="btn ghost" id="copyBtn">複製備份文字</button></div></div>
+  <div><h3 style="margin-bottom:6px">這台裝置的顯示設定</h3><label class="row small"><input type="checkbox" id="refToggle" ${showRef()?"checked":""}> 顯示參考資料（生命靈數靈感、五行精油）</label><div class="small muted" style="margin-top:4px">只影響這台裝置的這個瀏覽器，朋友那邊預設不會顯示。</div></div>
   <hr class="sep"><div class="row between"><span class="small muted">清除所有資料，回到初始庫存</span><button class="btn danger sm" id="resetBtn">全部重設</button></div></div>`,{onOpen:sc=>{
   const data=()=>JSON.stringify({app:"zhixin-v3",exported:new Date().toISOString(),...Object.fromEntries(DOCS.map(k=>[k,S[k]]))},null,1);
   sc.querySelector("#expBtn").onclick=async()=>{const fname=`芝心調香室備份_${new Date().toISOString().slice(0,10)}.json`;if(!window.claude?.use){const u=URL.createObjectURL(new Blob([data()],{type:"application/json"}));const l=document.createElement("a");l.href=u;l.download=fname;document.body.append(l);l.click();l.remove();setTimeout(()=>URL.revokeObjectURL(u),2000);toast("已下載備份");return}try{const d=await window.claude.use("downloads");if(!d)throw 0;await d.save({filename:`芝心調香室備份_${new Date().toISOString().slice(0,10)}.json`,data:data()});toast("已匯出")}catch(e){try{await navigator.clipboard.writeText(data());toast("無法直接下載，已改為複製到剪貼簿")}catch(_){toast("這個環境不能下載，請用「複製備份文字」")}}};
   sc.querySelector("#copyBtn").onclick=async()=>{try{await navigator.clipboard.writeText(data());toast("已複製，可貼到記事本保存")}catch(e){toast("無法複製")}};
+  sc.querySelector("#refToggle").onchange=e=>{try{localStorage.setItem("zhixin-showref",e.target.checked?"1":"0")}catch(_){}render();toast(e.target.checked?"已顯示參考資料（在精油庫最下方）":"已隱藏參考資料")};
   sc.querySelector("#resetBtn").onclick=()=>ask("全部重設","所有配方、紀錄與庫存都會清除，建議先匯出備份。確定重設？","重設","danger").then(ok=>{if(ok){S=freshState();touch(...DOCS);sc.remove();render();toast("已重設")}});
   sc.querySelector("#importFile").onchange=e=>{const f=e.target.files[0];if(!f)return;const rd=new FileReader();rd.onload=()=>{try{
    const obj=JSON.parse(rd.result); let next;
@@ -1314,6 +1374,7 @@ document.addEventListener("click",e=>{
  const rowI=()=>+el.closest(".orow").dataset.i;
  switch(a){
   case "backup": backupDialog(); break;
+  case "wish-new": wishDialog(); break;
   case "oil-all": {const was=ui.oilAll;ui.oilAll=!ui.oilAll;render();if(was)document.querySelector(".oil-list")?.scrollIntoView({block:"start"});break}
   case "restock-all": S.inventory.filter(i=>i.category==="精油"&&isLow(i)).forEach(i=>{const l=S.misc.shopping;if(!l.some(x=>x.name===i.name))l.push({name:i.name,reason:"低庫存"})});touch("misc");render();toast("已加入採購清單");break;
   case "oil-reorder-all": {const v=Math.max(0,Number($("#oilReorder").value)||0);S.misc.oilReorder=v;S.inventory.filter(i=>i.category==="精油").forEach(i=>i.reorder=v);touch("inventory","misc");render();toast(`所有精油低於 ${fmt(v)} ml 時會提醒`);break}
@@ -1356,7 +1417,7 @@ document.addEventListener("click",e=>{
   case "oil-need": ui.oilNeed=ui.oilNeed===d.v?"":d.v; render(); break;
   case "oil-reset": Object.assign(ui,{oilQ:"",oilTone:"",oilTheme:"",oilNeed:"",oilStock:false,oilFav:false}); render(); break;
   case "oil-new": oilForm(null); break;
-  case "num-use": {const names=NUMEROLOGY[d.n].map(n=>findOil(n)?.name).filter(Boolean);studio.rows=names.map(n=>({oil:n,tone:findOil(n).tone,ratio:0}));const r=partsByTone(studio.rows,3,2,1);studio.rows.forEach((x,i)=>x.ratio=r[i]);studio.name=`生命靈數 ${d.n} 號`;studio.recipeId=null;saveStudio();go("studio");break}
+  case "num-use": {const all=NUMEROLOGY[d.n];const names=all.map(n=>findOil(n)?.name).filter(Boolean);const miss=all.filter(n=>!findOil(n));studio=Object.assign(defaultStudio(),{mode:studio.mode,params:studio.params});studio.rows=names.map(n=>({oil:n,tone:findOil(n).tone,ratio:0}));const r=partsByTone(studio.rows,3,2,1);studio.rows.forEach((x,i)=>x.ratio=r[i]);studio.name=`靈數 ${d.n} 號靈感`;studio.status="草稿";studio.recipeId=null;studio.tags=["生命靈數"];studio.notes=`以生命靈數 ${d.n} 號（${all.join("、")}）為靈感，可依喜好與庫存自由替換。`+(miss.length?`\n${miss.join("、")} 不在精油庫，可換成同感覺的精油。`:"");saveStudio();go("studio");setTimeout(()=>toast(miss.length?`${miss.join("、")} 不在精油庫，記得換成類似的精油`:"已帶入，當作起點自由調整吧"),300);break}
   case "inv-cat": ui.invCat=d.v; render(); break;
   case "inv-new": invForm(null); break;
   case "inv-edit": invForm(S.inventory.find(i=>i.id===el.closest(".inv-item").dataset.id)); break;
