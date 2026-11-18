@@ -646,7 +646,7 @@ function shell(){
 }
 function footer(){
  const cur=layout();
- return `<footer class="site-foot"><span>芝心調香室・芝心聊癒</span><div class="row" style="gap:8px"><span>版面</span><div class="seg" role="group" aria-label="切換版面">${[["auto","自動"],["mobile","手機版"],["desktop","電腦版"]].map(([k,l])=>`<button data-act="layout" data-v="${k}" aria-pressed="${cur===k}">${l}</button>`).join("")}</div></div></footer>`;
+ return `<footer class="site-foot"><span>芝心調香室・芝心聊癒・<span class="num">V3.6</span>（2026/11/18）</span><div class="row" style="gap:8px"><span>版面</span><div class="seg" role="group" aria-label="切換版面">${[["auto","自動"],["mobile","手機版"],["desktop","電腦版"]].map(([k,l])=>`<button data-act="layout" data-v="${k}" aria-pressed="${cur===k}">${l}</button>`).join("")}</div></div></footer>`;
 }
 function layout(){try{return localStorage.getItem("zhixin-layout")||"auto"}catch(e){return "auto"}}
 function applyLayout(v){
@@ -1100,7 +1100,9 @@ function oilFiltered(){
  });
 }
 VIEW.oils=()=>{
- const list=oilFiltered();
+ const filtering=!!(ui.oilQ||ui.oilTone||ui.oilTheme||ui.oilNeed||ui.oilStock||ui.oilFav);
+ let list=oilFiltered(); const total=list.length;
+ if(!filtering){list=[...list].sort((a,b)=>(isFav(b)-isFav(a))||((stockOf(b.name)>0)-(stockOf(a.name)>0))||a.name.localeCompare(b.name,"zh-Hant"));if(!ui.oilAll)list=list.slice(0,12)}
  return `<div class="page-head"><div><h2>精油庫</h2><p>${oils().length} 支精油的香調、香氣、身心應用與安全提醒。點一下看詳細資料。</p></div><button class="btn" data-act="oil-new">＋ 新增精油</button></div>
  <div class="card flat stack" style="margin-bottom:14px">
   <div class="row"><input id="oilQ" style="flex:1;min-width:200px" placeholder="搜尋名稱、英文、香氣或用途" value="${h(ui.oilQ)}" data-ui="oilQ">
@@ -1109,10 +1111,11 @@ VIEW.oils=()=>{
   <div class="row small"><span class="muted" style="width:3em">主題</span><div class="chips">${THEMES.map(t=>`<button class="chip" data-act="oil-theme" data-v="${t}" aria-pressed="${ui.oilTheme===t}">${THEME_ICON[t]} ${t}</button>`).join("")}</div></div>
   <div class="row small"><span class="muted" style="width:3em">需求</span><div class="chips">${NEEDS.map(n=>`<button class="chip" data-act="oil-need" data-v="${n.k}" aria-pressed="${ui.oilNeed===n.k}">${n.k}</button>`).join("")}</div></div>
  </div>
- <div class="row between small muted" style="margin-bottom:6px"><span>顯示 ${list.length} 支</span>${ui.oilQ||ui.oilTone||ui.oilTheme||ui.oilNeed||ui.oilStock||ui.oilFav?`<button class="btn ghost sm" data-act="oil-reset">清除篩選</button>`:""}</div>
- <div class="card" style="padding:6px 10px"><div class="oil-list">${list.map(o=>{const st=stockOf(o.name);return `<div class="oil-row" data-act="oil-open" data-id="${h(o.id)}" tabindex="0" role="button"><span>${toneTag(o.tone)}</span><div class="nm"><b>${h(o.name)}</b><small>${h(o.en||"")}</small></div><div class="ar">${h(o.aroma||"")}</div><span class="num small ${st>0?"":"muted"}" style="text-align:right">${st>0?fmt(st)+" ml":"—"}</span><button class="star ${isFav(o)?"on":""}" data-act="oil-fav" data-id="${h(o.id)}" aria-label="常用">★</button></div>`}).join("")||`<div class="empty" style="margin:10px 0">沒有符合的精油</div>`}</div></div>
+ <div class="row between small muted" style="margin-bottom:6px"><span>${filtering?`找到 ${total} 支`:ui.oilAll?`全部 ${total} 支（★常用、有庫存排前面）`:`★常用與有庫存的精油排在前面・共 ${total} 支`}</span>${ui.oilQ||ui.oilTone||ui.oilTheme||ui.oilNeed||ui.oilStock||ui.oilFav?`<button class="btn ghost sm" data-act="oil-reset">清除篩選</button>`:""}</div>
+ <div class="card" style="padding:6px 10px"><div class="oil-list">${list.map(o=>{const st=stockOf(o.name);return `<div class="oil-row" data-act="oil-open" data-id="${h(o.id)}" tabindex="0" role="button"><span>${toneTag(o.tone)}</span><div class="nm"><b>${h(o.name)}</b><small>${h(o.en||"")}</small></div><div class="ar">${h(o.aroma||"")}</div><span class="num small ${st>0?"":"muted"}" style="text-align:right">${st>0?fmt(st)+" ml":"—"}</span><button class="star ${isFav(o)?"on":""}" data-act="oil-fav" data-id="${h(o.id)}" aria-label="常用">★</button></div>`}).join("")||`<div class="empty" style="margin:10px 0">沒有符合的精油</div>`}</div>
+  ${!filtering&&total>12?`<div style="text-align:center;padding:12px 0 8px"><button class="btn soft" data-act="oil-all">${ui.oilAll?"收起，只看前 12 支":`展開全部 ${total} 支`}</button></div>`:""}</div>
  <h3 style="margin:22px 0 10px">參考資料</h3>
- <div class="grid g2"><div class="card"><details class="fold"><summary>生命靈數精油 1–9</summary><div class="small muted" style="margin:8px 0">其他老師提供的參考配方，僅供比對研究。</div><div class="list">${Object.entries(NUMEROLOGY).map(([n,a])=>`<div class="li"><b class="num" style="font-size:18px;width:28px">${n}</b><span style="flex:1">${a.join("・")}</span><button class="btn ghost sm" data-act="num-use" data-n="${n}">帶入</button></div>`).join("")}</div></details></div>
+ <div class="grid g2" style="align-items:start"><div class="card"><details class="fold"><summary>生命靈數精油 1–9</summary><div class="small muted" style="margin:8px 0">其他老師提供的參考配方，僅供比對研究。</div><div class="list">${Object.entries(NUMEROLOGY).map(([n,a])=>`<div class="li"><b class="num" style="font-size:18px;width:28px">${n}</b><span style="flex:1">${a.join("・")}</span><button class="btn ghost sm" data-act="num-use" data-n="${n}">帶入</button></div>`).join("")}</div></details></div>
   <div class="card"><details class="fold"><summary>五行精油</summary><div class="stack" style="margin-top:10px">${ELEMENTS.map(e=>`<div><b>${h(e.name)}</b><div class="small muted">${e.effects.join("、")}</div><div class="small">範例：${e.examples.join("｜")}</div></div>`).join("")}</div></details></div></div>`;
 };
 function oilDetail(id){
@@ -1298,6 +1301,7 @@ document.addEventListener("click",e=>{
  const rowI=()=>+el.closest(".orow").dataset.i;
  switch(a){
   case "backup": backupDialog(); break;
+  case "oil-all": {const was=ui.oilAll;ui.oilAll=!ui.oilAll;render();if(was)document.querySelector(".oil-list")?.scrollIntoView({block:"start"});break}
   case "restock-all": S.inventory.filter(i=>i.category==="精油"&&isLow(i)).forEach(i=>{const l=S.misc.shopping;if(!l.some(x=>x.name===i.name))l.push({name:i.name,reason:"低庫存"})});touch("misc");render();toast("已加入採購清單");break;
   case "oil-reorder-all": {const v=Math.max(0,Number($("#oilReorder").value)||0);S.misc.oilReorder=v;S.inventory.filter(i=>i.category==="精油").forEach(i=>i.reorder=v);touch("inventory","misc");render();toast(`所有精油低於 ${fmt(v)} ml 時會提醒`);break}
   case "burn-new": burnDialog({}); break;
