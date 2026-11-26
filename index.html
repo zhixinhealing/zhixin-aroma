@@ -156,12 +156,6 @@ details.fold>summary::after{content:"＋";color:var(--muted)} details.fold[open]
 .ln.base .nm{color:var(--muted)}
 .drops{display:flex;flex-wrap:wrap;gap:2px;margin-top:3px}
 .drops i{width:6px;height:8px;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;display:block}
-.melt{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:10px 0 4px;padding:10px 12px;border-radius:10px;background:var(--amber-soft);border:1px solid var(--amber)}
-.melt b{font-size:15px}.melt small{display:block;font-size:11px;color:var(--muted)}
-.melt .num{font-size:24px;font-weight:600;color:var(--amber);white-space:nowrap}
-.ogroup{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:var(--muted);margin-top:4px}
-.ogroup:first-child{margin-top:0}
-.ogroup::after{content:"";flex:1;border-top:1px dashed var(--line)}
 .label-foot{border-top:1.5px solid var(--ink);padding:12px 20px;display:flex;gap:8px;flex-wrap:wrap}
 
 /* AI */
@@ -316,6 +310,8 @@ td.r,th.r{text-align:right}
 :root[data-layout="mobile"] .inv-main{grid-template-columns:minmax(0,1fr) 54px;gap:6px 10px}:root[data-layout="mobile"] .inv-bar{grid-column:1/-1;grid-row:2}
 [hidden]{display:none!important}
 
+.weigh{flex-basis:100%;display:flex;flex-direction:column;gap:8px;padding:12px;border:1px dashed var(--line);border-radius:10px;background:var(--surface)}
+
 </style>
 </head>
 <body>
@@ -431,6 +427,9 @@ function diffuserDrops(p){
  return Math.min(10,Math.max(3,Math.round(3+area*.4+(min>60?1:0))));
 }
 
+/* 精油比重（g/ml）約略值：柑橘較輕、丁香冬青較重，其他以 0.9 估算 */
+const OIL_DENSITY={"甜橙":.85,"葡萄柚":.85,"粉紅葡萄柚":.85,"檸檬":.85,"義大利檸檬":.85,"萊姆／青檸":.86,"紅橘":.85,"綠橘":.85,"柚子":.85,"佛手柑":.88,"乳香":.87,"神聖乳香":.87,"薰衣草":.89,"醒目薰衣草":.89,"尤加利":.91,"雪松":.95,"依蘭":.94,"完全衣蘭":.94,"廣藿香":.96,"皇家夏威夷檀香":.97,"西印度檀香":.96,"岩蘭草":.99,"海地岩蘭草":.99,"沒藥":.99,"丁香":1.05,"丁香葉":1.04,"肉桂":1.02,"冬青":1.18};
+function oilDensity(n){return OIL_DENSITY[n]||.9}
 /* 主計算：studio = {mode, params, rows:[{oil,tone,ratio}]}；ctx = {findOil, stockOf, invByName} */
 function compute(studio,ctx){
  const mode=MODES[studio.mode]||MODES.rollon, p=studio.params||{};
@@ -446,7 +445,7 @@ function compute(studio,ctx){
   const totalMl=qty*vol, totalDrops=Math.round(totalMl*conc/100*20);
   const drops=allocate(totalDrops,shares);
   out.totalMl=totalMl; out.totalDrops=drops.reduce((a,b)=>a+b,0);
-  out.lines=rows.map((r,i)=>({oil:r.oil,tone:r.tone,share:shares[i],drops:drops[i],ml:drops[i]/20,need:drops[i]/20,unit:"ml",pct:totalMl?drops[i]/20/totalMl*100:0}));
+  out.lines=rows.map((r,i)=>({oil:r.oil,tone:r.tone,share:shares[i],drops:drops[i],ml:drops[i]/20,need:drops[i]/20,unit:"ml",g:drops[i]/20*oilDensity(r.oil),pct:totalMl?drops[i]/20/totalMl*100:0}));
   out.base={name:p.base||"",ml:Math.max(0,totalMl-out.totalDrops/20)};
   out.realConc=totalMl?out.totalDrops/20/totalMl*100:0;
   if(conc<mode.range[0]||conc>mode.range[1]) out.warnings.push(`${mode.label}濃度 ${fmt(conc)}% 不在建議範圍（${mode.rangeText}）。`);
@@ -464,17 +463,13 @@ function compute(studio,ctx){
   if(p.pack) out.materials.push({name:p.pack,amount:qty,unit:"個"});
  } else if(mode.kind==="candle"){
   const qty=Math.max(1,Number(p.qty)||1), w=Math.max(1,Number(p.weight)||180), pct=Math.max(0,Number(p.pct)||0);
-  const basis=p.basis==="total"?"total":"wax", loss=Math.max(0,Number(p.loss??5)||0);
-  let total,frag,wax;
-  if(basis==="wax"){wax=qty*w;frag=wax*pct/100;total=wax+frag}
-  else{total=qty*w;frag=total*pct/100;wax=total-frag}
-  const melt=wax*(1+loss/100);
-  out.total=total; out.frag=frag; out.perCandle=total/qty; out.basis=basis; out.loss=loss; out.wax={name:p.wax||"",g:wax,melt};
-  out.lines=rows.map((r,i)=>{const g=frag*shares[i], ml=g/.9;return {oil:r.oil,tone:r.tone,share:shares[i],g,ml,need:ml,unit:"ml",drops:Math.round(ml*20)}});
+  const total=qty*w, frag=total*pct/100, wax=total-frag;
+  out.total=total; out.frag=frag; out.wax={name:p.wax||"",g:wax};
+  out.lines=rows.map((r,i)=>{const g=frag*shares[i], ml=g/oilDensity(r.oil);return {oil:r.oil,tone:r.tone,share:shares[i],g,ml,need:ml,unit:"ml",drops:Math.round(ml*20)}});
   out.totalDrops=out.lines.reduce((a,l)=>a+l.drops,0);
   if(pct>10) out.warnings.push(`精油添加 ${fmt(pct)}% 超過一般蠟材上限 10%，容易出油或影響燃燒。`);
   else if(pct<mode.range[0]) out.infos.push(`添加 ${fmt(pct)}% 偏低，天然精油蠟燭香氣可能較淡。`);
-  out.materials=out.lines.map(l=>({name:l.oil,amount:l.ml,unit:"ml"})).concat(out.wax.name?[{name:out.wax.name,amount:melt,unit:"g"}]:[]);
+  out.materials=out.lines.map(l=>({name:l.oil,amount:l.ml,unit:"ml"})).concat(out.wax.name?[{name:out.wax.name,amount:wax,unit:"g"}]:[]);
   if(p.wick) out.materials.push({name:p.wick,amount:qty*(Number(p.wickPer)||1),unit:"支"});
   if(p.jar) out.materials.push({name:p.jar,amount:qty,unit:"個"});
   if(p.pack) out.materials.push({name:p.pack,amount:qty,unit:"個"});
@@ -482,7 +477,7 @@ function compute(studio,ctx){
  } else {
   const total=diffuserDrops(p); const drops=allocate(total,shares);
   out.totalDrops=drops.reduce((a,b)=>a+b,0); out.device=p.device;
-  out.lines=rows.map((r,i)=>({oil:r.oil,tone:r.tone,share:shares[i],drops:drops[i],ml:drops[i]/20,need:drops[i]/20,unit:"ml"}));
+  out.lines=rows.map((r,i)=>({oil:r.oil,tone:r.tone,share:shares[i],drops:drops[i],ml:drops[i]/20,g:drops[i]/20*oilDensity(r.oil),need:drops[i]/20,unit:"ml"}));
   if(p.device==="nebulizer") out.infos.push(`無水霧化機不用滴數：先調好一瓶 ${fmt(p.premix||5)} ml 複方，建議間歇使用（開 15 分、關 15 分）。`);
   if(rows.length>5) out.infos.push("擴香以 2–5 支精油較容易聞出層次。");
   if(p.device!=="nebulizer"&&rows.length&&total<rows.length*2) out.warnings.push(`這次只用 ${total} 滴，卻有 ${rows.length} 支精油，每支只分到 1–2 滴，比例調整幾乎沒有作用。建議減到 ${Math.max(2,Math.floor(total/2))} 支以內，或改用「無水霧化機」先調一小瓶複方。`);
@@ -588,7 +583,7 @@ function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
 let S=lsGet(LS_KEY);
 if(!S){const legacy=lsGet("zhixinAromaState");if(legacy&&legacy.inventory){try{S={...migrateOld(legacy),_meta:{}};S._autoMigrated=1}catch(e){S=null}}}
 S=S||freshState(); S._meta=S._meta||{};
-function defaultStudio(){return {mode:"spray",name:"",recipeId:null,version:1,status:"草稿",tags:[],notes:"",params:{qty:1,volume:30,conc:3,base:"香水基劑",use:"space",weight:180,pct:7,basis:"wax",loss:5,wax:"大豆蠟",wick:"燭芯",wickPer:1,jar:"蠟燭容器",bottle:"",pack:"",price:"",cure:7,device:"water",area:5,minutes:30,premix:5},rows:[]}}
+function defaultStudio(){return {mode:"spray",name:"",recipeId:null,version:1,status:"草稿",tags:[],notes:"",params:{qty:1,volume:30,conc:3,base:"香水基劑",use:"space",weight:180,pct:7,wax:"大豆蠟",wick:"燭芯",wickPer:1,jar:"蠟燭容器",bottle:"",pack:"",price:"",cure:7,device:"water",area:5,minutes:30,premix:5},rows:[]}}
 let studio=Object.assign(defaultStudio(),lsGet(LS_STUDIO)||{});
 const ui={view:"home",oilQ:"",oilTone:"",oilTheme:"",oilNeed:"",oilStock:false,oilFav:false,invCat:"全部",invQ:"",invLow:false,recTab:"recipes",recMode:"",recStatus:"",recQ:"",recKind:"",aiMode:"auto",aiStock:false,chat:[],aiBusy:null,analysis:null};
 
@@ -685,7 +680,7 @@ function shell(){
 }
 function footer(){
  const cur=layout();
- return `<footer class="site-foot"><span>芝心調香室・芝心聊癒・<span class="num">V4.2 ${HAS_REF?"完整版":"分享版"}</span>（2026/11/25）</span><div class="row" style="gap:8px"><span>版面</span><div class="seg" role="group" aria-label="切換版面">${[["auto","自動"],["mobile","手機版"],["desktop","電腦版"]].map(([k,l])=>`<button data-act="layout" data-v="${k}" aria-pressed="${cur===k}">${l}</button>`).join("")}</div></div></footer>`;
+ return `<footer class="site-foot"><span>芝心調香室・芝心聊癒・<span class="num">V4.3 ${HAS_REF?"完整版":"分享版"}</span>（2026/11/18）</span><div class="row" style="gap:8px"><span>版面</span><div class="seg" role="group" aria-label="切換版面">${[["auto","自動"],["mobile","手機版"],["desktop","電腦版"]].map(([k,l])=>`<button data-act="layout" data-v="${k}" aria-pressed="${cur===k}">${l}</button>`).join("")}</div></div></footer>`;
 }
 function layout(){try{return localStorage.getItem("zhixin-layout")||"auto"}catch(e){return "auto"}}
 function applyLayout(v){
@@ -757,38 +752,17 @@ function recordLine(r){
 }
 
 /* ================= 調配台 ================= */
-function saveStudio(){sortRows();lsSet(LS_STUDIO,studio)}
+function saveStudio(){lsSet(LS_STUDIO,studio)}
 function showRef(){if(!HAS_REF)return false;try{return localStorage.getItem("zhixin-showref")==="1"}catch(e){return false}}
 function partsTotal(){return studio.rows.filter(r=>r.oil).reduce((a,r)=>a+(Number(r.ratio)||0),0)}
 function partsSummary(){const t=partsTotal();return t?`共 ${fmt(t)} 份`:""}
 function shareText(i){const r=studio.rows[i],t=partsTotal();return r&&r.oil&&t?`佔 ${fmt((Number(r.ratio)||0)/t*100,0)}%`:""}
-/* 精油列依香調排序：T → T/M → M → M/B → B（同調性內保持原本順序） */
-const TONE_ORDER=["T","T/M","M","M/B","B"];
-function toneRank(t){const i=TONE_ORDER.indexOf(t);return i<0?2:i}
-function sortRows(){studio.rows=studio.rows.map((r,i)=>({r,i})).sort((a,b)=>toneRank(a.r.tone)-toneRank(b.r.tone)||a.i-b.i).map(x=>x.r)}
-/* 這支精油是否符合這一列的香調：單一調（T）→ 含 T 的都算（T、T/M）；複合調（T/M）→ 只要 T、M、T/M */
-function toneFits(oilTone,rowTone){
- const op=toneParts(oilTone), rp=toneParts(rowTone);
- return rp.length===1?op.includes(rp[0]):op.every(x=>rp.includes(x));
-}
-const showAllRows=new WeakSet();
-function oilOption(o,sel){const st=stockOf(o.name);return `<option value="${h(o.name)}" ${o.name===sel?"selected":""}>${st>0?"● ":"○ "}${h(o.name)}${o.tone?`（${h(o.tone)}）`:""}${st>0?` ${fmt(st)}ml`:""}</option>`}
-function oilOptions(sel,tone,all){
- const list=oils(); const label={T:"前調 T",M:"中調 M",B:"後調 B"};
- if(all){
-  const want=tone?primaryTone(tone):"";
-  const groups={T:[],M:[],B:[]}; list.forEach(o=>groups[primaryTone(o.tone)].push(o));
-  const order=want?[want,...["T","M","B"].filter(x=>x!==want)]:["T","M","B"];
-  return `<option value="">選擇精油</option>`+order.map(k=>`<optgroup label="${label[k]}">${groups[k].map(o=>oilOption(o,sel)).join("")}</optgroup>`).join("")+`<option value="__fit__">↩ 只顯示 ${h(tone)} 的精油</option>`;
- }
- const fit=list.filter(o=>toneFits(o.tone,tone));
- const selOil=sel&&!fit.some(o=>o.name===sel)?(findOil(sel)||{name:sel,tone:""}):null;
- const stockFirst=fit.filter(o=>stockOf(o.name)>0), rest=fit.filter(o=>stockOf(o.name)<=0);
- return `<option value="">選擇${h(tone)}精油</option>`
-  +(selOil?`<optgroup label="目前選的（不是 ${h(tone)}）">${oilOption(selOil,sel)}</optgroup>`:"")
-  +(stockFirst.length?`<optgroup label="有庫存">${stockFirst.map(o=>oilOption(o,sel)).join("")}</optgroup>`:"")
-  +(rest.length?`<optgroup label="沒有庫存">${rest.map(o=>oilOption(o,sel)).join("")}</optgroup>`:"")
-  +`<option value="__all__">⋯ 顯示全部精油</option>`;
+function oilOptions(sel,tone){
+ const list=oils(); const want=tone?primaryTone(tone):"";
+ const groups={T:[],M:[],B:[]}; list.forEach(o=>groups[primaryTone(o.tone)].push(o));
+ const order=want?[want,...["T","M","B"].filter(x=>x!==want)]:["T","M","B"];
+ const label={T:"前調 T",M:"中調 M",B:"後調 B"};
+ return `<option value="">選擇精油</option>`+order.map(k=>`<optgroup label="${label[k]}">${groups[k].map(o=>{const st=stockOf(o.name);return `<option value="${h(o.name)}" ${o.name===sel?"selected":""}>${st>0?"● ":"○ "}${h(o.name)}${st>0?` ${fmt(st)}ml`:""}</option>`}).join("")}</optgroup>`).join("");
 }
 function invOptions(cats,sel){
  const items=S.inventory.filter(i=>cats.includes(i.category));
@@ -811,9 +785,8 @@ VIEW.studio=()=>{
    <div class="small muted" style="margin-top:8px">建議：${h(m.rangeText)}</div>`;
  else if(m.kind==="candle") params=`<div class="grid g4">
    <label class="f">數量<input type="number" min="1" value="${h(p.qty)}" data-p="qty"></label>
-   <label class="f">${p.basis==="total"?"單顆成品 g（含精油）":"單顆蠟重 g"}<input type="number" min="1" value="${h(p.weight)}" data-p="weight"></label>
+   <label class="f">單顆成品 g<input type="number" min="1" value="${h(p.weight)}" data-p="weight"></label>
    <label class="f">精油添加 %<input type="number" min="0" max="15" step="0.5" value="${h(p.pct)}" data-p="pct"></label>
-   <label class="f">融蠟損耗 %<input type="number" min="0" max="50" step="1" value="${h(p.loss??5)}" data-p="loss"></label>
    <label class="f">蠟材<select data-p="wax">${invOptions(["蠟材"],p.wax)}</select></label>
    <label class="f">燭芯<select data-p="wick">${invOptions(["燭芯"],p.wick)}</select></label>
    <label class="f">每顆燭芯數<input type="number" min="0" value="${h(p.wickPer)}" data-p="wickPer"></label>
@@ -821,21 +794,17 @@ VIEW.studio=()=>{
    <label class="f">包材・標籤<select data-p="pack">${invOptions(["貼紙","包裝盒","其他"],p.pack)}</select></label>
    <label class="f">售價（每顆 NT$）<input type="number" min="0" value="${h(p.price||"")}" data-p="price" placeholder="未定"></label>
    <label class="f">熟成天數<input type="number" min="0" value="${h(p.cure??7)}" data-p="cure"></label></div>
-   <div class="row small" style="margin-top:10px"><span class="muted">精油 % 的計算基準</span><div class="seg"><button data-act="basis" data-v="wax" aria-pressed="${p.basis!=="total"}">蠟重（精油另外加）</button><button data-act="basis" data-v="total" aria-pressed="${p.basis==="total"}">成品總重</button></div></div>
-   <div class="small muted" style="margin-top:8px">建議：${h(m.rangeText)}。${p.basis==="total"?"「成品總重」適合容器只裝得下固定重量時：輸入的重量已包含精油。":"輸入的就是每顆要放的蠟，精油依蠟重的 % 另外加上去。"}損耗是鍋子、量杯沾掉的蠟，右邊「要融的蠟」已經算進去。</div>`;
+   <div class="small muted" style="margin-top:8px">建議：${h(m.rangeText)}。比例以「成品總重」計算。</div>`;
  else params=`<div class="grid g4">
    <label class="f">設備<select data-p="device">${Object.entries(DEVICES).map(([k,v])=>`<option value="${k}" ${p.device===k?"selected":""}>${v}</option>`).join("")}</select></label>
    ${p.device==="nebulizer"?`<label class="f">複方瓶 ml<input type="number" min="1" value="${h(p.premix)}" data-p="premix"></label>`:`<label class="f">空間（坪）<input type="number" min="1" step="0.5" value="${h(p.area)}" data-p="area"></label><label class="f">使用時間（分）<input type="number" min="10" step="10" value="${h(p.minutes)}" data-p="minutes"></label>`}</div>`;
 
- const GNAME={T:"前調",M:"中調",B:"後調"}; let lastG="";
- const rows=studio.rows.map((r,i)=>{const st=r.oil?stockOf(r.oil):null;const g=primaryTone(r.tone);const head=g!==lastG?`<div class="ogroup"><i class="dot ${g}"></i>${GNAME[g]}</div>`:"";lastG=g;
-   const o=r.oil?findOil(r.oil):null; const off=o&&o.tone&&!toneFits(o.tone,r.tone);
-   return `${head}<div class="orow" data-i="${i}">
-   <select class="tsel" data-r="tone" aria-label="香調">${TONE_ORDER.map(t=>`<option ${r.tone===t?"selected":""}>${t}</option>`).join("")}</select>
-   <select data-r="oil" aria-label="精油">${oilOptions(r.oil,r.tone,showAllRows.has(r))}</select>
+ const rows=studio.rows.map((r,i)=>{const st=r.oil?stockOf(r.oil):null;return `<div class="orow" data-i="${i}">
+   <select class="tsel" data-r="tone" aria-label="香調">${["T","T/M","M","M/B","B"].map(t=>`<option ${r.tone===t?"selected":""}>${t}</option>`).join("")}</select>
+   <select data-r="oil" aria-label="精油">${oilOptions(r.oil,r.tone)}</select>
    <div class="pct-in parts"><input type="number" min="0" step="0.5" value="${h(r.ratio)}" data-r="ratio" aria-label="份數"></div>
    <button class="iconbtn" data-act="row-del" aria-label="移除">×</button>
-   ${r.oil?`<div class="stockmini"><b data-share>${shareText(i)}</b>・${st>0?`庫存 ${fmt(st)} ml`:"目前沒有庫存"}${off?`・<span style="color:var(--warn)">精油庫標示為 ${h(o.tone)}</span>`:""}${SAFETY[r.oil]&&(m.skin||p.use==="body")?`・皮膚上限 ${SAFETY[r.oil].max}%`:""}</div>`:""}</div>`}).join("");
+   ${r.oil?`<div class="stockmini"><b data-share>${shareText(i)}</b>・${st>0?`庫存 ${fmt(st)} ml`:"目前沒有庫存"}${SAFETY[r.oil]&&(m.skin||p.use==="body")?`・皮膚上限 ${SAFETY[r.oil].max}%`:""}</div>`:""}</div>`}).join("");
  return `<div class="page-head"><div><h2>調配台</h2><p>選產品、配精油，右邊的配方標籤會即時算好滴數、用量與庫存。</p></div>
   <div class="row"><button class="btn ghost sm" data-act="studio-new">清空重來</button></div></div>
  ${modeSeg}
@@ -844,8 +813,8 @@ VIEW.studio=()=>{
    <div class="card"><div class="grid g2" style="margin-bottom:12px"><label class="f">配方名稱<input value="${h(studio.name)}" data-s="name" placeholder="例如：月光慢眠"></label>
     <label class="f">狀態<select data-s="status">${STATUSES.map(s=>`<option ${studio.status===s?"selected":""}>${s}</option>`).join("")}</select></label></div>${params}</div>
    <div class="card"><div class="row between" style="margin-bottom:10px"><h3>精油比例</h3><span class="small muted num" id="ratioSum">${partsSummary()}</span></div>
-    <div class="rows">${rows||`<div class="empty">還沒有精油，按下方「＋ 前調」「＋ 中調」「＋ 後調」</div>`}</div>
-    <div class="row" style="margin-top:12px">${[["T","前調"],["M","中調"],["B","後調"]].map(([t,l])=>`<button class="btn soft sm" data-act="row-add" data-tone="${t}"><i class="dot ${t}"></i>＋ ${l}</button>`).join("")}<span class="small muted">會自動排進對應的位置</span></div>
+    <div class="rows">${rows||`<div class="empty">還沒有精油，按下方「＋ 新增精油」</div>`}</div>
+    <div class="row" style="margin-top:12px"><button class="btn soft sm" data-act="row-add">＋ 新增精油</button></div>
     <hr class="sep" style="margin:14px 0 10px">
     <div class="small muted" style="margin-bottom:6px">快速套用：前調：中調：後調 每支各幾份</div>
     <div class="chips">${[["經典 3:2:1",3,2,1],["平衡 2:2:1",2,2,1],["沉穩 1:2:2",1,2,2]].map(([l,t,mm,b])=>`<button class="chip" data-act="preset" data-t="${t}" data-m="${mm}" data-b="${b}">${l}</button>`).join("")}<button class="chip" data-act="even">每支 1 份</button></div>
@@ -863,17 +832,17 @@ function renderLabel(){
  const res=compute(studio,ctx), m=MODES[studio.mode], p=studio.params;
  const A=localAnalysis(res,findOil);
  const unitBig=m.kind==="candle"?["g",fmt(res.frag||0)]:["滴",res.totalDrops];
- const sub=m.kind==="liquid"?`${p.qty} 瓶 × ${p.volume} ml・實際濃度 ${fmt(res.realConc||0,2)}%`:m.kind==="candle"?`成品 ${fmt(res.total)} g（每顆 ${fmt(res.perCandle)} g）・精油約 ${res.totalDrops} 滴`:p.device==="nebulizer"?`${fmt(p.premix)} ml 複方`:`${DEVICES[p.device]}・${p.area} 坪・${p.minutes} 分`;
+ const gTot=res.lines.reduce((s,l)=>s+(l.g||0),0);
+ const sub=m.kind==="liquid"?`${p.qty} 瓶 × ${p.volume} ml・實際濃度 ${fmt(res.realConc||0,2)}%・精油約 ${fmt(gTot,2)} g`:m.kind==="candle"?`成品 ${fmt(res.total)} g・精油約 ${res.totalDrops} 滴`:p.device==="nebulizer"?`${fmt(p.premix)} ml 複方`:`${DEVICES[p.device]}・${p.area} 坪・${p.minutes} 分`;
  const dropsViz=l=>m.kind!=="candle"&&l.drops&&l.drops<=40?`<span class="drops">${Array.from({length:l.drops},()=>`<i style="background:var(--${primaryTone(l.tone).toLowerCase()})"></i>`).join("")}</span>`:"";
  const lines=res.lines.map(l=>`<div class="ln"><span>${toneTag(l.tone)}</span><div class="nm">${h(l.oil)} <span class="num small muted">${fmt(l.share*100,0)}%</span>${l.over?` <span class="pill bad">超過上限</span>`:""}${l.enough===false?` <span class="pill warn">庫存不足</span>`:""}${dropsViz(l)}</div>
-  <div class="amt">${m.kind==="candle"?`${fmt(l.g,2)} g<small>約 ${l.drops} 滴</small>`:`${l.drops} 滴<small>${fmt(l.ml,2)} ml</small>`}</div></div>`).join("");
+  <div class="amt">${m.kind==="candle"?`${fmt(l.g,2)} g<small>約 ${l.drops} 滴</small>`:`${l.drops} 滴<small>${fmt(l.ml,2)} ml・約 ${fmt(l.g,2)} g</small>`}</div></div>`).join("");
  const extra=[];
  if(m.kind==="liquid"&&res.base.name) extra.push(["基底",res.base.name,`${fmt(res.base.ml)} ml`]);
  if(m.kind==="liquid"&&p.bottle) extra.push(["瓶",p.bottle,`${p.qty} 個`]);
  if(m.kind!=="diffuser"&&p.pack) extra.push(["包",p.pack,`${p.qty} 個`]);
- if(m.kind==="candle"){ extra.push(["蠟",`${res.wax.name||"蠟"}（配方用，不含損耗）`,`${fmt(res.wax.g)} g`]); if(p.wick) extra.push(["芯",p.wick,`${p.qty*(Number(p.wickPer)||1)} 支`]); if(p.jar) extra.push(["器",p.jar,`${p.qty} 個`]); }
- let extraHtml=extra.map(([k,n,a])=>{const mm=res.materials.find(x=>x.name===n);return `<div class="ln base"><span class="small muted">${k}</span><div class="nm">${h(n)}${mm&&mm.enough===false?` <span class="pill warn">不足</span>`:""}</div><div class="amt">${a}</div></div>`}).join("");
- if(m.kind==="candle"){const mw=res.materials.find(x=>x.name===res.wax.name);extraHtml=`<div class="melt"><div><b>要融的蠟</b><small>${h(res.wax.name||"蠟材")}・已含損耗 ${fmt(res.loss)}%・每顆約 ${fmt(res.wax.melt/Math.max(1,Number(p.qty)||1))} g${mw&&mw.enough===false?` <span class="pill warn">庫存不足</span>`:""}</small></div><span class="num">${fmt(res.wax.melt)} g</span></div>`+extraHtml}
+ if(m.kind==="candle"){ if(res.wax.name) extra.push(["蠟",res.wax.name,`${fmt(res.wax.g)} g`]); if(p.wick) extra.push(["芯",p.wick,`${p.qty*(Number(p.wickPer)||1)} 支`]); if(p.jar) extra.push(["器",p.jar,`${p.qty} 個`]); }
+ const extraHtml=extra.map(([k,n,a])=>{const mm=res.materials.find(x=>x.name===n);return `<div class="ln base"><span class="small muted">${k}</span><div class="nm">${h(n)}${mm&&mm.enough===false?` <span class="pill warn">不足</span>`:""}</div><div class="amt">${a}</div></div>`}).join("");
  const short=res.materials.filter(x=>x.enough===false);
  const {T,M,B}=res.tmb;
  const process=m.kind==="candle"?`<div class="note" style="margin-top:12px"><b>製作流程</b>（以大豆蠟為例，請以你的蠟材說明為準）<br>① 融蠟加熱到約 80–85°C ② 加入精油輕柔攪拌 2 分鐘 ③ 降到約 55–60°C 倒蠟 ④ 室溫靜置 ⑤ 熟成 1–2 週再試燒</div>`:"";
@@ -881,7 +850,7 @@ function renderLabel(){
  box.innerHTML=`<div class="label-card">
   <div class="label-top"><div><div class="kind">${h(m.label)}・${h(studio.status)}</div><h3>${h(studio.name||"未命名配方")}${studio.version>1?` <span class="small muted">V${studio.version}</span>`:""}</h3></div><div class="batch">芝心調香室<br>${dateStr(Date.now())}</div></div>
   <div class="label-big"><b>${unitBig[1]}</b><span>${unitBig[0]} 精油<br>${h(sub)}</span></div>
-  <div class="label-body">${lines||`<div class="empty" style="margin:8px 0">加入精油後顯示用量</div>`}${extraHtml}</div>
+  <div class="label-body">${lines||`<div class="empty" style="margin:8px 0">加入精油後顯示用量</div>`}${extraHtml}${res.lines.length&&m.kind!=="candle"?`<div class="small muted" style="margin-top:8px">滴的大小會因滴頭和精油稠度而不同，要做得精準或拿去賣，建議放在秤上加到上面的克數。克數依各精油比重估算。</div>`:""}</div>
   ${res.lines.length?`<div style="padding:0 20px 14px"><div class="tmbbar" aria-label="香調結構"><i class="T" style="width:${T*100}%"></i><i class="M" style="width:${M*100}%"></i><i class="B" style="width:${B*100}%"></i></div>
    <div class="tmblegend"><span><i class="dot T"></i>前調 ${fmt(T*100,0)}%</span><span><i class="dot M"></i>中調 ${fmt(M*100,0)}%</span><span><i class="dot B"></i>後調 ${fmt(B*100,0)}%</span><span>持香 ${A.longevity}</span></div></div>`:""}
   <div class="label-foot">
@@ -953,15 +922,15 @@ function makeIt(){
    const deduct=sc.querySelector("#mk-deduct").checked;
    if(deduct) res.materials.forEach(x=>{const inv=S.inventory.find(i=>i.id===x.invId);if(inv)inv.amount=round(Math.max(0,inv.amount-x.amount),2)});
    const cureD=isD?0:Math.max(0,Number(sc.querySelector("#mk-cure")?.value)||0); const cst=costOf(res,invByName,isD?1:Math.max(1,Number(p.qty)||1));
-   S.records.unshift({id:uid(),kind:isD?"diffuser":"production",ts:Date.now(),readyTs:cureD?Date.now()+cureD*864e5:undefined,cureDays:cureD||undefined,cost:cst.missing.length===res.materials.length?undefined:round(cst.total,1),price:Number(p.price)||undefined,jar:m.kind==="candle"?p.jar:undefined,wick:m.kind==="candle"?p.wick:undefined,name:studio.name||m.label,mode:studio.mode,typeLabel:m.label,recipeId:studio.recipeId,qty:p.qty,size:m.kind==="liquid"?p.volume+" ml":m.kind==="candle"?fmt(res.perCandle)+" g":"",device:isD?DEVICES[p.device]:undefined,rating,materials:res.materials.map(x=>({name:x.name,amount:round(x.amount,3),unit:x.unit})),deducted:deduct,note:sc.querySelector("#mk-note").value.trim()});
+   S.records.unshift({id:uid(),kind:isD?"diffuser":"production",ts:Date.now(),readyTs:cureD?Date.now()+cureD*864e5:undefined,cureDays:cureD||undefined,cost:cst.missing.length===res.materials.length?undefined:round(cst.total,1),price:Number(p.price)||undefined,jar:m.kind==="candle"?p.jar:undefined,wick:m.kind==="candle"?p.wick:undefined,name:studio.name||m.label,mode:studio.mode,typeLabel:m.label,recipeId:studio.recipeId,qty:p.qty,size:m.kind==="liquid"?p.volume+" ml":m.kind==="candle"?p.weight+" g":"",device:isD?DEVICES[p.device]:undefined,rating,materials:res.materials.map(x=>({name:x.name,amount:round(x.amount,3),unit:x.unit})),deducted:deduct,note:sc.querySelector("#mk-note").value.trim()});
    if(studio.status==="草稿"||studio.status==="想試試"){studio.status="測試中";saveStudio()}
    touch("records","inventory"); render(); toast(deduct?"已記錄並扣除庫存":"已記錄");
   }}]});
 }
 function labelText(){
  const res=compute(studio,ctx), m=MODES[studio.mode];
- return [`【${studio.name||"未命名配方"}】${m.label}`,...res.lines.map(l=>`${l.oil}（${l.tone}）${m.kind==="candle"?fmt(l.g,2)+" g":l.drops+" 滴"}`),
-  m.kind==="liquid"&&res.base.name?`${res.base.name} ${fmt(res.base.ml)} ml`:"",m.kind==="candle"?`${res.wax.name||"蠟"} 要融 ${fmt(res.wax.melt)} g（配方用 ${fmt(res.wax.g)} g＋損耗 ${fmt(res.loss)}%）`:"","— 芝心調香室"].filter(Boolean).join("\n");
+ return [`【${studio.name||"未命名配方"}】${m.label}`,...res.lines.map(l=>`${l.oil}（${l.tone}）${m.kind==="candle"?fmt(l.g,2)+" g（約 "+l.drops+" 滴）":l.drops+" 滴（約 "+fmt(l.g,2)+" g）"}`),
+  m.kind==="liquid"&&res.base.name?`${res.base.name} ${fmt(res.base.ml)} ml`:"",m.kind==="candle"&&res.wax.name?`${res.wax.name} ${fmt(res.wax.g)} g`:"","— 芝心調香室"].filter(Boolean).join("\n");
 }
 
 /* ================= AI 調香師 ================= */
@@ -1017,6 +986,7 @@ function cleanFormula(f){
  const list=f.oils.map(o=>({name:findOil(String(o.name||"").trim())?.name,ratio:Math.max(0,Number(o.ratio)||0),why:o.why?String(o.why):""})).filter(o=>o.name&&o.ratio>0);
  if(!list.length) return null;
  const p=simplifyParts(list.map(o=>o.ratio)); list.forEach((o,i)=>o.ratio=p[i]);
+ list.forEach((o,i)=>o.ratio=ints[i]);
  return {name:String(f.name||"AI 配方"),mode:MODES[f.mode]?f.mode:"rollon",concentration:Number(f.concentration)||null,oils:list,aroma:f.aroma?String(f.aroma):"",tips:Array.isArray(f.tips)?f.tips.map(String).slice(0,4):[]};
 }
 async function askAI(text){
@@ -1273,8 +1243,22 @@ function invRow(i){
    <span class="pill ${st[0]}">${st[1]}</span></button>
   ${open?`<div class="inv-edit"><span class="stepper"><button data-act="inv-step" data-d="${-step}" aria-label="減少">−</button><input type="number" step="any" value="${round(amt,2)}" data-inv="amount" aria-label="${h(i.name)} 目前數量"><button data-act="inv-step" data-d="${step}" aria-label="增加">＋</button></span><span class="small muted">${h(i.unit)}</span>
    <label class="row small" style="gap:6px">每${i.category==="精油"?"瓶":"份"}容量<input type="number" min="0" step="any" value="${round(cap,2)}" data-inv="capacity" style="width:80px">${h(i.unit)}</label>
-   <span class="small muted">低於 ${fmt(i.reorder)} ${h(i.unit)} 提醒</span><button class="btn ghost sm" data-act="inv-edit">更多設定</button></div>`:""}</div>`;
+   <span class="small muted">低於 ${fmt(i.reorder)} ${h(i.unit)} 提醒</span><button class="btn ghost sm" data-act="inv-edit">更多設定</button>
+   ${i.unit==="ml"?weighHtml(i):""}</div>`:""}</div>`;
 }
+/* 秤重換算：記下空瓶重量，之後秤整瓶就能算出剩幾 ml */
+const DENSITY={精油:.9,基底油:.92,香水基劑:.82,酒精:.8,噴霧基底:.85,純露:1};
+function densityOf(i){return DENSITY[i.category]||.9}
+function emptyWeight(i){const fw=Number(i.fullWeight);return fw>0?fw-capOf(i)*densityOf(i):(Number(i.emptyWeight)||null)}
+function weighHtml(i){
+ const ew=emptyWeight(i), d=densityOf(i);
+ if(ew==null) return `<div class="weigh"><b>秤重換算</b><div class="small muted">新瓶子（還沒用過）時先秤一次整瓶重量，之後秤一秤就知道剩幾 ml。</div>
+  <div class="row"><label class="row small" style="gap:6px">滿瓶 ${fmt(capOf(i))} ml 時整瓶重<input type="number" min="0" step="0.1" id="wf-${i.id}" style="width:90px">g</label><button class="btn soft sm" data-act="weigh-full">記下滿瓶重量</button></div>
+  <div class="small muted">已經用過了？也可以秤同款空瓶，直接填空瓶重：<input type="number" min="0" step="0.1" id="we-${i.id}" style="width:80px;display:inline-block;padding:4px 6px"> g <button class="btn ghost sm" data-act="weigh-empty">記下空瓶重量</button></div></div>`;
+ return `<div class="weigh"><div class="row between"><b>秤重換算</b><span class="small muted">空瓶約 ${fmt(ew,1)} g・1 ml ≈ ${d} g <button class="btn ghost sm" data-act="weigh-reset" style="margin-left:6px">重新設定</button></span></div>
+  <div class="row"><label class="row small" style="gap:6px">現在整瓶秤到<input type="number" min="0" step="0.1" id="wn-${i.id}" data-weigh="${i.id}" style="width:90px">g</label><span class="small" id="wr-${i.id}">輸入重量後顯示剩量</span><button class="btn sm" data-act="weigh-now">更新庫存</button></div></div>`;
+}
+function weighCalc(i,g){const ew=emptyWeight(i);if(ew==null||!(g>0))return null;return Math.max(0,round((g-ew)/densityOf(i),1))}
 function invForm(item){
  const isNew=!item; item=item||{name:"",category:"精油",amount:10,unit:"ml",spec:"",reorder:S.misc.oilReorder??3};
  dialog(isNew?"新增庫存品項":"編輯 "+item.name,`<div class="grid g2"><label class="f">品項名稱<input id="if-name" value="${h(item.name)}" list="oilNames"></label>
@@ -1323,7 +1307,7 @@ function labelDefaults(){
  if(skin&&oilNames.some(n=>SAFETY[n]?.photo)) caution.push("含光敏性精油，塗抹後 12 小時內避免日曬。");
  const d=new Date(); const pad=n=>String(n).padStart(2,"0");
  const brand=S.misc.labelInfo||{};
- return {name:studio.name||m.label,type:m.label,net:m.kind==="candle"?`${fmt(res.perCandle)} g`:`${fmt(p.volume)} ml`,ingredients,usage:(USAGE[studio.mode]||[]).join(""),caution:caution.join(""),
+ return {name:studio.name||m.label,type:m.label,net:m.kind==="candle"?`${fmt(p.weight)} g`:`${fmt(p.volume)} ml`,ingredients,usage:(USAGE[studio.mode]||[]).join(""),caution:caution.join(""),
   made:`${d.getFullYear()}/${pad(d.getMonth()+1)}/${pad(d.getDate())}`,batch:`${d.getFullYear()}${pad(d.getMonth()+1)}${pad(d.getDate())}-${pad(d.getHours())}${pad(d.getMinutes())}`,
   brand:brand.brand||"芝心聊癒",maker:brand.maker||"",contact:brand.contact||"",origin:brand.origin||"台灣",copies:Math.max(1,Number(p.qty)||1)};
 }
@@ -1405,6 +1389,10 @@ document.addEventListener("click",e=>{
  const rowI=()=>+el.closest(".orow").dataset.i;
  switch(a){
   case "backup": backupDialog(); break;
+  case "weigh-full": {const it=S.inventory.find(x=>x.id===el.closest(".inv-item").dataset.id);const g=Number($("#wf-"+it.id).value);if(!(g>0))return toast("請輸入整瓶重量");if(g<=capOf(it)*densityOf(it))return toast("重量比精油本身還輕，請確認是整瓶（含瓶子）的重量");it.fullWeight=g;delete it.emptyWeight;touch("inventory");render();toast(`已記下：空瓶約 ${fmt(emptyWeight(it),1)} g`);break}
+  case "weigh-empty": {const it=S.inventory.find(x=>x.id===el.closest(".inv-item").dataset.id);const g=Number($("#we-"+it.id).value);if(!(g>0))return toast("請輸入空瓶重量");it.emptyWeight=g;delete it.fullWeight;touch("inventory");render();toast("已記下空瓶重量");break}
+  case "weigh-reset": {const it=S.inventory.find(x=>x.id===el.closest(".inv-item").dataset.id);delete it.fullWeight;delete it.emptyWeight;touch("inventory");render();break}
+  case "weigh-now": {const it=S.inventory.find(x=>x.id===el.closest(".inv-item").dataset.id);const ml=weighCalc(it,Number($("#wn-"+it.id).value));if(ml==null)return toast("請輸入現在秤到的重量");const before=it.amount;it.amount=ml;touch("inventory");render();toast(`${it.name}：${fmt(before)} → ${fmt(ml)} ml`);break}
   case "wish-new": wishDialog(); break;
   case "oil-all": {const was=ui.oilAll;ui.oilAll=!ui.oilAll;render();if(was)document.querySelector(".oil-list")?.scrollIntoView({block:"start"});break}
   case "restock-all": S.inventory.filter(i=>i.category==="精油"&&isLow(i)).forEach(i=>{const l=S.misc.shopping;if(!l.some(x=>x.name===i.name))l.push({name:i.name,reason:"低庫存"})});touch("misc");render();toast("已加入採購清單");break;
@@ -1417,8 +1405,7 @@ document.addEventListener("click",e=>{
   case "quick": studio.rows=studio.rows.filter(r=>r.oil); setMode(d.mode); go("studio"); break;
   case "mode": setMode(d.mode); render(); break;
   case "use": studio.params.use=d.use; if(d.use==="body"&&studio.params.conc>2) studio.params.conc=1.5; else if(d.use!=="body") studio.params.conc=MODES.spray.conc; saveStudio(); render(); break;
-  case "row-add": {const nr={oil:"",tone:d.tone||"M",ratio:1};studio.rows.push(nr);saveStudio();render();const i=studio.rows.indexOf(nr);document.querySelector(`.orow[data-i="${i}"] select[data-r="oil"]`)?.focus();break}
-  case "basis": studio.params.basis=d.v; saveStudio(); render(); break;
+  case "row-add": studio.rows.push({oil:"",tone:"M",ratio:1}); saveStudio(); render(); break;
   case "row-del": studio.rows.splice(rowI(),1); saveStudio(); render(); break;
   case "preset": {const r=partsByTone(studio.rows,+d.t,+d.m,+d.b);studio.rows.forEach((x,i)=>x.ratio=r[i]);saveStudio();render();break}
   case "even": {const r=studio.rows.map(()=>1);studio.rows.forEach((x,i)=>x.ratio=r[i]);saveStudio();render();break}
@@ -1468,12 +1455,12 @@ document.addEventListener("input",e=>{
  if(t.dataset.s){studio[t.dataset.s]=t.dataset.s==="tags"?t.value.split(/[,，、]+/).map(x=>x.trim()).filter(Boolean):t.value;saveStudio();if(t.dataset.s!=="notes"&&t.dataset.s!=="tags")renderLabel();return}
  if(t.dataset.r){const i=+t.closest(".orow").dataset.i,r=studio.rows[i];
   if(t.dataset.r==="ratio"){r.ratio=Number(t.value)||0;saveStudio();renderLabel();const sum=document.getElementById("ratioSum");if(sum)sum.textContent=partsSummary();document.querySelectorAll(".orow").forEach(el=>{const s=el.querySelector("[data-share]");if(s)s.textContent=shareText(+el.dataset.i)});return}
-  if(t.dataset.r==="oil"&&(t.value==="__all__"||t.value==="__fit__")){if(t.value==="__all__")showAllRows.add(r);else showAllRows.delete(r);render();const sel=document.querySelector(`.orow[data-i="${i}"] select[data-r="oil"]`);sel?.focus();try{sel?.showPicker?.()}catch(_){}return}
-  if(t.dataset.r==="oil"){r.oil=t.value;const o=findOil(t.value);if(o&&!toneFits(o.tone,r.tone))r.tone=o.tone;showAllRows.delete(r)}
+  if(t.dataset.r==="oil"){r.oil=t.value;const o=findOil(t.value);if(o)r.tone=o.tone}
   if(t.dataset.r==="tone") r.tone=t.value;
   saveStudio();render();return}
  if(t.dataset.ui){ui[t.dataset.ui]=t.value;const id=t.id,pos=t.selectionStart;render();const n=id?document.getElementById(id):document.querySelector(`[data-ui="${t.dataset.ui}"]`);if(n){n.focus();try{n.setSelectionRange(pos,pos)}catch(_){}}return}
  if(t.dataset.uc){ui[t.dataset.uc]=t.checked;render();return}
+ if(t.dataset.weigh){const it=S.inventory.find(x=>x.id===t.dataset.weigh);const ml=weighCalc(it,Number(t.value));const r=document.getElementById("wr-"+it.id);if(r)r.innerHTML=ml==null?"輸入重量後顯示剩量":`約剩 <b class="num">${fmt(ml)} ml</b>（目前記錄 ${fmt(it.amount)} ml）`;return}
  if(t.dataset.inv){const it=S.inventory.find(i=>i.id===t.closest(".inv-item").dataset.id);it[t.dataset.inv]=round(Number(t.value)||0,2);clearTimeout(t._tm);t._tm=setTimeout(()=>{touch("inventory")},500);return}
  if(t.id==="aiStock"){ui.aiStock=t.checked}
 });
@@ -1485,7 +1472,6 @@ document.addEventListener("keydown",e=>{if(e.target.id==="aiInput"&&e.key==="Ent
 (function start(){
  applyLayout(layout());
  ensureCapacity();
- sortRows();
  if(S._autoMigrated){delete S._autoMigrated;lsSet(LS_KEY,S);setTimeout(()=>toast("已自動搬入這個瀏覽器裡的舊版資料"),400)}
  const v=location.hash.slice(1); ui.view=VIEWS.some(x=>x[0]===v)?v:"home";
  render();
